@@ -1,0 +1,24 @@
+{
+  "name": "angular-gdeic",
+  "description": "An ng-components for GDEIC's projects",
+  "main": "index.js",
+  "authors": [
+    "AlcheXie"
+  ],
+  "license": "MIT",
+  "moduleType": [],
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "devDependencies": {
+    "angular-animate": "1.4.9",
+    "angular-bootstrap": "1.1.2",
+    "angular-linq": "1.0.2"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "name": "angular-gdeic",
+  "version": "0.0.0",
+  "description": "An ng-component for GDEIC's projects",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "AlcheXie",
+  "license": "MIT",
+  "devDependencies": {
+    "raw-loader": "^0.5.1",
+    "webpack": "^1.13.0"
+  }
+}
