@@ -1,0 +1,9 @@
+<div>
+    <div class="text-center" style="border-top: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; padding-top: 20px; padding-bottom: 20px"
+        ng-if="!hideAlert" ng-show="pagingModel.pagingListLength === 0">无匹配记录</div>
+    <div class="text-center" ng-show="pagingModel.pagingListLength > pagingModel.itemsPerPage">
+        <uib-pagination total-items="pagingModel.pagingListLength" ng-model="pagingModel.currentPage" max-size="5" class="pagination-sm"
+            boundary-link-numbers="true" rotate="false" previous-text="上一页" next-text="下一页" items-per-page="pagingModel.itemsPerPage"
+            ng-change="pagingModel.paging(pagingModel.currentPage)"></uib-pagination>
+    </div>
+</div>
