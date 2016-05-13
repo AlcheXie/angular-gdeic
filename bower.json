@@ -19,6 +19,7 @@
   "devDependencies": {
     "angular-animate": "1.4.9",
     "angular-bootstrap": "1.1.2",
-    "angular-linq": "1.0.2"
+    "angular-linq": "1.0.2",
+    "angular-resource": "1.4.9"
   }
 }
