@@ -1,0 +1,10 @@
+<div class="input-group">
+    <input type="text" class="form-control" uib-datepicker-popup ng-model="ngModel" is-open="opened" min-date="minDate" max-date="maxDate"
+        datepicker-options="{ startingDay: 0 }" date-disabled="dateDisabled(date, mode)" ng-required="ngRequired" ng-disabled="ngDisabled"
+        current-text="今天" clear-text="清除" close-text="关闭" />
+    <span class="input-group-btn">
+        <button type="button" class="btn btn-default" ng-disabled="ngDisabled" ng-click="open()">
+            <i class="glyphicon glyphicon-calendar"></i>
+        </button>
+    </span>
+</div>

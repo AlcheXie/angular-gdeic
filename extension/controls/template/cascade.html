@@ -1,0 +1,4 @@
+<select class="{{inputClass}}" ng-model="selectedModel" ng-change="setValue()" ng-show="showWhenNoOption ? true : itemList.length > 0" ng-required="ngRequired">
+    <option value="">--请选择--</option>
+    <option ng-repeat="i in itemList" value="{{i.[[key]]}}" label="{{i.[[value]]}}"></option>   
+</select>

@@ -1,0 +1,10 @@
+<div>
+    <input id="{{fileId}}" class="form-control" type="file" style="display: none" accept="{{accept}}" />
+    <div class="input-group">
+        <input type="text" class="form-control" style="background: #ffffff" readonly ng-required="ngRequired" placeholder="{{placeholder}}"
+            ng-if="!hideFileName" />
+        <span class="input-group-btn">
+            <button class="btn btn-default" type="button">浏览</button>
+        </span>
+    </div>
+</div>

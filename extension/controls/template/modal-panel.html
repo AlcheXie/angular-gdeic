@@ -1,0 +1,24 @@
+<div gradual-show="isShow" style="position:absolute; width:100%; height:100%; top:0">
+    <div class="modal-select" gradual-show="isShow">
+        <div class="modal-select-header">
+            <b>{{headerTitle}}</b>
+            <button type="button" class="close" ng-click="isShow = !isShow">&times;</button>
+        </div>
+        <div class="modal-select-body">
+            <ng-transclude></ng-transclude>
+        </div>
+        <div class="modal-select-footer">
+            <div class="pull-right">
+                <button type="button" class="btn btn-default btn-xs" ng-click="cancel(); isShow = !isShow">
+                    <span class="glyphicon glyphicon-remove"></span> 取消
+                </button>
+                <button type="button" class="btn btn-warning btn-xs" style="margin-left: 5px" ng-if="$$isClear" ng-click="clear()">'
+                    <span class="glyphicon glyphicon-trash"></span> 清空
+                </button>
+                <button type="button" class="btn btn-primary btn-xs" style="margin-left: 5px" ng-click="ok()">
+                <span class="glyphicon glyphicon-ok"></span> 确定
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
