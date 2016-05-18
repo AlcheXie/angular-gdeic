@@ -1,0 +1,33 @@
+.gdeic-modal-panel {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    @include transform(translateX(-50%) translateY(-50%));
+    width: 90%;
+    @include box-shadow(5px 5px 20px #888888);
+    overflow: auto;
+    background-color: #FFFFFF;
+
+    .gdeic-modal-panel-header {
+        padding: 10px 15px;
+        background-color: #5EB2D9;
+        color: #FFFFFF;
+    }
+
+    .gdeic-modal-panel-filter {
+        padding: 10px 15px 0;
+    }
+
+    .gdeic-modal-panel-body {
+        flex: 1;
+        padding: 10px 15px;
+        overflow-y: auto;
+    }
+
+    .gdeic-modal-panel-footer {
+        padding: 10px 15px;
+        border-top: 1px solid #E5E5E5;
+    }
+}

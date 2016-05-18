@@ -1,7 +1,7 @@
-<div style="position: relative; min-height: 60px">
-    <div class="{{loadingClass || 'text-center'}}" style="position:absolute; width:100%; {{loadingStyle}}" ng-show="isLoading">
-        <br/>
-        <span class="fa fa-spinner anime-spinner"></span>&nbsp;{{loadingText || '正在加载'}}...<br /><br />
+<div>
+    <div class="{{loadingClass || 'text-center'}}" ng-show="isLoading" style="padding: 25px 0">
+        <span class="gdeic-loading anime-spinner"></span>
+        <span ng-if="loadingText">{{loadingText + '...'}}</span>
     </div>
     <ng-transclude ng-class="{'invisible': isLoading}"></ng-transclude>
 </div>

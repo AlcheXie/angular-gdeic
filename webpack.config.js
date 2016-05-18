@@ -1,4 +1,5 @@
 var PROD = process.argv.indexOf('-p') >= 0;
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
     entry: {
@@ -12,7 +13,16 @@ module.exports = {
     },
     module: {
         loaders: [
-            { test: /\.html$/, loader: 'raw-loader' }
+            {
+                test: /\.html$/,
+                loader: 'raw-loader'
+            }, {
+                test: /\.scss$/,
+                loader: ExtractTextPlugin.extract('css-loader!sass-loader')
+            }
         ]
-    }
+    },
+    plugins: [
+        new ExtractTextPlugin('./css/' + (PROD ? '[name].min.css' : '[name].css'))
+    ]
 };

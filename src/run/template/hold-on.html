@@ -1,5 +1,6 @@
-<div class="holdOn" ng-show="isHoldingOn">
-    <div class="holdOn-body">
-        <span class="fa fa-spinner anime-spinner"></span>&nbsp;{{holdOnText || '正在操作，请稍后'}}...
+<div class="gdeic-holdOn" ng-show="isHoldingOn">
+    <div class="gdeic-holdOn-body">
+        <span class="gdeic-loading"></span>
+        <span ng-if="holdOnText">{{holdOnText + '...'}}</span>
     </div>
 </div>

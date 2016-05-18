@@ -13,7 +13,6 @@ module.exports = function (ngModule) {
                 templateUrl: '@',
                 isLoading: '=',
                 loadingClass: '@',
-                loadingStyle: '@',
                 loadingText: '@'
             },
             templateUrl: function (tElement, tAttrs) {

@@ -9,7 +9,11 @@
   "author": "AlcheXie",
   "license": "MIT",
   "devDependencies": {
+    "css-loader": "^0.23.1",
+    "extract-text-webpack-plugin": "^1.0.1",
+    "node-sass": "^3.7.0",
     "raw-loader": "^0.5.1",
+    "sass-loader": "^3.2.0",
     "webpack": "^1.13.0"
   }
 }
