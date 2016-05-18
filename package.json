@@ -1,6 +1,6 @@
 {
   "name": "angular-gdeic",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "An ng-component for GDEIC's projects",
   "main": "index.js",
   "scripts": {

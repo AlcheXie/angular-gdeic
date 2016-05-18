@@ -1,14 +1,14 @@
 {
   "name": "angular-gdeic",
+  "version": "1.0.0",
   "description": "An ng-components for GDEIC's projects",
-  "main": "index.js",
+  "main": "./dist/angular.gdeic.js",
   "authors": [
     "AlcheXie"
   ],
   "license": "MIT",
   "moduleType": [],
   "homepage": "",
-  "private": true,
   "ignore": [
     "**/.*",
     "node_modules",
@@ -16,7 +16,7 @@
     "test",
     "tests"
   ],
-  "devDependencies": {
+  "dependencies": {
     "angular-animate": "1.4.9",
     "angular-bootstrap": "1.1.2",
     "angular-linq": "1.0.2",
