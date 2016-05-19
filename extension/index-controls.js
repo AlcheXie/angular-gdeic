@@ -8,3 +8,5 @@ require('./controls/modal-select-panel')(ngModule);
 require('./controls/tree-view')(ngModule);
 
 require('./controls/template')(ngModule);
+
+require('./../scss/controls.scss');

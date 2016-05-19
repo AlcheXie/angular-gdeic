@@ -1,24 +1,7 @@
 $commonFontFamily: 'Microsoft YaHei';
 
-@mixin transform($transform) {
-    -ms-transform: $transform;
-    -webkit-transform: $transform;
-    transform: $transform;
-}
-
-@mixin box-shadow($boxShadow) {
-    -webkit-box-shadow: $boxShadow;
-    -moz-box-shadow: $boxShadow;
-    box-shadow: $boxShadow;
-}
-
-@mixin border-radius($borderRadius) {
-    -webkit-border-radius: $borderRadius;
-    -moz-border-radius: $borderRadius;
-    border-radius: $borderRadius;
-}
+@import "mixin";
 
 @import "error";
 @import "hold-on";
 @import "loading";
-@import "modal-panel";
