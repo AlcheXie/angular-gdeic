@@ -40,15 +40,19 @@ module.exports = function (ngModule) {
             replace: true,
             link: function (scope, iElement, iAttrs, controller, transcludeFn) {
                 var _originalValue;
-                scope.search = {};
-                if (scope.multiSelect === true) {
-                    _originalValue = [];
-                } else {
-                    _originalValue = {};
-                    Object.defineProperty(_originalValue, iAttrs.keyProperty, {
-                        value: ''
-                    });
-                }
+
+                (function () {
+                    scope.search = {};
+                    if (scope.multiSelect === true) {
+                        _originalValue = [];
+                    } else {
+                        _originalValue = {};
+                        Object.defineProperty(_originalValue, iAttrs.keyProperty, {
+                            value: ''
+                        });
+                    }
+                } ());
+
 
                 scope.$watch('isShow', function (newValue) {
                     if (newValue) {
@@ -56,6 +60,23 @@ module.exports = function (ngModule) {
                             scope.selectedItem = angular.isArray(scope.ngModel) ? angular.copy(scope.ngModel) : _originalValue;
                         } else {
                             scope.selectedItem = angular.isObject(scope.ngModel) && !angular.isArray(scope.ngModel) ? angular.copy(scope.ngModel) : _originalValue;
+                        }
+
+                        if (angular.isUndefined(scope.templateUrl)) {
+                            $gdeic.execAsync(function () {
+                                var panel = iElement.children(),
+                                    panelChildren = panel.children(),
+                                    panelHeader = panelChildren.eq(0),
+                                    panelFilter = panelChildren.eq(1),
+                                    panelBody = panelChildren.eq(angular.isUndefined(scope.filterProperty) ? 1 : 2),
+                                    panelFooter = panelChildren.eq(panelChildren.length - 1);
+
+                                if (angular.isUndefined(scope.filterProperty)) {
+                                    panelBody.css('height', (iElement[0].offsetHeight - panelHeader[0].offsetHeight - panelFooter[0].offsetHeight) + 'px');
+                                } else {
+                                    panelBody.css('height', (iElement[0].offsetHeight - panelHeader[0].offsetHeight - panelFilter[0].offsetHeight - panelFooter[0].offsetHeight) + 'px');
+                                }
+                            })
                         }
                     }
                 });
