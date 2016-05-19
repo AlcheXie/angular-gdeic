@@ -12,6 +12,7 @@ module.exports = function (ngModule) {
                 templateUrl: '@',
                 treeData: '=',
                 isExpandRoot: '=',
+                isSelectRoot: '=',
                 isMultiChecked: '=',
                 selectedModel: '=',
                 itemToggle: '&',
@@ -39,7 +40,7 @@ module.exports = function (ngModule) {
                         if (angular.isUndefined(scope.selectedModel)) {
                             scope.selectedItems = null;
                         } else {
-                            if (scope.selectedModel === null || scope.selectedModel.constructor === Object) {
+                            if (scope.selectedModel === null || angular.isObject(scope.selectedModel)) {
                                 scope.selectedItems = scope.selectedModel;
                             } else {
                                 scope.selectedItems = null;
@@ -51,6 +52,11 @@ module.exports = function (ngModule) {
                         var _unbindWatcher = scope.$watch('treeData', function (newValue) {
                             if (newValue) {
                                 scope.treeData.$$isExpand = true;
+
+                                if (scope.isSelectRoot) {
+                                    doCallback('itemSelect', newValue)
+                                }
+
                                 _unbindWatcher();
                             }
                         }, true);
@@ -65,12 +71,16 @@ module.exports = function (ngModule) {
                     }
                 } ());
 
-                scope.toggleExpand = function (item, $event) {
+                scope.toggleExpand = toggleExpand;
+
+                scope.doCallback = doCallback;
+
+                function toggleExpand(item, $event) {
                     item.$$isExpand = !item.$$isExpand;
                     $event.stopPropagation();
                 }
 
-                scope.doCallback = function (callbackName, item, $event) {
+                function doCallback(callbackName, item, $event) {
                     if (!scope[callbackName]) { return; }
 
                     if (callbackName === 'itemSelect') {
