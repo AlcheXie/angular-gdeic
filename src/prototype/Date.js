@@ -29,11 +29,11 @@ module.exports = function (angular) {
                         format = format.replace(/dd/g, this.getDate().toString().padStart(2, '0'));
                     }
                     if (/HH/.test(format)) {
-                        format = format.replace(/dd/g, this.getHours().toString().padStart(2, '0'));
+                        format = format.replace(/HH/g, this.getHours().toString().padStart(2, '0'));
                     }
                     if (/hh/.test(format)) {
                         var hour = this.getHours();
-                        format = format.replace(/dd/g, (hour < 12 ? hour : hour - 12).toString().padStart(2, '0'));
+                        format = format.replace(/hh/g, (hour < 12 ? hour : hour - 12).toString().padStart(2, '0'));
                     }
                     if (/mm/.test(format)) {
                         format = format.replace(/mm/g, this.getMinutes().toString().padStart(2, '0'));
@@ -43,6 +43,17 @@ module.exports = function (angular) {
                     }
 
                     return format;
+                },
+                writable: false,
+                enumerable: false
+            },
+            addHours: {
+                value: function addHours(diff) {
+                    if (angular.isNumber(diff)) {
+                        diff = Math.floor(diff);
+                        this.setHours(this.getHours() + diff);
+                    }
+                    return this;
                 },
                 writable: false,
                 enumerable: false
