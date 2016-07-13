@@ -33,6 +33,32 @@ module.exports = function (angular) {
                 writable: false,
                 enumerable: false
             },
+            addHours: {
+                value: function addHours(diff) {
+                    var i, max, p, value;
+                    if (angular.isArray(this)) {
+                        for (i = 0, max = this.length; i < max; i++) {
+                            value = this[i];
+                            if (angular.isObject(value)) {
+                                value.addHours(diff);
+                            }
+                        }
+                    } else {
+                        for (p in this) {
+                            if (this.hasOwnProperty(p)) {
+                                value = this[p];
+                                if (angular.isDate(value)) {
+                                    this[p] = value.addHours(diff);
+                                } else if (angular.isObject(value)) {
+                                    value.addHours(diff);
+                                }
+                            }
+                        }
+                    }
+                },
+                writable: false,
+                enumerable: false
+            },
             clearProperties: {
                 value: function clear() {
                     var p, value;
