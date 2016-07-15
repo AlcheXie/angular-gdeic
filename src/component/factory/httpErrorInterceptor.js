@@ -7,11 +7,13 @@ module.exports = function (ngModule) {
 
     function $gdeicHttpErrorInterceptor($q, $rootScope, $log) {
         var httpInterceptor = {
-            'responseError': function (response) {
-                if (response.config.url.indexOf('.') < 0) {
-                    $log.error('RequestError: ' + response.config.url, response.status, response);
+            'request': function (config) {
+                if (config.url.indexOf('.') < 0) {
+                    if (angular.isDefined(config.data)) {
+                        config.data.addHours(8);
+                    }
                 }
-                return $q.reject(response);
+                return config;
             },
             'response': function (response) {
                 if (response.config.url.indexOf('.') < 0) {
@@ -26,9 +28,16 @@ module.exports = function (ngModule) {
 
                     if (angular.isObject(response.data.Data)) {
                         response.data.Data.formatDate();
+                        response.data.Data.addHours(-8);
                     }
                 }
                 return response;
+            },
+            'responseError': function (response) {
+                if (response.config.url.indexOf('.') < 0) {
+                    $log.error('RequestError: ' + response.config.url, response.status, response);
+                }
+                return $q.reject(response);
             }
         }
         return httpInterceptor;
