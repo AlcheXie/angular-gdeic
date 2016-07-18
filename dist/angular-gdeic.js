@@ -448,6 +448,32 @@
 	                writable: false,
 	                enumerable: false
 	            },
+	            addHours: {
+	                value: function addHours(diff) {
+	                    var i, max, p, value;
+	                    if (angular.isArray(this)) {
+	                        for (i = 0, max = this.length; i < max; i++) {
+	                            value = this[i];
+	                            if (angular.isObject(value)) {
+	                                value.addHours(diff);
+	                            }
+	                        }
+	                    } else {
+	                        for (p in this) {
+	                            if (this.hasOwnProperty(p)) {
+	                                value = this[p];
+	                                if (angular.isDate(value)) {
+	                                    this[p] = value.addHours(diff);
+	                                } else if (angular.isObject(value)) {
+	                                    value.addHours(diff);
+	                                }
+	                            }
+	                        }
+	                    }
+	                },
+	                writable: false,
+	                enumerable: false
+	            },
 	            clearProperties: {
 	                value: function clear() {
 	                    var p, value;
@@ -651,11 +677,11 @@
 	                        format = format.replace(/dd/g, this.getDate().toString().padStart(2, '0'));
 	                    }
 	                    if (/HH/.test(format)) {
-	                        format = format.replace(/dd/g, this.getHours().toString().padStart(2, '0'));
+	                        format = format.replace(/HH/g, this.getHours().toString().padStart(2, '0'));
 	                    }
 	                    if (/hh/.test(format)) {
 	                        var hour = this.getHours();
-	                        format = format.replace(/dd/g, (hour < 12 ? hour : hour - 12).toString().padStart(2, '0'));
+	                        format = format.replace(/hh/g, (hour < 12 ? hour : hour - 12).toString().padStart(2, '0'));
 	                    }
 	                    if (/mm/.test(format)) {
 	                        format = format.replace(/mm/g, this.getMinutes().toString().padStart(2, '0'));
@@ -665,6 +691,17 @@
 	                    }
 
 	                    return format;
+	                },
+	                writable: false,
+	                enumerable: false
+	            },
+	            addHours: {
+	                value: function addHours(diff) {
+	                    if (angular.isNumber(diff)) {
+	                        diff = Math.floor(diff);
+	                        this.setHours(this.getHours() + diff);
+	                    }
+	                    return this;
 	                },
 	                writable: false,
 	                enumerable: false
@@ -1105,11 +1142,13 @@
 
 	    function $gdeicHttpErrorInterceptor($q, $rootScope, $log) {
 	        var httpInterceptor = {
-	            'responseError': function (response) {
-	                if (response.config.url.indexOf('.') < 0) {
-	                    $log.error('RequestError: ' + response.config.url, response.status, response);
+	            'request': function (config) {
+	                if (config.url.indexOf('.') < 0) {
+	                    if (angular.isDefined(config.data)) {
+	                        config.data.addHours(8);
+	                    }
 	                }
-	                return $q.reject(response);
+	                return config;
 	            },
 	            'response': function (response) {
 	                if (response.config.url.indexOf('.') < 0) {
@@ -1124,9 +1163,16 @@
 
 	                    if (angular.isObject(response.data.Data)) {
 	                        response.data.Data.formatDate();
+	                        response.data.Data.addHours(-8);
 	                    }
 	                }
 	                return response;
+	            },
+	            'responseError': function (response) {
+	                if (response.config.url.indexOf('.') < 0) {
+	                    $log.error('RequestError: ' + response.config.url, response.status, response);
+	                }
+	                return $q.reject(response);
 	            }
 	        }
 	        return httpInterceptor;

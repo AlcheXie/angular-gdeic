@@ -1,6 +1,6 @@
 {
   "name": "angular-gdeic",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "An ng-components for GDEIC's projects",
   "main": "./dist/angular.gdeic.js",
   "authors": [
@@ -17,9 +17,9 @@
     "tests"
   ],
   "dependencies": {
-    "angular-animate": "1.4.9",
-    "angular-bootstrap": "1.1.2",
-    "angular-linq": "1.0.2",
-    "angular-resource": "1.4.9"
+    "angular-bootstrap": ">=1.1.0",
+    "angular-animate": ">=1.4.0",
+    "angular-resource": ">=1.4.9",
+    "angular-linq": ">=1.0.0"
   }
 }
