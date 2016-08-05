@@ -1,0 +1,7 @@
+<div class="gdeic-range">
+    <div class="gdeic-range-bar">
+        <input type="range" ng-model="ngModel" min="{{minValue}}" max="{{maxValue}}" step="{{step}}" ng-change="vm.change()">
+        <div ng-style="{ width: ngModel + '%' }"></div>
+    </div>
+    <span>{{ngModel}}{{labelText}}</span>
+</div>

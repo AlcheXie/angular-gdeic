@@ -6,6 +6,7 @@ require('./controls/file-upload')(ngModule);
 require('./controls/modal-panel')(ngModule);
 require('./controls/modal-select-panel')(ngModule);
 require('./controls/tree-view')(ngModule);
+require('./controls/range')(ngModule);
 
 require('./controls/template')(ngModule);
 

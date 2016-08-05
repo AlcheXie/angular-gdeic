@@ -12,7 +12,8 @@ module.exports = function (ngModule) {
             'file-upload.html',
             'modal-panel.html',
             'modal-select-panel.html',
-            'modal-select-panel-multi.html'
+            'modal-select-panel-multi.html',
+            'range.html'
         ],
             url = 'gdeic/controls/template/',
             entry = './template/';
