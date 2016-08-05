@@ -1,5 +1,6 @@
 module.exports = function (ngModule) {
 
+    require('./directive/element/ie-warning')(ngModule);
     require('./directive/element/error')(ngModule);
     require('./directive/element/hold-on')(ngModule);
     require('./directive/element/loading')(ngModule);
