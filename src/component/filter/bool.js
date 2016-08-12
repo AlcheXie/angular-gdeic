@@ -1,11 +1,11 @@
 module.exports = function (ngModule) {
     'use strict';
 
-    ngModule.filter('bool', bool);
+    ngModule.filter('bool', boolFilter);
 
-    bool.$inject = [];
+    boolFilter.$inject = [];
 
-    function bool() {
+    function boolFilter() {
         return function (input, rule) {
             rule = rule || '是|否';
             var params = rule.split('|');

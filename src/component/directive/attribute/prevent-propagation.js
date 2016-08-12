@@ -1,11 +1,11 @@
 module.exports = function (ngModule) {
     'use strict';
 
-    ngModule.directive('preventPropagation', preventPropagation);
+    ngModule.directive('preventPropagation', preventPropagationDirective);
 
-    preventPropagation.$inject = [];
+    preventPropagationDirective.$inject = [];
 
-    function preventPropagation() {
+    function preventPropagationDirective() {
         return {
             restrict: 'A',
             link: function (scope, iElement, iAttrs) {

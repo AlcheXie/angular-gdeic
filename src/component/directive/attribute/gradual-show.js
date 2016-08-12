@@ -1,11 +1,11 @@
 module.exports = function (ngModule) {
     'use strict';
 
-    ngModule.directive('gradualShow', gradualShow);
+    ngModule.directive('gradualShow', gradualShowDirective);
 
-    gradualShow.$inject = ['$animateCss'];
+    gradualShowDirective.$inject = ['$animateCss'];
 
-    function gradualShow($animateCss) {
+    function gradualShowDirective($animateCss) {
         return {
             restrict: 'A',
             link: function (scope, iElement, iAttrs) {

@@ -1,11 +1,11 @@
 module.exports = function (ngModule) {
     'use strict';
 
-    ngModule.directive('gdeicDatePicker', gdeicDatePicker);
+    ngModule.directive('gdeicDatePicker', gdeicDatePickerDirective);
 
-    gdeicDatePicker.$inject = [];
+    gdeicDatePickerDirective.$inject = [];
 
-    function gdeicDatePicker() {
+    function gdeicDatePickerDirective() {
         return {
             restrict: 'EA',
             scope: {

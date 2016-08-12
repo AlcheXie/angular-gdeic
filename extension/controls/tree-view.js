@@ -1,11 +1,11 @@
 module.exports = function (ngModule) {
     'use strict';
 
-    ngModule.directive('gdeicTreeView', gdeicTreeView);
+    ngModule.directive('gdeicTreeView', gdeicTreeViewDirective);
 
-    gdeicTreeView.$inject = ['$templateCache', '$gdeic'];
+    gdeicTreeViewDirective.$inject = ['$templateCache', '$gdeic'];
 
-    function gdeicTreeView($templateCache, $gdeic) {
+    function gdeicTreeViewDirective($templateCache, $gdeic) {
         return {
             restrict: 'EA',
             scope: {

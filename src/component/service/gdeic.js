@@ -1,11 +1,11 @@
 module.exports = function (ngModule) {
     'use strict';
 
-    ngModule.service('$gdeic', $gdeic);
+    ngModule.service('$gdeic', $gdeicService);
 
-    $gdeic.$inject = ['$rootScope', '$q', '$location', '$timeout', '$uibModal'];
+    $gdeicService.$inject = ['$rootScope', '$q', '$location', '$timeout', '$uibModal'];
 
-    function $gdeic($rootScope, $q, $location, $timeout, $uibModal) {
+    function $gdeicService($rootScope, $q, $location, $timeout, $uibModal) {
         this.finishInit = function () {
             $rootScope.finishInit = true;
         };

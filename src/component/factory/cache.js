@@ -1,11 +1,11 @@
 module.exports = function (ngModule) {
     'use strict';
 
-    ngModule.factory('$gdeicCache', $gdeicCache);
+    ngModule.factory('$gdeicCache', $gdeicCacheFactory);
 
-    $gdeicCache.$inject = ['$cacheFactory', '$q', '$gdeic'];
+    $gdeicCacheFactory.$inject = ['$cacheFactory', '$q', '$gdeic'];
 
-    function $gdeicCache($cacheFactory, $q, $gdeic) {
+    function $gdeicCacheFactory($cacheFactory, $q, $gdeic) {
         var _cacheKeyList = [],
             _cache = $cacheFactory('gdeicCache'),
             gdeicCache = {

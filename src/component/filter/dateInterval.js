@@ -1,11 +1,11 @@
 module.exports = function (ngModule) {
     'use strict';
 
-    ngModule.filter('dateInterval', dateInterval);
+    ngModule.filter('dateInterval', dateIntervalFilter);
 
-    dateInterval.$inject = [];
+    dateIntervalFilter.$inject = [];
 
-    function dateInterval() {
+    function dateIntervalFilter() {
         return function (input, rule, type) {
             type = type || 'day';
 

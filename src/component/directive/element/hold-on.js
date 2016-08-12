@@ -1,11 +1,11 @@
 module.exports = function (ngModule) {
     'use strict';
 
-    ngModule.directive('gdeicHoldOn', gdeicHoldOn);
+    ngModule.directive('gdeicHoldOn', gdeicHoldOnDirective);
 
-    gdeicHoldOn.$inject = [];
+    gdeicHoldOnDirective.$inject = [];
 
-    function gdeicHoldOn() {
+    function gdeicHoldOnDirective() {
         return {
             restrict: 'EA',
             scope: {

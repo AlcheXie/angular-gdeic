@@ -1,11 +1,11 @@
 module.exports = function (ngModule) {
     'use strict';
 
-    ngModule.directive('gdeicModalPanel', gdeicModalPanel);
+    ngModule.directive('gdeicModalPanel', gdeicModalPanelDirective);
 
-    gdeicModalPanel.$inject = [];
+    gdeicModalPanelDirective.$inject = [];
 
-    function gdeicModalPanel() {
+    function gdeicModalPanelDirective() {
         return {
             restrict: 'EA',
             transclude: true,

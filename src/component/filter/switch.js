@@ -1,11 +1,11 @@
 module.exports = function (ngModule) {
     'use strict';
 
-    ngModule.filter('switch', switch_);
+    ngModule.filter('switch', switchFilter);
 
-    switch_.$inject = [];
+    switchFilter.$inject = [];
 
-    function switch_() {
+    function switchFilter() {
         return function (input, rule) {
             var params = rule.split('|'), i = 0, max = params.length, result = '';
             if (angular.isNumber(input)) {

@@ -1,11 +1,11 @@
 module.exports = function (ngModule) {
     'use strict';
 
-    ngModule.directive('autoResize', autoResize);
+    ngModule.directive('autoResize', autoResizeDirective);
 
-    autoResize.$inject = ['$window'];
+    autoResizeDirective.$inject = ['$window'];
 
-    function autoResize($window) {
+    function autoResizeDirective($window) {
         return {
             restrict: 'A',
             link: function (scope, iElement, iAttrs) {

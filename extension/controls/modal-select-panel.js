@@ -1,11 +1,11 @@
 module.exports = function (ngModule) {
     'use strict';
 
-    ngModule.directive('gdeicModalSelectPanel', gdeicModalSelectPanel);
+    ngModule.directive('gdeicModalSelectPanel', gdeicModalSelectPanelDirective);
 
-    gdeicModalSelectPanel.$inject = ['$templateCache', '$gdeic'];
+    gdeicModalSelectPanelDirective.$inject = ['$templateCache', '$gdeic'];
 
-    function gdeicModalSelectPanel($templateCache, $gdeic) {
+    function gdeicModalSelectPanelDirective($templateCache, $gdeic) {
         return {
             restrict: 'EA',
             scope: {

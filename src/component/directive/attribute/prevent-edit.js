@@ -1,11 +1,11 @@
 module.exports = function (ngModule) {
     'use strict';
 
-    ngModule.directive('preventEdit', preventEdit);
+    ngModule.directive('preventEdit', preventEditDirective);
 
-    preventEdit.$inject = [];
+    preventEditDirective.$inject = [];
 
-    function preventEdit() {
+    function preventEditDirective() {
         return {
             restrict: 'A',
             link: function (scope, iElement, iAttrs) {

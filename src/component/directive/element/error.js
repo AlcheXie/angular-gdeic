@@ -1,11 +1,11 @@
 module.exports = function (ngModule) {
     'use strict';
 
-    ngModule.directive('gdeicError', gdeicError);
+    ngModule.directive('gdeicError', gdeicErrorDirective);
 
-    gdeicError.$inject = ['$window'];
+    gdeicErrorDirective.$inject = ['$window'];
 
-    function gdeicError($window) {
+    function gdeicErrorDirective($window) {
         return {
             restrict: 'EA',
             scope: {

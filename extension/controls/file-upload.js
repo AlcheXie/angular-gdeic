@@ -1,11 +1,11 @@
 module.exports = function (ngModule) {
     'use strict';
 
-    ngModule.directive('gdeicFileUpload', gdeicFileUpload);
+    ngModule.directive('gdeicFileUpload', gdeicFileUploadDirective);
 
-    gdeicFileUpload.$inject = ['$gdeic'];
+    gdeicFileUploadDirective.$inject = ['$gdeic'];
 
-    function gdeicFileUpload($gdeic) {
+    function gdeicFileUploadDirective($gdeic) {
         return {
             restrict: "EA",
             scope: {

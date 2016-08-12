@@ -1,11 +1,11 @@
 module.exports = function (ngModule) {
     'use strict';
 
-    ngModule.factory('$gdeicHttpErrorInterceptor', $gdeicHttpErrorInterceptor);
+    ngModule.factory('$gdeicHttpInterceptor', $gdeicHttpInterceptorFactory);
 
-    $gdeicHttpErrorInterceptor.$inject = ['$q', '$rootScope', '$log'];
+    $gdeicHttpInterceptorFactory.$inject = ['$q', '$rootScope', '$log'];
 
-    function $gdeicHttpErrorInterceptor($q, $rootScope, $log) {
+    function $gdeicHttpInterceptorFactory($q, $rootScope, $log) {
         var httpInterceptor = {
             'request': function (config) {
                 if (config.url.indexOf('.') < 0) {

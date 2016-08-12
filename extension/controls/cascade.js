@@ -1,11 +1,11 @@
 module.exports = function (ngModule) {
     'use strict';
 
-    ngModule.directive('gdeicCascade', gdeicCascade);
+    ngModule.directive('gdeicCascade', gdeicCascadeDirective);
 
-    gdeicCascade.$inject = ['$templateCache', '$linq', '$gdeic'];
+    gdeicCascadeDirective.$inject = ['$templateCache', '$linq', '$gdeic'];
 
-    function gdeicCascade($templateCache, $linq, $gdeic) {
+    function gdeicCascadeDirective($templateCache, $linq, $gdeic) {
         return {
             restrict: 'EA',
             scope: {

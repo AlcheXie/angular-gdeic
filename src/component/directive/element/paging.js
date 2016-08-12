@@ -1,11 +1,11 @@
 module.exports = function (ngModule) {
     'use strict';
 
-    ngModule.directive('gdeicPaging', gdeicPaging);
+    ngModule.directive('gdeicPaging', gdeicPagingDirective);
 
-    gdeicPaging.$inject = ['$cPagingModel', '$cGroupingModel'];
+    gdeicPagingDirective.$inject = ['$cPagingModel', '$cGroupingModel'];
 
-    function gdeicPaging($cPagingModel, $cGroupingModel) {
+    function gdeicPagingDirective($cPagingModel, $cGroupingModel) {
         return {
             restrict: 'EA',
             scope: {

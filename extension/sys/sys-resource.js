@@ -1,11 +1,11 @@
 module.exports = function (ngModule) {
     'use strict';
 
-    ngModule.factory('$gdeicSysResource', $gdeicSysResource);
+    ngModule.factory('$gdeicSysResource', $gdeicSysResourceFactory);
 
-    $gdeicSysResource.$inject = ['$resource'];
+    $gdeicSysResourceFactory.$inject = ['$resource'];
 
-    function $gdeicSysResource($resource) {
+    function $gdeicSysResourceFactory($resource) {
         return $resource('api/account', {}, {
             getAccountInfo: {
                 url: 'api/account/account',

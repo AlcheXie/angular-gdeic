@@ -1,11 +1,11 @@
 module.exports = function (ngModule) {
     'use strict';
 
-    ngModule.directive('gdeicLoading', gdeicLoading);
+    ngModule.directive('gdeicLoading', gdeicLoadingDirective);
 
-    gdeicLoading.$inject = [];
+    gdeicLoadingDirective.$inject = [];
 
-    function gdeicLoading() {
+    function gdeicLoadingDirective() {
         return {
             restrict: 'EA',
             transclude: true,

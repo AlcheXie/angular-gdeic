@@ -1,11 +1,11 @@
 module.exports = function (ngModule) {
     'use strict';
 
-    ngModule.directive('gdeicArrayText', gdeicArrayText);
+    ngModule.directive('gdeicArrayText', gdeicArrayTextDirective);
 
-    gdeicArrayText.$inject = [];
+    gdeicArrayTextDirective.$inject = [];
 
-    function gdeicArrayText() {
+    function gdeicArrayTextDirective() {
         return {
             restrict: 'EA',
             transclude: true,

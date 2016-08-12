@@ -6,6 +6,6 @@ module.exports = function (ngModule) {
     configFunc.$inject = ['$httpProvider'];
 
     function configFunc($httpProvider) {
-        $httpProvider.interceptors.push('$gdeicHttpErrorInterceptor');
+        $httpProvider.interceptors.push('$gdeicHttpInterceptor');
     }
 };
