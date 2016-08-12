@@ -52,10 +52,11 @@
 	__webpack_require__(4)(ngModule);
 	__webpack_require__(5)(ngModule);
 	__webpack_require__(6)(ngModule);
-
 	__webpack_require__(7)(ngModule);
 
-	__webpack_require__(15);
+	__webpack_require__(8)(ngModule);
+
+	__webpack_require__(17);
 
 /***/ },
 /* 1 */
@@ -64,11 +65,11 @@
 	module.exports = function (ngModule) {
 	    'use strict';
 
-	    ngModule.directive('gdeicCascade', gdeicCascade);
+	    ngModule.directive('gdeicCascade', gdeicCascadeDirective);
 
-	    gdeicCascade.$inject = ['$templateCache', '$linq', '$gdeic'];
+	    gdeicCascadeDirective.$inject = ['$templateCache', '$linq', '$gdeic'];
 
-	    function gdeicCascade($templateCache, $linq, $gdeic) {
+	    function gdeicCascadeDirective($templateCache, $linq, $gdeic) {
 	        return {
 	            restrict: 'EA',
 	            scope: {
@@ -209,11 +210,11 @@
 	module.exports = function (ngModule) {
 	    'use strict';
 
-	    ngModule.directive('gdeicDatePicker', gdeicDatePicker);
+	    ngModule.directive('gdeicDatePicker', gdeicDatePickerDirective);
 
-	    gdeicDatePicker.$inject = [];
+	    gdeicDatePickerDirective.$inject = [];
 
-	    function gdeicDatePicker() {
+	    function gdeicDatePickerDirective() {
 	        return {
 	            restrict: 'EA',
 	            scope: {
@@ -261,11 +262,11 @@
 	module.exports = function (ngModule) {
 	    'use strict';
 
-	    ngModule.directive('gdeicFileUpload', gdeicFileUpload);
+	    ngModule.directive('gdeicFileUpload', gdeicFileUploadDirective);
 
-	    gdeicFileUpload.$inject = ['$gdeic'];
+	    gdeicFileUploadDirective.$inject = ['$gdeic'];
 
-	    function gdeicFileUpload($gdeic) {
+	    function gdeicFileUploadDirective($gdeic) {
 	        return {
 	            restrict: "EA",
 	            scope: {
@@ -366,11 +367,11 @@
 	module.exports = function (ngModule) {
 	    'use strict';
 
-	    ngModule.directive('gdeicModalPanel', gdeicModalPanel);
+	    ngModule.directive('gdeicModalPanel', gdeicModalPanelDirective);
 
-	    gdeicModalPanel.$inject = [];
+	    gdeicModalPanelDirective.$inject = [];
 
-	    function gdeicModalPanel() {
+	    function gdeicModalPanelDirective() {
 	        return {
 	            restrict: 'EA',
 	            transclude: true,
@@ -405,11 +406,11 @@
 	module.exports = function (ngModule) {
 	    'use strict';
 
-	    ngModule.directive('gdeicModalSelectPanel', gdeicModalSelectPanel);
+	    ngModule.directive('gdeicModalSelectPanel', gdeicModalSelectPanelDirective);
 
-	    gdeicModalSelectPanel.$inject = ['$templateCache', '$gdeic'];
+	    gdeicModalSelectPanelDirective.$inject = ['$templateCache', '$gdeic'];
 
-	    function gdeicModalSelectPanel($templateCache, $gdeic) {
+	    function gdeicModalSelectPanelDirective($templateCache, $gdeic) {
 	        return {
 	            restrict: 'EA',
 	            scope: {
@@ -536,11 +537,11 @@
 	module.exports = function (ngModule) {
 	    'use strict';
 
-	    ngModule.directive('gdeicTreeView', gdeicTreeView);
+	    ngModule.directive('gdeicTreeView', gdeicTreeViewDirective);
 
-	    gdeicTreeView.$inject = ['$templateCache', '$gdeic'];
+	    gdeicTreeViewDirective.$inject = ['$templateCache', '$gdeic'];
 
-	    function gdeicTreeView($templateCache, $gdeic) {
+	    function gdeicTreeViewDirective($templateCache, $gdeic) {
 	        return {
 	            restrict: 'EA',
 	            scope: {
@@ -642,6 +643,57 @@
 
 /***/ },
 /* 7 */
+/***/ function(module, exports) {
+
+	module.exports = function (ngModule) {
+	    'use strict';
+
+	    ngModule.directive('gdeicRange', gdeicRangeDirective);
+
+	    gdeicRangeDirective.$inject = [];
+
+	    function gdeicRangeDirective() {
+	        return {
+	            restrict: 'EA',
+	            scope: {
+	                ngModel: '=',
+	                labelText: '@',
+	                minValue: '=',
+	                maxValue: '=',
+	                step: '=',
+	                isModifyMinValue: '='
+	            },
+	            templateUrl: function (tElement, tAttrs) {
+	                return tAttrs.templateUrl || 'gdeic/controls/template/range.html';
+	            },
+	            replace: true,
+	            controller: function () {
+	                this.change = angular.noop;
+	            },
+	            controllerAs: 'vm',
+	            link: function (scope, iElement, iAttrs, controller, transcludeFn) {
+	                var _minValue;
+
+	                if (scope.isModifyMinValue) {
+	                    controller.change = function () {
+	                        if (angular.isUndefined(_minValue)) {
+	                            _minValue = scope.minValue;
+	                        }
+
+	                        if (parseFloat(scope.ngModel) - _minValue < 1) {
+	                            scope.minValue = _minValue;
+	                        } else {
+	                            scope.minValue = Math.ceil(scope.minValue);
+	                        }
+	                    }
+	                }
+	            }
+	        }
+	    }
+	}
+
+/***/ },
+/* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (ngModule) {
@@ -658,7 +710,8 @@
 	            'file-upload.html',
 	            'modal-panel.html',
 	            'modal-select-panel.html',
-	            'modal-select-panel-multi.html'
+	            'modal-select-panel-multi.html',
+	            'range.html'
 	        ],
 	            url = 'gdeic/controls/template/',
 	            entry = './template/';
@@ -667,13 +720,13 @@
 
 	        for (; i < max; i++) {
 	            curr = templates[i];
-	            $templateCache.put(url + curr, __webpack_require__(8)(entry + curr));
+	            $templateCache.put(url + curr, __webpack_require__(9)(entry + curr));
 	        }
 	    }
 	};
 
 /***/ },
-/* 8 */
+/* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var map = {
@@ -687,14 +740,17 @@
 		"./modal-panel.js": 4,
 		"./modal-select-panel": 5,
 		"./modal-select-panel.js": 5,
-		"./template": 7,
-		"./template.js": 7,
-		"./template/cascade.html": 9,
-		"./template/date-picker.html": 10,
-		"./template/file-upload.html": 11,
-		"./template/modal-panel.html": 12,
-		"./template/modal-select-panel-multi.html": 13,
-		"./template/modal-select-panel.html": 14,
+		"./range": 7,
+		"./range.js": 7,
+		"./template": 8,
+		"./template.js": 8,
+		"./template/cascade.html": 10,
+		"./template/date-picker.html": 11,
+		"./template/file-upload.html": 12,
+		"./template/modal-panel.html": 13,
+		"./template/modal-select-panel-multi.html": 14,
+		"./template/modal-select-panel.html": 15,
+		"./template/range.html": 16,
 		"./tree-view": 6,
 		"./tree-view.js": 6
 	};
@@ -709,56 +765,62 @@
 	};
 	webpackContext.resolve = webpackContextResolve;
 	module.exports = webpackContext;
-	webpackContext.id = 8;
+	webpackContext.id = 9;
 
-
-/***/ },
-/* 9 */
-/***/ function(module, exports) {
-
-	module.exports = "<select class=\"{{inputClass}}\" ng-model=\"selectedModel\" ng-change=\"setValue()\" ng-show=\"showWhenNoOption ? true : itemList.length > 0\" ng-required=\"ngRequired\">\r\n    <option value=\"\">--请选择--</option>\r\n    <option ng-repeat=\"i in itemList\" value=\"{{i.[[key]]}}\" label=\"{{i.[[value]]}}\"></option>   \r\n</select>"
 
 /***/ },
 /* 10 */
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"input-group\">\r\n    <input type=\"text\" class=\"form-control\" uib-datepicker-popup ng-model=\"ngModel\" is-open=\"opened\" min-date=\"minDate\" max-date=\"maxDate\"\r\n        datepicker-options=\"{ startingDay: 0 }\" date-disabled=\"dateDisabled(date, mode)\" ng-required=\"ngRequired\" ng-disabled=\"ngDisabled\"\r\n        current-text=\"今天\" clear-text=\"清除\" close-text=\"关闭\" />\r\n    <span class=\"input-group-btn\">\r\n        <button type=\"button\" class=\"btn btn-default\" ng-disabled=\"ngDisabled\" ng-click=\"open()\">\r\n            <i class=\"glyphicon glyphicon-calendar\"></i>\r\n        </button>\r\n    </span>\r\n</div>"
+	module.exports = "<select class=\"{{inputClass}}\" ng-model=\"selectedModel\" ng-change=\"setValue()\" ng-show=\"showWhenNoOption ? true : itemList.length > 0\" ng-required=\"ngRequired\">\r\n    <option value=\"\">--请选择--</option>\r\n    <option ng-repeat=\"i in itemList\" value=\"{{i.[[key]]}}\" label=\"{{i.[[value]]}}\"></option>   \r\n</select>"
 
 /***/ },
 /* 11 */
 /***/ function(module, exports) {
 
-	module.exports = "<div>\r\n    <input id=\"{{fileId}}\" class=\"form-control\" type=\"file\" style=\"display: none\" accept=\"{{accept}}\" />\r\n    <div class=\"input-group\">\r\n        <input type=\"text\" class=\"form-control\" style=\"background: #ffffff\" readonly ng-required=\"ngRequired\" placeholder=\"{{placeholder}}\"\r\n            ng-if=\"!hideFileName\" />\r\n        <span class=\"input-group-btn\">\r\n            <button class=\"btn btn-default\" type=\"button\">浏览</button>\r\n        </span>\r\n    </div>\r\n</div>"
+	module.exports = "<div class=\"input-group\">\r\n    <input type=\"text\" class=\"form-control\" uib-datepicker-popup ng-model=\"ngModel\" is-open=\"opened\" min-date=\"minDate\" max-date=\"maxDate\"\r\n        datepicker-options=\"{ startingDay: 0 }\" date-disabled=\"dateDisabled(date, mode)\" ng-required=\"ngRequired\" ng-disabled=\"ngDisabled\"\r\n        current-text=\"今天\" clear-text=\"清除\" close-text=\"关闭\" />\r\n    <span class=\"input-group-btn\">\r\n        <button type=\"button\" class=\"btn btn-default\" ng-disabled=\"ngDisabled\" ng-click=\"open()\">\r\n            <i class=\"glyphicon glyphicon-calendar\"></i>\r\n        </button>\r\n    </span>\r\n</div>"
 
 /***/ },
 /* 12 */
 /***/ function(module, exports) {
 
-	module.exports = "<div gradual-show=\"isShow\" style=\"position:absolute; width:100%; height:100%; top:0\">\r\n    <div class=\"gdeic-modal-panel\" gradual-show=\"isShow\">\r\n        <div class=\"gdeic-modal-panel-header\">\r\n            <b>{{headerTitle}}</b>\r\n            <button type=\"button\" class=\"close\" ng-click=\"isShow = !isShow\">&times;</button>\r\n        </div>\r\n        <div class=\"gdeic-modal-panel-body\">\r\n            <ng-transclude></ng-transclude>\r\n        </div>\r\n        <div class=\"gdeic-modal-panel-footer\">\r\n            <div class=\"pull-right\">\r\n                <button type=\"button\" class=\"btn btn-default btn-xs\" ng-click=\"cancel(); isShow = !isShow\">\r\n                    <span class=\"glyphicon glyphicon-remove\"></span> 取消\r\n                </button>\r\n                <button type=\"button\" class=\"btn btn-warning btn-xs\" style=\"margin-left: 5px\" ng-if=\"$$isClear\" ng-click=\"clear()\">'\r\n                    <span class=\"glyphicon glyphicon-trash\"></span> 清空\r\n                </button>\r\n                <button type=\"button\" class=\"btn btn-primary btn-xs\" style=\"margin-left: 5px\" ng-click=\"ok()\">\r\n                <span class=\"glyphicon glyphicon-ok\"></span> 确定\r\n                </button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>"
+	module.exports = "<div>\r\n    <input id=\"{{fileId}}\" class=\"form-control\" type=\"file\" style=\"display: none\" accept=\"{{accept}}\" />\r\n    <div class=\"input-group\">\r\n        <input type=\"text\" class=\"form-control\" style=\"background: #ffffff\" readonly ng-required=\"ngRequired\" placeholder=\"{{placeholder}}\"\r\n            ng-if=\"!hideFileName\" />\r\n        <span class=\"input-group-btn\">\r\n            <button class=\"btn btn-default\" type=\"button\">浏览</button>\r\n        </span>\r\n    </div>\r\n</div>"
 
 /***/ },
 /* 13 */
 /***/ function(module, exports) {
 
-	module.exports = "<div gradual-show=\"isShow\" style=\"position:absolute; width:100%; height:100%; top:0\">\r\n    <div class=\"gdeic-modal-panel\">\r\n        <div class=\"gdeic-modal-panel-header\">\r\n            <b>{{headerTitle}}</b>\r\n            <button type=\"button\" class=\"close\" ng-click=\"isShow = !isShow\">&times;</button>\r\n        </div>\r\n        <div class=\"gdeic-modal-panel-filter\" ng-if=\"filterProperty\">\r\n            <div class=\"input-group\">\r\n                <input type=\"text\" class=\"form-control\" ng-model=\"search.[[filter]]\">\r\n                <span class=\"input-group-addon\"><span class=\"glyphicon glyphicon-filter\"></span></span>\r\n            </div>\r\n        </div>\r\n        <div class=\"gdeic-modal-panel-body\">\r\n            <div class=\"text-center\" ng-show=\"!sourceList\"><br />\r\n                <span class=\"fa fa-spinner anime-spinner\"></span>&nbsp;正在加载..\r\n            </div>\r\n            <p ng-show=\"sourceList.length === 0\">无可选项</p>\r\n            <div class=\"checkbox\" ng-repeat=\"item in sourceList | filter:search\"\r\n                ng-show=\"sourceList\">\r\n                <label ng-class=\"{'highlight': isCheck(item)}\">\r\n                    <input type=\"checkbox\" name=\"items\" ng-checked=\"isCheck(item)\" ng-click=\"selectItem(item)\" />&nbsp;&nbsp;{{item.[[value]]}}\r\n                </label>\r\n            </div>\r\n        </div>\r\n        <div class=\"gdeic-modal-panel-footer\">\r\n            <div class=\"pull-right\">\r\n                <button type=\"button\" class=\"btn btn-default btn-xs\" ng-click=\"isShow = !isShow\">\r\n                    <span class=\"glyphicon glyphicon-remove\"></span> 取消\r\n                </button>&nbsp;\r\n                <button type=\"button\" class=\"btn btn-warning btn-xs\" style=\"margin-left: 5px\" ng-click=\"clear()\">\r\n                    <span class=\"glyphicon glyphicon-trash\"></span> 清空\r\n                </button>&nbsp;\r\n                <button type=\"button\" class=\"btn btn-primary btn-xs\" style=\"margin-left: 5px\" ng-click=\"ok()\">\r\n                    <span class=\"glyphicon glyphicon-ok\"></span> 确定\r\n                </button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>"
+	module.exports = "<div gradual-show=\"isShow\" style=\"position:absolute; width:100%; height:100%; top:0\">\r\n    <div class=\"gdeic-modal-panel\" gradual-show=\"isShow\">\r\n        <div class=\"gdeic-modal-panel-header\">\r\n            <b>{{headerTitle}}</b>\r\n            <button type=\"button\" class=\"close\" ng-click=\"isShow = !isShow\">&times;</button>\r\n        </div>\r\n        <div class=\"gdeic-modal-panel-body\">\r\n            <ng-transclude></ng-transclude>\r\n        </div>\r\n        <div class=\"gdeic-modal-panel-footer\">\r\n            <div class=\"pull-right\">\r\n                <button type=\"button\" class=\"btn btn-default btn-xs\" ng-click=\"cancel(); isShow = !isShow\">\r\n                    <span class=\"glyphicon glyphicon-remove\"></span> 取消\r\n                </button>\r\n                <button type=\"button\" class=\"btn btn-warning btn-xs\" style=\"margin-left: 5px\" ng-if=\"$$isClear\" ng-click=\"clear()\">'\r\n                    <span class=\"glyphicon glyphicon-trash\"></span> 清空\r\n                </button>\r\n                <button type=\"button\" class=\"btn btn-primary btn-xs\" style=\"margin-left: 5px\" ng-click=\"ok()\">\r\n                <span class=\"glyphicon glyphicon-ok\"></span> 确定\r\n                </button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>"
 
 /***/ },
 /* 14 */
 /***/ function(module, exports) {
 
-	module.exports = "<div gradual-show=\"isShow\" style=\"position:absolute; width:100%; height:100%; top:0\">\r\n    <div class=\"gdeic-modal-panel\">\r\n        <div class=\"gdeic-modal-panel-header\">\r\n            <b>{{headerTitle}}</b>\r\n            <button type=\"button\" class=\"close\" ng-click=\"isShow = !isShow\">&times;</button>\r\n        </div>\r\n        <div class=\"gdeic-modal-panel-filter\" ng-if=\"filterProperty\">\r\n            <div class=\"input-group\">\r\n                <input type=\"text\" class=\"form-control\" ng-model=\"search.[[filter]]\">\r\n                <span class=\"input-group-addon\"><span class=\"glyphicon glyphicon-filter\"></span></span>\r\n            </div>\r\n        </div>\r\n        <div class=\"gdeic-modal-panel-body\">\r\n            <div class=\"text-center\" ng-show=\"!sourceList\"><br />\r\n                <span class=\"fa fa-spinner anime-spinner\"></span>&nbsp;正在加载..\r\n            </div>\r\n            <p ng-show=\"sourceList.length === 0\">无可选项</p>\r\n            <div class=\"radio\" ng-repeat=\"item in sourceList | filter:search\"\r\n                ng-show=\"sourceList\">\r\n                <label ng-class=\"{'highlight': item.[[key]] === selectedItem.[[key]]}\">\r\n                    <input type=\"radio\" name=\"items\" ng-checked=\"isCheck(item)\" ng-click=\"selectItem(item)\" />&nbsp;&nbsp;{{[[value]]}}\r\n                </label>\r\n            </div>\r\n        </div>\r\n        <div class=\"gdeic-modal-panel-footer\">\r\n            <div class=\"pull-right\">\r\n                <button type=\"button\" class=\"btn btn-default btn-xs\" ng-click=\"isShow = !isShow\">\r\n                    <span class=\"glyphicon glyphicon-remove\"></span> 取消\r\n                </button>&nbsp;\r\n                <button type=\"button\" class=\"btn btn-warning btn-xs\" style=\"margin-left: 5px\" ng-click=\"clear()\">\r\n                    <span class=\"glyphicon glyphicon-trash\"></span> 清空\r\n                </button>&nbsp;\r\n                <button type=\"button\" class=\"btn btn-primary btn-xs\" style=\"margin-left: 5px\" ng-click=\"ok()\">\r\n                    <span class=\"glyphicon glyphicon-ok\"></span> 确定\r\n                </button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>"
+	module.exports = "<div gradual-show=\"isShow\" style=\"position:absolute; width:100%; height:100%; top:0\">\r\n    <div class=\"gdeic-modal-panel\">\r\n        <div class=\"gdeic-modal-panel-header\">\r\n            <b>{{headerTitle}}</b>\r\n            <button type=\"button\" class=\"close\" ng-click=\"isShow = !isShow\">&times;</button>\r\n        </div>\r\n        <div class=\"gdeic-modal-panel-filter\" ng-if=\"filterProperty\">\r\n            <div class=\"input-group\">\r\n                <input type=\"text\" class=\"form-control\" ng-model=\"search.[[filter]]\">\r\n                <span class=\"input-group-addon\"><span class=\"glyphicon glyphicon-filter\"></span></span>\r\n            </div>\r\n        </div>\r\n        <div class=\"gdeic-modal-panel-body\">\r\n            <div class=\"text-center\" ng-show=\"!sourceList\"><br />\r\n                <span class=\"fa fa-spinner anime-spinner\"></span>&nbsp;正在加载..\r\n            </div>\r\n            <p ng-show=\"sourceList.length === 0\">无可选项</p>\r\n            <div class=\"checkbox\" ng-repeat=\"item in sourceList | filter:search\"\r\n                ng-show=\"sourceList\">\r\n                <label ng-class=\"{'highlight': isCheck(item)}\">\r\n                    <input type=\"checkbox\" name=\"items\" ng-checked=\"isCheck(item)\" ng-click=\"selectItem(item)\" />&nbsp;&nbsp;{{item.[[value]]}}\r\n                </label>\r\n            </div>\r\n        </div>\r\n        <div class=\"gdeic-modal-panel-footer\">\r\n            <div class=\"pull-right\">\r\n                <button type=\"button\" class=\"btn btn-default btn-xs\" ng-click=\"isShow = !isShow\">\r\n                    <span class=\"glyphicon glyphicon-remove\"></span> 取消\r\n                </button>&nbsp;\r\n                <button type=\"button\" class=\"btn btn-warning btn-xs\" style=\"margin-left: 5px\" ng-click=\"clear()\">\r\n                    <span class=\"glyphicon glyphicon-trash\"></span> 清空\r\n                </button>&nbsp;\r\n                <button type=\"button\" class=\"btn btn-primary btn-xs\" style=\"margin-left: 5px\" ng-click=\"ok()\">\r\n                    <span class=\"glyphicon glyphicon-ok\"></span> 确定\r\n                </button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>"
 
 /***/ },
 /* 15 */
+/***/ function(module, exports) {
+
+	module.exports = "<div gradual-show=\"isShow\" style=\"position:absolute; width:100%; height:100%; top:0\">\r\n    <div class=\"gdeic-modal-panel\">\r\n        <div class=\"gdeic-modal-panel-header\">\r\n            <b>{{headerTitle}}</b>\r\n            <button type=\"button\" class=\"close\" ng-click=\"isShow = !isShow\">&times;</button>\r\n        </div>\r\n        <div class=\"gdeic-modal-panel-filter\" ng-if=\"filterProperty\">\r\n            <div class=\"input-group\">\r\n                <input type=\"text\" class=\"form-control\" ng-model=\"search.[[filter]]\">\r\n                <span class=\"input-group-addon\"><span class=\"glyphicon glyphicon-filter\"></span></span>\r\n            </div>\r\n        </div>\r\n        <div class=\"gdeic-modal-panel-body\">\r\n            <div class=\"text-center\" ng-show=\"!sourceList\"><br />\r\n                <span class=\"fa fa-spinner anime-spinner\"></span>&nbsp;正在加载..\r\n            </div>\r\n            <p ng-show=\"sourceList.length === 0\">无可选项</p>\r\n            <div class=\"radio\" ng-repeat=\"item in sourceList | filter:search\"\r\n                ng-show=\"sourceList\">\r\n                <label ng-class=\"{'highlight': item.[[key]] === selectedItem.[[key]]}\">\r\n                    <input type=\"radio\" name=\"items\" ng-checked=\"isCheck(item)\" ng-click=\"selectItem(item)\" />&nbsp;&nbsp;{{[[value]]}}\r\n                </label>\r\n            </div>\r\n        </div>\r\n        <div class=\"gdeic-modal-panel-footer\">\r\n            <div class=\"pull-right\">\r\n                <button type=\"button\" class=\"btn btn-default btn-xs\" ng-click=\"isShow = !isShow\">\r\n                    <span class=\"glyphicon glyphicon-remove\"></span> 取消\r\n                </button>&nbsp;\r\n                <button type=\"button\" class=\"btn btn-warning btn-xs\" style=\"margin-left: 5px\" ng-click=\"clear()\">\r\n                    <span class=\"glyphicon glyphicon-trash\"></span> 清空\r\n                </button>&nbsp;\r\n                <button type=\"button\" class=\"btn btn-primary btn-xs\" style=\"margin-left: 5px\" ng-click=\"ok()\">\r\n                    <span class=\"glyphicon glyphicon-ok\"></span> 确定\r\n                </button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>"
+
+/***/ },
+/* 16 */
+/***/ function(module, exports) {
+
+	module.exports = "<div class=\"gdeic-range\">\r\n    <div class=\"gdeic-range-bar\">\r\n        <input type=\"range\" ng-model=\"ngModel\" min=\"{{minValue}}\" max=\"{{maxValue}}\" step=\"{{step}}\" ng-change=\"vm.change()\">\r\n        <div ng-style=\"{ width: ngModel + '%' }\"></div>\r\n    </div>\r\n    <span>{{ngModel}}{{labelText}}</span>\r\n</div>"
+
+/***/ },
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(16);
+	var content = __webpack_require__(18);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(18)(content, {});
+	var update = __webpack_require__(20)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -775,21 +837,21 @@
 	}
 
 /***/ },
-/* 16 */
+/* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(17)();
+	exports = module.exports = __webpack_require__(19)();
 	// imports
 
 
 	// module
-	exports.push([module.id, ".gdeic-modal-panel {\n  display: flex;\n  flex-direction: column;\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  -ms-transform: translateX(-50%) translateY(-50%);\n  -webkit-transform: translateX(-50%) translateY(-50%);\n  transform: translateX(-50%) translateY(-50%);\n  width: 90%;\n  -webkit-box-shadow: 5px 5px 20px #888888;\n  -moz-box-shadow: 5px 5px 20px #888888;\n  box-shadow: 5px 5px 20px #888888;\n  overflow: auto;\n  background-color: #FFFFFF; }\n  .gdeic-modal-panel .gdeic-modal-panel-header {\n    padding: 10px 15px;\n    background-color: #5EB2D9;\n    color: #FFFFFF; }\n  .gdeic-modal-panel .gdeic-modal-panel-filter {\n    padding: 10px 15px 0; }\n  .gdeic-modal-panel .gdeic-modal-panel-body {\n    flex: 1;\n    padding: 10px 15px;\n    overflow-y: auto; }\n  .gdeic-modal-panel .gdeic-modal-panel-footer {\n    padding: 10px 15px;\n    border-top: 1px solid #E5E5E5; }\n", ""]);
+	exports.push([module.id, ".gdeic-modal-panel {\n  display: flex;\n  flex-direction: column;\n  position: absolute;\n  top: 50%;\n  left: 50%;\n  -ms-transform: translateX(-50%) translateY(-50%);\n  -webkit-transform: translateX(-50%) translateY(-50%);\n  transform: translateX(-50%) translateY(-50%);\n  width: 90%;\n  -webkit-box-shadow: 5px 5px 20px #888888;\n  -moz-box-shadow: 5px 5px 20px #888888;\n  box-shadow: 5px 5px 20px #888888;\n  overflow: auto;\n  background-color: #FFFFFF; }\n  .gdeic-modal-panel .gdeic-modal-panel-header {\n    padding: 10px 15px;\n    background-color: #5EB2D9;\n    color: #FFFFFF; }\n  .gdeic-modal-panel .gdeic-modal-panel-filter {\n    padding: 10px 15px 0; }\n  .gdeic-modal-panel .gdeic-modal-panel-body {\n    flex: 1;\n    padding: 10px 15px;\n    overflow-y: auto; }\n  .gdeic-modal-panel .gdeic-modal-panel-footer {\n    padding: 10px 15px;\n    border-top: 1px solid #E5E5E5; }\n\n.gdeic-range {\n  display: flex;\n  align-items: center; }\n  .gdeic-range .gdeic-range-bar {\n    position: relative;\n    flex: 1;\n    height: 12px;\n    margin-right: 10px;\n    margin-bottom: 3px;\n    -webkit-border-radius: 8px;\n    -moz-border-radius: 8px;\n    border-radius: 8px;\n    background: #f2f1f1;\n    -webkit-box-shadow: 0 0 2px #D5D4D4 inset;\n    -moz-box-shadow: 0 0 2px #D5D4D4 inset;\n    box-shadow: 0 0 2px #D5D4D4 inset; }\n    .gdeic-range .gdeic-range-bar input[type=\"range\"] {\n      position: absolute;\n      top: 0px;\n      left: 0px;\n      opacity: 0;\n      cursor: pointer;\n      z-index: 1; }\n      .gdeic-range .gdeic-range-bar input[type=\"range\"] + div {\n        position: relative;\n        height: 12px;\n        background: #5EB2D9;\n        transition: all 1s ease-out;\n        transition: none;\n        -webkit-border-radius: 8px;\n        -moz-border-radius: 8px;\n        border-radius: 8px; }\n        .gdeic-range .gdeic-range-bar input[type=\"range\"] + div:after {\n          content: \"\";\n          position: absolute;\n          top: -5px;\n          right: -5px;\n          width: 10px;\n          height: 23px;\n          border: 1px solid #bbb;\n          -webkit-border-radius: 2px;\n          -moz-border-radius: 2px;\n          border-radius: 2px;\n          background-color: #ccc;\n          -webkit-box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.3);\n          -moz-box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.3);\n          box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.3); }\n", ""]);
 
 	// exports
 
 
 /***/ },
-/* 17 */
+/* 19 */
 /***/ function(module, exports) {
 
 	/*
@@ -845,7 +907,7 @@
 
 
 /***/ },
-/* 18 */
+/* 20 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*

@@ -47,23 +47,23 @@
 
 	var ngModule = angular.module('ngGdeicSys', ['ngGdeic']);
 
-	__webpack_require__(19)(ngModule);
-	__webpack_require__(20)(ngModule);
 	__webpack_require__(21)(ngModule);
+	__webpack_require__(22)(ngModule);
+	__webpack_require__(23)(ngModule);
 
 /***/ },
 
-/***/ 19:
+/***/ 21:
 /***/ function(module, exports) {
 
 	module.exports = function (ngModule) {
 	    'use strict';
 
-	    ngModule.factory('$gdeicSysResource', $gdeicSysResource);
+	    ngModule.factory('$gdeicSysResource', $gdeicSysResourceFactory);
 
-	    $gdeicSysResource.$inject = ['$resource'];
+	    $gdeicSysResourceFactory.$inject = ['$resource'];
 
-	    function $gdeicSysResource($resource) {
+	    function $gdeicSysResourceFactory($resource) {
 	        return $resource('api/account', {}, {
 	            getAccountInfo: {
 	                url: 'api/account/account',
@@ -144,7 +144,7 @@
 
 /***/ },
 
-/***/ 20:
+/***/ 22:
 /***/ function(module, exports) {
 
 	module.exports = function (ngModule) {
@@ -262,7 +262,7 @@
 
 /***/ },
 
-/***/ 21:
+/***/ 23:
 /***/ function(module, exports) {
 
 	module.exports = function (ngModule) {

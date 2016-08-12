@@ -46,12 +46,12 @@
 
 	var ngApp = angular.module('ngGdeic', ['ngAnimate', 'ui.bootstrap', 'ngResource', 'angular-linq']);
 
-	__webpack_require__(22)(ngApp);
-	__webpack_require__(23)(angular);
-	__webpack_require__(28)(ngApp);
-	__webpack_require__(56)(ngApp);
+	__webpack_require__(24)(ngApp);
+	__webpack_require__(25)(angular);
+	__webpack_require__(30)(ngApp);
+	__webpack_require__(59)(ngApp);
 
-	__webpack_require__(64);
+	__webpack_require__(67);
 
 /***/ },
 /* 1 */,
@@ -70,7 +70,9 @@
 /* 14 */,
 /* 15 */,
 /* 16 */,
-/* 17 */
+/* 17 */,
+/* 18 */,
+/* 19 */
 /***/ function(module, exports) {
 
 	/*
@@ -126,7 +128,7 @@
 
 
 /***/ },
-/* 18 */
+/* 20 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -378,10 +380,10 @@
 
 
 /***/ },
-/* 19 */,
-/* 20 */,
 /* 21 */,
-/* 22 */
+/* 22 */,
+/* 23 */,
+/* 24 */
 /***/ function(module, exports) {
 
 	module.exports = function (ngModule) {
@@ -392,25 +394,25 @@
 	    configFunc.$inject = ['$httpProvider'];
 
 	    function configFunc($httpProvider) {
-	        $httpProvider.interceptors.push('$gdeicHttpErrorInterceptor');
+	        $httpProvider.interceptors.push('$gdeicHttpInterceptor');
 	    }
 	};
 
 /***/ },
-/* 23 */
+/* 25 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (angular) {
 
-	    __webpack_require__(24)(angular);
-	    __webpack_require__(25)(angular);
 	    __webpack_require__(26)(angular);
 	    __webpack_require__(27)(angular);
+	    __webpack_require__(28)(angular);
+	    __webpack_require__(29)(angular);
 
 	};
 
 /***/ },
-/* 24 */
+/* 26 */
 /***/ function(module, exports) {
 
 	module.exports = function (angular) {
@@ -528,7 +530,7 @@
 	};
 
 /***/ },
-/* 25 */
+/* 27 */
 /***/ function(module, exports) {
 
 	module.exports = function (angular) {
@@ -579,7 +581,7 @@
 	};
 
 /***/ },
-/* 26 */
+/* 28 */
 /***/ function(module, exports) {
 
 	module.exports = function (angular) {
@@ -643,7 +645,7 @@
 	};
 
 /***/ },
-/* 27 */
+/* 29 */
 /***/ function(module, exports) {
 
 	module.exports = function (angular) {
@@ -711,31 +713,31 @@
 	};
 
 /***/ },
-/* 28 */
+/* 30 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (ngModule) {
 
-	    __webpack_require__(29)(ngModule);
 	    __webpack_require__(31)(ngModule);
-	    __webpack_require__(41)(ngModule);
-	    __webpack_require__(50)(ngModule);
-	    __webpack_require__(54)(ngModule);
+	    __webpack_require__(33)(ngModule);
+	    __webpack_require__(44)(ngModule);
+	    __webpack_require__(53)(ngModule);
+	    __webpack_require__(57)(ngModule);
 
 	};
 
 /***/ },
-/* 29 */
+/* 31 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (ngModule) {
 
-	    __webpack_require__(30)(ngModule);
+	    __webpack_require__(32)(ngModule);
 
 	}
 
 /***/ },
-/* 30 */
+/* 32 */
 /***/ function(module, exports) {
 
 	module.exports = function (ngModule) {
@@ -763,36 +765,69 @@
 	};
 
 /***/ },
-/* 31 */
+/* 33 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (ngModule) {
 
-	    __webpack_require__(32)(ngModule);
-	    __webpack_require__(33)(ngModule);
 	    __webpack_require__(34)(ngModule);
 	    __webpack_require__(35)(ngModule);
 	    __webpack_require__(36)(ngModule);
-
 	    __webpack_require__(37)(ngModule);
 	    __webpack_require__(38)(ngModule);
 	    __webpack_require__(39)(ngModule);
+
 	    __webpack_require__(40)(ngModule);
+	    __webpack_require__(41)(ngModule);
+	    __webpack_require__(42)(ngModule);
+	    __webpack_require__(43)(ngModule);
 
 	}
 
 /***/ },
-/* 32 */
+/* 34 */
 /***/ function(module, exports) {
 
 	module.exports = function (ngModule) {
 	    'use strict';
 
-	    ngModule.directive('gdeicError', gdeicError);
+	    ngModule.directive('gdeicIeWarning', gdeicIeWarningDirective);
 
-	    gdeicError.$inject = ['$window'];
+	    gdeicIeWarningDirective.$inject = ['$window'];
 
-	    function gdeicError($window) {
+	    function gdeicIeWarningDirective($window) {
+	        return {
+	            restrict: 'EA',
+	            scope: {
+	                warningText: '@'
+	            },
+	            template: '<div class="gdeic-ie-warning" ng-if="isIE">'
+	            + '{{warningText || \'注意：为达到最好的使用效果，请使用【Chrome浏览器】或【双核浏览器极速模式】访问！\'}}'
+	            + '</div>',
+	            replace: true,
+	            link: function (scope, iElement, iAttrs, controller, transcludeFn) {
+	                if ('ActiveXObject' in $window) {
+	                    scope.isIE = true;
+
+	                    angular.element(document.querySelectorAll('body')).css('padding-top', '50px');
+	                }
+	            }
+	        }
+	    }
+	};
+
+/***/ },
+/* 35 */
+/***/ function(module, exports) {
+
+	module.exports = function (ngModule) {
+	    'use strict';
+
+	    ngModule.directive('gdeicError', gdeicErrorDirective);
+
+	    gdeicErrorDirective.$inject = ['$window'];
+
+	    function gdeicErrorDirective($window) {
 	        return {
 	            restrict: 'EA',
 	            scope: {
@@ -830,17 +865,17 @@
 	};
 
 /***/ },
-/* 33 */
+/* 36 */
 /***/ function(module, exports) {
 
 	module.exports = function (ngModule) {
 	    'use strict';
 
-	    ngModule.directive('gdeicHoldOn', gdeicHoldOn);
+	    ngModule.directive('gdeicHoldOn', gdeicHoldOnDirective);
 
-	    gdeicHoldOn.$inject = [];
+	    gdeicHoldOnDirective.$inject = [];
 
-	    function gdeicHoldOn() {
+	    function gdeicHoldOnDirective() {
 	        return {
 	            restrict: 'EA',
 	            scope: {
@@ -867,17 +902,17 @@
 	};
 
 /***/ },
-/* 34 */
+/* 37 */
 /***/ function(module, exports) {
 
 	module.exports = function (ngModule) {
 	    'use strict';
 
-	    ngModule.directive('gdeicLoading', gdeicLoading);
+	    ngModule.directive('gdeicLoading', gdeicLoadingDirective);
 
-	    gdeicLoading.$inject = [];
+	    gdeicLoadingDirective.$inject = [];
 
-	    function gdeicLoading() {
+	    function gdeicLoadingDirective() {
 	        return {
 	            restrict: 'EA',
 	            transclude: true,
@@ -896,17 +931,17 @@
 	};
 
 /***/ },
-/* 35 */
+/* 38 */
 /***/ function(module, exports) {
 
 	module.exports = function (ngModule) {
 	    'use strict';
 
-	    ngModule.directive('gdeicPaging', gdeicPaging);
+	    ngModule.directive('gdeicPaging', gdeicPagingDirective);
 
-	    gdeicPaging.$inject = ['$cPagingModel', '$cGroupingModel'];
+	    gdeicPagingDirective.$inject = ['$cPagingModel', '$cGroupingModel'];
 
-	    function gdeicPaging($cPagingModel, $cGroupingModel) {
+	    function gdeicPagingDirective($cPagingModel, $cGroupingModel) {
 	        return {
 	            restrict: 'EA',
 	            scope: {
@@ -952,17 +987,17 @@
 	};
 
 /***/ },
-/* 36 */
+/* 39 */
 /***/ function(module, exports) {
 
 	module.exports = function (ngModule) {
 	    'use strict';
 
-	    ngModule.directive('gdeicArrayText', gdeicArrayText);
+	    ngModule.directive('gdeicArrayText', gdeicArrayTextDirective);
 
-	    gdeicArrayText.$inject = [];
+	    gdeicArrayTextDirective.$inject = [];
 
-	    function gdeicArrayText() {
+	    function gdeicArrayTextDirective() {
 	        return {
 	            restrict: 'EA',
 	            transclude: true,
@@ -988,17 +1023,17 @@
 	};
 
 /***/ },
-/* 37 */
+/* 40 */
 /***/ function(module, exports) {
 
 	module.exports = function (ngModule) {
 	    'use strict';
 
-	    ngModule.directive('autoResize', autoResize);
+	    ngModule.directive('autoResize', autoResizeDirective);
 
-	    autoResize.$inject = ['$window'];
+	    autoResizeDirective.$inject = ['$window'];
 
-	    function autoResize($window) {
+	    function autoResizeDirective($window) {
 	        return {
 	            restrict: 'A',
 	            link: function (scope, iElement, iAttrs) {
@@ -1027,17 +1062,17 @@
 	};
 
 /***/ },
-/* 38 */
+/* 41 */
 /***/ function(module, exports) {
 
 	module.exports = function (ngModule) {
 	    'use strict';
 
-	    ngModule.directive('gradualShow', gradualShow);
+	    ngModule.directive('gradualShow', gradualShowDirective);
 
-	    gradualShow.$inject = ['$animateCss'];
+	    gradualShowDirective.$inject = ['$animateCss'];
 
-	    function gradualShow($animateCss) {
+	    function gradualShowDirective($animateCss) {
 	        return {
 	            restrict: 'A',
 	            link: function (scope, iElement, iAttrs) {
@@ -1067,17 +1102,17 @@
 	};
 
 /***/ },
-/* 39 */
+/* 42 */
 /***/ function(module, exports) {
 
 	module.exports = function (ngModule) {
 	    'use strict';
 
-	    ngModule.directive('preventEdit', preventEdit);
+	    ngModule.directive('preventEdit', preventEditDirective);
 
-	    preventEdit.$inject = [];
+	    preventEditDirective.$inject = [];
 
-	    function preventEdit() {
+	    function preventEditDirective() {
 	        return {
 	            restrict: 'A',
 	            link: function (scope, iElement, iAttrs) {
@@ -1095,17 +1130,17 @@
 	};
 
 /***/ },
-/* 40 */
+/* 43 */
 /***/ function(module, exports) {
 
 	module.exports = function (ngModule) {
 	    'use strict';
 
-	    ngModule.directive('preventPropagation', preventPropagation);
+	    ngModule.directive('preventPropagation', preventPropagationDirective);
 
-	    preventPropagation.$inject = [];
+	    preventPropagationDirective.$inject = [];
 
-	    function preventPropagation() {
+	    function preventPropagationDirective() {
 	        return {
 	            restrict: 'A',
 	            link: function (scope, iElement, iAttrs) {
@@ -1118,29 +1153,29 @@
 	};
 
 /***/ },
-/* 41 */
+/* 44 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (ngModule) {
 
-	    __webpack_require__(42)(ngModule);
-	    __webpack_require__(43)(ngModule);
-	    __webpack_require__(44)(ngModule);
+	    __webpack_require__(45)(ngModule);
+	    __webpack_require__(46)(ngModule);
+	    __webpack_require__(47)(ngModule);
 
 	}
 
 /***/ },
-/* 42 */
+/* 45 */
 /***/ function(module, exports) {
 
 	module.exports = function (ngModule) {
 	    'use strict';
 
-	    ngModule.factory('$gdeicHttpErrorInterceptor', $gdeicHttpErrorInterceptor);
+	    ngModule.factory('$gdeicHttpInterceptor', $gdeicHttpInterceptorFactory);
 
-	    $gdeicHttpErrorInterceptor.$inject = ['$q', '$rootScope', '$log'];
+	    $gdeicHttpInterceptorFactory.$inject = ['$q', '$rootScope', '$log'];
 
-	    function $gdeicHttpErrorInterceptor($q, $rootScope, $log) {
+	    function $gdeicHttpInterceptorFactory($q, $rootScope, $log) {
 	        var httpInterceptor = {
 	            'request': function (config) {
 	                if (config.url.indexOf('.') < 0) {
@@ -1180,17 +1215,17 @@
 	};
 
 /***/ },
-/* 43 */
+/* 46 */
 /***/ function(module, exports) {
 
 	module.exports = function (ngModule) {
 	    'use strict';
 
-	    ngModule.factory('$gdeicCache', $gdeicCache);
+	    ngModule.factory('$gdeicCache', $gdeicCacheFactory);
 
-	    $gdeicCache.$inject = ['$cacheFactory', '$q', '$gdeic'];
+	    $gdeicCacheFactory.$inject = ['$cacheFactory', '$q', '$gdeic'];
 
-	    function $gdeicCache($cacheFactory, $q, $gdeic) {
+	    function $gdeicCacheFactory($cacheFactory, $q, $gdeic) {
 	        var _cacheKeyList = [],
 	            _cache = $cacheFactory('gdeicCache'),
 	            gdeicCache = {
@@ -1261,21 +1296,21 @@
 	};
 
 /***/ },
-/* 44 */
+/* 47 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (ngModule) {
 
-	    __webpack_require__(45)(ngModule);
-	    __webpack_require__(46)(ngModule);
-	    __webpack_require__(47)(ngModule);
 	    __webpack_require__(48)(ngModule);
 	    __webpack_require__(49)(ngModule);
+	    __webpack_require__(50)(ngModule);
+	    __webpack_require__(51)(ngModule);
+	    __webpack_require__(52)(ngModule);
 
 	}
 
 /***/ },
-/* 45 */
+/* 48 */
 /***/ function(module, exports) {
 
 	module.exports = function (ngModule) {
@@ -1444,7 +1479,7 @@
 	};
 
 /***/ },
-/* 46 */
+/* 49 */
 /***/ function(module, exports) {
 
 	module.exports = function (ngModule) {
@@ -1542,7 +1577,7 @@
 	};
 
 /***/ },
-/* 47 */
+/* 50 */
 /***/ function(module, exports) {
 
 	module.exports = function (ngModule) {
@@ -1589,7 +1624,7 @@
 	};
 
 /***/ },
-/* 48 */
+/* 51 */
 /***/ function(module, exports) {
 
 	module.exports = function (ngModule) {
@@ -1727,7 +1762,7 @@
 	};
 
 /***/ },
-/* 49 */
+/* 52 */
 /***/ function(module, exports) {
 
 	module.exports = function (ngModule) {
@@ -1891,29 +1926,29 @@
 	};
 
 /***/ },
-/* 50 */
+/* 53 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (ngModule) {
 
-	    __webpack_require__(51)(ngModule);
-	    __webpack_require__(52)(ngModule);
-	    __webpack_require__(53)(ngModule);
+	    __webpack_require__(54)(ngModule);
+	    __webpack_require__(55)(ngModule);
+	    __webpack_require__(56)(ngModule);
 
 	}
 
 /***/ },
-/* 51 */
+/* 54 */
 /***/ function(module, exports) {
 
 	module.exports = function (ngModule) {
 	    'use strict';
 
-	    ngModule.filter('bool', bool);
+	    ngModule.filter('bool', boolFilter);
 
-	    bool.$inject = [];
+	    boolFilter.$inject = [];
 
-	    function bool() {
+	    function boolFilter() {
 	        return function (input, rule) {
 	            rule = rule || '是|否';
 	            var params = rule.split('|');
@@ -1923,17 +1958,17 @@
 	};
 
 /***/ },
-/* 52 */
+/* 55 */
 /***/ function(module, exports) {
 
 	module.exports = function (ngModule) {
 	    'use strict';
 
-	    ngModule.filter('switch', switch_);
+	    ngModule.filter('switch', switchFilter);
 
-	    switch_.$inject = [];
+	    switchFilter.$inject = [];
 
-	    function switch_() {
+	    function switchFilter() {
 	        return function (input, rule) {
 	            var params = rule.split('|'), i = 0, max = params.length, result = '';
 	            if (angular.isNumber(input)) {
@@ -1957,17 +1992,17 @@
 	};
 
 /***/ },
-/* 53 */
+/* 56 */
 /***/ function(module, exports) {
 
 	module.exports = function (ngModule) {
 	    'use strict';
 
-	    ngModule.filter('dateInterval', dateInterval);
+	    ngModule.filter('dateInterval', dateIntervalFilter);
 
-	    dateInterval.$inject = [];
+	    dateIntervalFilter.$inject = [];
 
-	    function dateInterval() {
+	    function dateIntervalFilter() {
 	        return function (input, rule, type) {
 	            type = type || 'day';
 
@@ -2059,27 +2094,27 @@
 	};
 
 /***/ },
-/* 54 */
+/* 57 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (ngModule) {
 
-	    __webpack_require__(55)(ngModule);
+	    __webpack_require__(58)(ngModule);
 
 	}
 
 /***/ },
-/* 55 */
+/* 58 */
 /***/ function(module, exports) {
 
 	module.exports = function (ngModule) {
 	    'use strict';
 
-	    ngModule.service('$gdeic', $gdeic);
+	    ngModule.service('$gdeic', $gdeicService);
 
-	    $gdeic.$inject = ['$rootScope', '$q', '$location', '$timeout', '$uibModal'];
+	    $gdeicService.$inject = ['$rootScope', '$q', '$location', '$timeout', '$uibModal'];
 
-	    function $gdeic($rootScope, $q, $location, $timeout, $uibModal) {
+	    function $gdeicService($rootScope, $q, $location, $timeout, $uibModal) {
 	        this.finishInit = function () {
 	            $rootScope.finishInit = true;
 	        };
@@ -2262,7 +2297,7 @@
 	};
 
 /***/ },
-/* 56 */
+/* 59 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (ngModule) {
@@ -2274,13 +2309,13 @@
 
 	    function runFunc($templateCache) {
 
-	        __webpack_require__(57)($templateCache);
+	        __webpack_require__(60)($templateCache);
 
 	    }
 	};
 
 /***/ },
-/* 57 */
+/* 60 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function ($templateCache) {
@@ -2301,22 +2336,22 @@
 	    $templateCache.put(url + 'blank.html', '<div></div>');
 	    for (; i < max; i++) {
 	        curr = templates[i];
-	        $templateCache.put(url + curr, __webpack_require__(58)(entry + curr));
+	        $templateCache.put(url + curr, __webpack_require__(61)(entry + curr));
 	    }
 	};
 
 /***/ },
-/* 58 */
+/* 61 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var map = {
-		"./template": 57,
-		"./template.js": 57,
-		"./template/confirm.html": 59,
-		"./template/error.html": 60,
-		"./template/hold-on.html": 61,
-		"./template/loading.html": 62,
-		"./template/paging.html": 63
+		"./template": 60,
+		"./template.js": 60,
+		"./template/confirm.html": 62,
+		"./template/error.html": 63,
+		"./template/hold-on.html": 64,
+		"./template/loading.html": 65,
+		"./template/paging.html": 66
 	};
 	function webpackContext(req) {
 		return __webpack_require__(webpackContextResolve(req));
@@ -2329,50 +2364,50 @@
 	};
 	webpackContext.resolve = webpackContextResolve;
 	module.exports = webpackContext;
-	webpackContext.id = 58;
+	webpackContext.id = 61;
 
-
-/***/ },
-/* 59 */
-/***/ function(module, exports) {
-
-	module.exports = "<div class=\"modal-header\">\r\n    <button type=\"button\" class=\"close\" data-dismiss=\"modal\" ng-click=\"cancel()\"><span aria-hidden=\"true\">&times;</span><span class=\"sr-only\">Close</span></button>\r\n    <h4 class=\"modal-title\">{{title}}</h4>\r\n</div>\r\n<div class=\"modal-body\">\r\n    <div class=\"text-center\">{{message}}</div>\r\n</div>\r\n<div class=\"modal-footer\">\r\n    <button class=\"btn btn-default\" ng-click=\"cancel()\">取消</button>\r\n    <button class=\"btn btn-danger\" ng-click=\"ok()\">确定</button>\r\n</div>"
-
-/***/ },
-/* 60 */
-/***/ function(module, exports) {
-
-	module.exports = "<div class=\"gdeic-error\" ng-show=\"isShowError\">\r\n    <div class=\"col-xs-offset-1 col-sm-offset-2 col-xs-10 col-sm-8 col-md-offset-3 col-md-6 gdeic-error-body\">\r\n        <span class=\"glyphicon glyphicon-remove-sign gdeic-error-bg\"></span>\r\n        <h4 class=\"gdeic-error-code\">Error：{{error.StatusCode}}</h4>\r\n        <div class=\"gdeic-error-content\">{{error.ErrorMsg}}</div>\r\n        <button type=\"button\" class=\"btn btn-primary btn-xs gdeic-error-btn\" ng-click=\"clearMsg()\">确 定</button>\r\n    </div>\r\n</div>"
-
-/***/ },
-/* 61 */
-/***/ function(module, exports) {
-
-	module.exports = "<div class=\"gdeic-holdOn\" ng-show=\"isHoldingOn\">\r\n    <div class=\"gdeic-holdOn-body\">\r\n        <span class=\"gdeic-loading\"></span>\r\n        <span ng-if=\"holdOnText\">{{holdOnText + '...'}}</span>\r\n    </div>\r\n</div>"
 
 /***/ },
 /* 62 */
 /***/ function(module, exports) {
 
-	module.exports = "<div>\r\n    <div class=\"{{loadingClass || 'text-center'}}\" ng-show=\"isLoading\" style=\"padding: 25px 0\">\r\n        <span class=\"gdeic-loading anime-spinner\"></span>\r\n        <span ng-if=\"loadingText\">{{loadingText + '...'}}</span>\r\n    </div>\r\n    <ng-transclude ng-class=\"{'invisible': isLoading}\"></ng-transclude>\r\n</div>"
+	module.exports = "<div class=\"modal-header\">\r\n    <button type=\"button\" class=\"close\" data-dismiss=\"modal\" ng-click=\"cancel()\"><span aria-hidden=\"true\">&times;</span><span class=\"sr-only\">Close</span></button>\r\n    <h4 class=\"modal-title\">{{title}}</h4>\r\n</div>\r\n<div class=\"modal-body\">\r\n    <div class=\"text-center\">{{message}}</div>\r\n</div>\r\n<div class=\"modal-footer\">\r\n    <button class=\"btn btn-default\" ng-click=\"cancel()\">取消</button>\r\n    <button class=\"btn btn-danger\" ng-click=\"ok()\">确定</button>\r\n</div>"
 
 /***/ },
 /* 63 */
 /***/ function(module, exports) {
 
-	module.exports = "<div>\r\n    <div class=\"text-center\" style=\"border-top: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; padding-top: 20px; padding-bottom: 20px\"\r\n        ng-if=\"!hideAlert\" ng-show=\"pagingModel.pagingListLength === 0\">无匹配记录</div>\r\n    <div class=\"text-center\" ng-show=\"pagingModel.pagingListLength > pagingModel.itemsPerPage\">\r\n        <uib-pagination total-items=\"pagingModel.pagingListLength\" ng-model=\"pagingModel.currentPage\" max-size=\"5\" class=\"pagination-sm\"\r\n            boundary-link-numbers=\"true\" rotate=\"false\" previous-text=\"上一页\" next-text=\"下一页\" items-per-page=\"pagingModel.itemsPerPage\"\r\n            ng-change=\"pagingModel.paging(pagingModel.currentPage)\"></uib-pagination>\r\n    </div>\r\n</div>"
+	module.exports = "<div class=\"gdeic-error\" ng-show=\"isShowError\">\r\n    <div class=\"col-xs-offset-1 col-sm-offset-2 col-xs-10 col-sm-8 col-md-offset-3 col-md-6 gdeic-error-body\">\r\n        <span class=\"glyphicon glyphicon-remove-sign gdeic-error-bg\"></span>\r\n        <h4 class=\"gdeic-error-code\">Error：{{error.StatusCode}}</h4>\r\n        <div class=\"gdeic-error-content\">{{error.ErrorMsg}}</div>\r\n        <button type=\"button\" class=\"btn btn-primary btn-xs gdeic-error-btn\" ng-click=\"clearMsg()\">确 定</button>\r\n    </div>\r\n</div>"
 
 /***/ },
 /* 64 */
+/***/ function(module, exports) {
+
+	module.exports = "<div class=\"gdeic-holdOn\" ng-show=\"isHoldingOn\">\r\n    <div class=\"gdeic-holdOn-body\">\r\n        <span class=\"gdeic-loading\"></span>\r\n        <span ng-if=\"holdOnText\">{{holdOnText + '...'}}</span>\r\n    </div>\r\n</div>"
+
+/***/ },
+/* 65 */
+/***/ function(module, exports) {
+
+	module.exports = "<div>\r\n    <div class=\"{{loadingClass || 'text-center'}}\" ng-show=\"isLoading\" style=\"padding: 25px 0\">\r\n        <span class=\"gdeic-loading anime-spinner\"></span>\r\n        <span ng-if=\"loadingText\">{{loadingText + '...'}}</span>\r\n    </div>\r\n    <ng-transclude ng-class=\"{'invisible': isLoading}\"></ng-transclude>\r\n</div>"
+
+/***/ },
+/* 66 */
+/***/ function(module, exports) {
+
+	module.exports = "<div>\r\n    <div class=\"text-center\" style=\"border-top: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; padding-top: 20px; padding-bottom: 20px\"\r\n        ng-if=\"!hideAlert\" ng-show=\"pagingModel.pagingListLength === 0\">无匹配记录</div>\r\n    <div class=\"text-center\" ng-show=\"pagingModel.pagingListLength > pagingModel.itemsPerPage\">\r\n        <uib-pagination total-items=\"pagingModel.pagingListLength\" ng-model=\"pagingModel.currentPage\" max-size=\"5\" class=\"pagination-sm\"\r\n            boundary-link-numbers=\"true\" rotate=\"false\" previous-text=\"上一页\" next-text=\"下一页\" items-per-page=\"pagingModel.itemsPerPage\"\r\n            ng-change=\"pagingModel.paging(pagingModel.currentPage)\"></uib-pagination>\r\n    </div>\r\n</div>"
+
+/***/ },
+/* 67 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(65);
+	var content = __webpack_require__(68);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(18)(content, {});
+	var update = __webpack_require__(20)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -2389,15 +2424,15 @@
 	}
 
 /***/ },
-/* 65 */
+/* 68 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(17)();
+	exports = module.exports = __webpack_require__(19)();
 	// imports
 
 
 	// module
-	exports.push([module.id, ".gdeic-error {\n  position: fixed;\n  top: 0;\n  z-index: 9999;\n  width: 100%;\n  height: 100%;\n  background-color: rgba(0, 0, 0, 0.5); }\n  .gdeic-error > .gdeic-error-body {\n    top: 50%;\n    -ms-transform: translateY(-60%);\n    -webkit-transform: translateY(-60%);\n    transform: translateY(-60%);\n    padding: 30px;\n    overflow: hidden;\n    background-image: -webkit-gradient(linear, center top, center bottom, from(#FCFCFC), color-stop(3%, #F7F7F7), color-stop(42%, #F2F2F2), color-stop(80%, #D9D9D9), to(#BFBFBF));\n    background-image: -webkit-linear-gradient(270deg, #FCFCFC, #F7F7F7 3%, #F2F2F2 42%, #D9D9D9 80%, #BFBFBF);\n    background-image: -moz-linear-gradient(180deg, #FCFCFC, #F7F7F7 3%, #F2F2F2 42%, #D9D9D9 80%, #BFBFBF);\n    background-image: linear-gradient(180deg, #FCFCFC, #F7F7F7 3%, #F2F2F2 42%, #D9D9D9 80%, #BFBFBF);\n    -webkit-box-shadow: 0 1px 10px rgba(0, 0, 0, 0.75);\n    -moz-box-shadow: 0 1px 10px rgba(0, 0, 0, 0.75);\n    box-shadow: 0 1px 10px rgba(0, 0, 0, 0.75);\n    -webkit-border-radius: 10px;\n    -moz-border-radius: 10px;\n    border-radius: 10px; }\n    .gdeic-error > .gdeic-error-body .gdeic-error-bg {\n      position: absolute;\n      top: 115px;\n      right: -45px;\n      opacity: .55;\n      color: #EDB2B1;\n      font-size: 250px; }\n    .gdeic-error > .gdeic-error-body .gdeic-error-code {\n      opacity: .6;\n      font-family: \"Microsoft YaHei\"; }\n    .gdeic-error > .gdeic-error-body .gdeic-error-content {\n      height: 170px;\n      margin-bottom: 10px;\n      overflow-y: auto;\n      font-family: \"Microsoft YaHei\"; }\n    .gdeic-error > .gdeic-error-body .gdeic-error-btn {\n      display: block;\n      width: 100px;\n      margin: 0 auto; }\n\n.gdeic-holdOn {\n  position: fixed;\n  top: 0;\n  z-index: 9999;\n  width: 100%;\n  height: 100%;\n  background-color: rgba(0, 0, 0, 0.5); }\n  .gdeic-holdOn > .gdeic-holdOn-body {\n    position: absolute;\n    left: 50%;\n    -ms-transform: translateX(-50%);\n    -webkit-transform: translateX(-50%);\n    transform: translateX(-50%);\n    z-index: 9999;\n    margin-top: 30%;\n    padding: 25px;\n    background-color: #AEAEAE;\n    -webkit-border-radius: 10px;\n    -moz-border-radius: 10px;\n    border-radius: 10px;\n    color: #FFFFFF;\n    text-align: center; }\n\n.gdeic-loading {\n  display: inline-block;\n  width: 1em;\n  height: 1em;\n  margin: 3em auto;\n  -webkit-border-radius: 50%;\n  -moz-border-radius: 50%;\n  border-radius: 50%;\n  -webkit-box-shadow: 0 -2em #626262, 1.414em -1.414em rgba(98, 98, 98, 0.875), 2em 0 rgba(98, 98, 98, 0.75), 1.414em 1.414em rgba(98, 98, 98, 0.625), 0 2em rgba(98, 98, 98, 0.5), -1.414em 1.414em rgba(98, 98, 98, 0.375), -2em 0 rgba(98, 98, 98, 0.25), -1.414em -1.414em rgba(98, 98, 98, 0.125);\n  -moz-box-shadow: 0 -2em #626262, 1.414em -1.414em rgba(98, 98, 98, 0.875), 2em 0 rgba(98, 98, 98, 0.75), 1.414em 1.414em rgba(98, 98, 98, 0.625), 0 2em rgba(98, 98, 98, 0.5), -1.414em 1.414em rgba(98, 98, 98, 0.375), -2em 0 rgba(98, 98, 98, 0.25), -1.414em -1.414em rgba(98, 98, 98, 0.125);\n  box-shadow: 0 -2em #626262, 1.414em -1.414em rgba(98, 98, 98, 0.875), 2em 0 rgba(98, 98, 98, 0.75), 1.414em 1.414em rgba(98, 98, 98, 0.625), 0 2em rgba(98, 98, 98, 0.5), -1.414em 1.414em rgba(98, 98, 98, 0.375), -2em 0 rgba(98, 98, 98, 0.25), -1.414em -1.414em rgba(98, 98, 98, 0.125);\n  font-size: 12px;\n  -webkit-animation: gdeic-rotate 1s infinite forwards steps(8, end);\n  -moz-animation: gdeic-rotate 1s infinite forwards steps(8, end);\n  animation: gdeic-rotate 1s infinite forwards steps(8, end); }\n  .gdeic-loading + span {\n    display: block; }\n\n@-webkit-keyframes gdeic-rotate {\n  100% {\n    -webkit-transform: rotate(360deg);\n    transform: rotate(360deg); } }\n\n@-moz-keyframes gdeic-rotate {\n  100% {\n    -moz-transform: rotate(360deg);\n    transform: rotate(360deg); } }\n\n@keyframes gdeic-rotate {\n  100% {\n    -moz-transform: rotate(360deg);\n    -webkit-transform: rotate(360deg);\n    transform: rotate(360deg); } }\n", ""]);
+	exports.push([module.id, ".gdeic-ie-warning {\n  position: fixed;\n  top: 0;\n  width: 100%;\n  height: 50px;\n  padding: 12px;\n  background-color: #FF7B00;\n  color: #FFFFFF;\n  text-align: center;\n  font: bold 16px \"Microsoft YaHei\"; }\n\n.gdeic-error {\n  position: fixed;\n  top: 0;\n  z-index: 9999;\n  width: 100%;\n  height: 100%;\n  background-color: rgba(0, 0, 0, 0.5); }\n  .gdeic-error > .gdeic-error-body {\n    top: 50%;\n    -ms-transform: translateY(-60%);\n    -webkit-transform: translateY(-60%);\n    transform: translateY(-60%);\n    padding: 30px;\n    overflow: hidden;\n    background-image: -webkit-gradient(linear, center top, center bottom, from(#FCFCFC), color-stop(3%, #F7F7F7), color-stop(42%, #F2F2F2), color-stop(80%, #D9D9D9), to(#BFBFBF));\n    background-image: -webkit-linear-gradient(270deg, #FCFCFC, #F7F7F7 3%, #F2F2F2 42%, #D9D9D9 80%, #BFBFBF);\n    background-image: -moz-linear-gradient(180deg, #FCFCFC, #F7F7F7 3%, #F2F2F2 42%, #D9D9D9 80%, #BFBFBF);\n    background-image: linear-gradient(180deg, #FCFCFC, #F7F7F7 3%, #F2F2F2 42%, #D9D9D9 80%, #BFBFBF);\n    -webkit-box-shadow: 0 1px 10px rgba(0, 0, 0, 0.75);\n    -moz-box-shadow: 0 1px 10px rgba(0, 0, 0, 0.75);\n    box-shadow: 0 1px 10px rgba(0, 0, 0, 0.75);\n    -webkit-border-radius: 10px;\n    -moz-border-radius: 10px;\n    border-radius: 10px; }\n    .gdeic-error > .gdeic-error-body .gdeic-error-bg {\n      position: absolute;\n      top: 115px;\n      right: -45px;\n      opacity: .55;\n      color: #EDB2B1;\n      font-size: 250px; }\n    .gdeic-error > .gdeic-error-body .gdeic-error-code {\n      opacity: .6;\n      font-family: \"Microsoft YaHei\"; }\n    .gdeic-error > .gdeic-error-body .gdeic-error-content {\n      height: 170px;\n      margin-bottom: 10px;\n      overflow-y: auto;\n      font-family: \"Microsoft YaHei\"; }\n    .gdeic-error > .gdeic-error-body .gdeic-error-btn {\n      display: block;\n      width: 100px;\n      margin: 0 auto; }\n\n.gdeic-holdOn {\n  position: fixed;\n  top: 0;\n  z-index: 9999;\n  width: 100%;\n  height: 100%;\n  background-color: rgba(0, 0, 0, 0.5); }\n  .gdeic-holdOn > .gdeic-holdOn-body {\n    position: absolute;\n    left: 50%;\n    -ms-transform: translateX(-50%);\n    -webkit-transform: translateX(-50%);\n    transform: translateX(-50%);\n    z-index: 9999;\n    margin-top: 30%;\n    padding: 25px;\n    background-color: #AEAEAE;\n    -webkit-border-radius: 10px;\n    -moz-border-radius: 10px;\n    border-radius: 10px;\n    color: #FFFFFF;\n    text-align: center; }\n\n.gdeic-loading {\n  display: inline-block;\n  width: 1em;\n  height: 1em;\n  margin: 3em auto;\n  -webkit-border-radius: 50%;\n  -moz-border-radius: 50%;\n  border-radius: 50%;\n  -webkit-box-shadow: 0 -2em #626262, 1.414em -1.414em rgba(98, 98, 98, 0.875), 2em 0 rgba(98, 98, 98, 0.75), 1.414em 1.414em rgba(98, 98, 98, 0.625), 0 2em rgba(98, 98, 98, 0.5), -1.414em 1.414em rgba(98, 98, 98, 0.375), -2em 0 rgba(98, 98, 98, 0.25), -1.414em -1.414em rgba(98, 98, 98, 0.125);\n  -moz-box-shadow: 0 -2em #626262, 1.414em -1.414em rgba(98, 98, 98, 0.875), 2em 0 rgba(98, 98, 98, 0.75), 1.414em 1.414em rgba(98, 98, 98, 0.625), 0 2em rgba(98, 98, 98, 0.5), -1.414em 1.414em rgba(98, 98, 98, 0.375), -2em 0 rgba(98, 98, 98, 0.25), -1.414em -1.414em rgba(98, 98, 98, 0.125);\n  box-shadow: 0 -2em #626262, 1.414em -1.414em rgba(98, 98, 98, 0.875), 2em 0 rgba(98, 98, 98, 0.75), 1.414em 1.414em rgba(98, 98, 98, 0.625), 0 2em rgba(98, 98, 98, 0.5), -1.414em 1.414em rgba(98, 98, 98, 0.375), -2em 0 rgba(98, 98, 98, 0.25), -1.414em -1.414em rgba(98, 98, 98, 0.125);\n  font-size: 12px;\n  -webkit-animation: gdeic-rotate 1s infinite forwards steps(8, end);\n  -moz-animation: gdeic-rotate 1s infinite forwards steps(8, end);\n  animation: gdeic-rotate 1s infinite forwards steps(8, end); }\n  .gdeic-loading + span {\n    display: block; }\n\n@-webkit-keyframes gdeic-rotate {\n  100% {\n    -webkit-transform: rotate(360deg);\n    transform: rotate(360deg); } }\n\n@-moz-keyframes gdeic-rotate {\n  100% {\n    -moz-transform: rotate(360deg);\n    transform: rotate(360deg); } }\n\n@keyframes gdeic-rotate {\n  100% {\n    -moz-transform: rotate(360deg);\n    -webkit-transform: rotate(360deg);\n    transform: rotate(360deg); } }\n", ""]);
 
 	// exports
 
