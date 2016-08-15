@@ -50,7 +50,7 @@ module.exports = function (ngModule) {
             this.pagingListLength = this.pagingList.length;
 
             var pageCount = Math.ceil(this.pagingListLength / this.itemsPerPage);
-            if (pageCount < this.currentPage) {
+            if (pageCount < this.currentPage && pageCount > 0) {
                 this.currentPage = pageCount;
             }
             this.paging(this.currentPage);
