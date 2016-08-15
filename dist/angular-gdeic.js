@@ -46,12 +46,11 @@
 
 	var ngApp = angular.module('ngGdeic', ['ngAnimate', 'ui.bootstrap', 'ngResource', 'angular-linq']);
 
-	__webpack_require__(24)(ngApp);
-	__webpack_require__(25)(angular);
-	__webpack_require__(30)(ngApp);
-	__webpack_require__(59)(ngApp);
+	__webpack_require__(22)(ngApp);
+	__webpack_require__(23)(angular);
+	__webpack_require__(28)(ngApp);
 
-	__webpack_require__(67);
+	__webpack_require__(62);
 
 /***/ },
 /* 1 */,
@@ -70,9 +69,7 @@
 /* 14 */,
 /* 15 */,
 /* 16 */,
-/* 17 */,
-/* 18 */,
-/* 19 */
+/* 17 */
 /***/ function(module, exports) {
 
 	/*
@@ -128,7 +125,7 @@
 
 
 /***/ },
-/* 20 */
+/* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -380,10 +377,10 @@
 
 
 /***/ },
+/* 19 */,
+/* 20 */,
 /* 21 */,
-/* 22 */,
-/* 23 */,
-/* 24 */
+/* 22 */
 /***/ function(module, exports) {
 
 	module.exports = function (ngModule) {
@@ -399,20 +396,20 @@
 	};
 
 /***/ },
-/* 25 */
+/* 23 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (angular) {
 
+	    __webpack_require__(24)(angular);
+	    __webpack_require__(25)(angular);
 	    __webpack_require__(26)(angular);
 	    __webpack_require__(27)(angular);
-	    __webpack_require__(28)(angular);
-	    __webpack_require__(29)(angular);
 
 	};
 
 /***/ },
-/* 26 */
+/* 24 */
 /***/ function(module, exports) {
 
 	module.exports = function (angular) {
@@ -530,7 +527,7 @@
 	};
 
 /***/ },
-/* 27 */
+/* 25 */
 /***/ function(module, exports) {
 
 	module.exports = function (angular) {
@@ -581,7 +578,7 @@
 	};
 
 /***/ },
-/* 28 */
+/* 26 */
 /***/ function(module, exports) {
 
 	module.exports = function (angular) {
@@ -645,7 +642,7 @@
 	};
 
 /***/ },
-/* 29 */
+/* 27 */
 /***/ function(module, exports) {
 
 	module.exports = function (angular) {
@@ -713,31 +710,31 @@
 	};
 
 /***/ },
-/* 30 */
+/* 28 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (ngModule) {
 
+	    __webpack_require__(29)(ngModule);
 	    __webpack_require__(31)(ngModule);
-	    __webpack_require__(33)(ngModule);
-	    __webpack_require__(44)(ngModule);
-	    __webpack_require__(53)(ngModule);
-	    __webpack_require__(57)(ngModule);
+	    __webpack_require__(46)(ngModule);
+	    __webpack_require__(55)(ngModule);
+	    __webpack_require__(59)(ngModule);
 
 	};
 
 /***/ },
-/* 31 */
+/* 29 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (ngModule) {
 
-	    __webpack_require__(32)(ngModule);
+	    __webpack_require__(30)(ngModule);
 
 	}
 
 /***/ },
-/* 32 */
+/* 30 */
 /***/ function(module, exports) {
 
 	module.exports = function (ngModule) {
@@ -748,6 +745,7 @@
 	    gdeicConfirmController.$inject = ['$scope', '$uibModalInstance', 'title', 'message'];
 
 	    function gdeicConfirmController($scope, $uibModalInstance, _title, _message) {
+
 	        $scope.title = _title;
 	        $scope.message = _message;
 
@@ -765,27 +763,27 @@
 	};
 
 /***/ },
-/* 33 */
+/* 31 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (ngModule) {
 
-	    __webpack_require__(34)(ngModule);
+	    __webpack_require__(32)(ngModule);
+	    __webpack_require__(33)(ngModule);
 	    __webpack_require__(35)(ngModule);
-	    __webpack_require__(36)(ngModule);
 	    __webpack_require__(37)(ngModule);
-	    __webpack_require__(38)(ngModule);
 	    __webpack_require__(39)(ngModule);
-
-	    __webpack_require__(40)(ngModule);
 	    __webpack_require__(41)(ngModule);
+
 	    __webpack_require__(42)(ngModule);
 	    __webpack_require__(43)(ngModule);
+	    __webpack_require__(44)(ngModule);
+	    __webpack_require__(45)(ngModule);
 
 	}
 
 /***/ },
-/* 34 */
+/* 32 */
 /***/ function(module, exports) {
 
 	module.exports = function (ngModule) {
@@ -817,17 +815,20 @@
 	};
 
 /***/ },
-/* 35 */
-/***/ function(module, exports) {
+/* 33 */
+/***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (ngModule) {
 	    'use strict';
 
 	    ngModule.directive('gdeicError', gdeicErrorDirective);
 
-	    gdeicErrorDirective.$inject = ['$window'];
+	    gdeicErrorDirective.$inject = ['$templateCache', '$window'];
 
-	    function gdeicErrorDirective($window) {
+	    function gdeicErrorDirective($templateCache, $window) {
+	        
+	        $templateCache.put('gdeic/template/error.html', __webpack_require__(34));
+
 	        return {
 	            restrict: 'EA',
 	            scope: {
@@ -865,17 +866,26 @@
 	};
 
 /***/ },
-/* 36 */
+/* 34 */
 /***/ function(module, exports) {
+
+	module.exports = "<div class=\"gdeic-error\" ng-show=\"isShowError\">\r\n    <div class=\"col-xs-offset-1 col-sm-offset-2 col-xs-10 col-sm-8 col-md-offset-3 col-md-6 gdeic-error-body\">\r\n        <span class=\"glyphicon glyphicon-remove-sign gdeic-error-bg\"></span>\r\n        <h4 class=\"gdeic-error-code\">Error：{{error.StatusCode}}</h4>\r\n        <div class=\"gdeic-error-content\">{{error.ErrorMsg}}</div>\r\n        <button type=\"button\" class=\"btn btn-primary btn-xs gdeic-error-btn\" ng-click=\"clearMsg()\">确 定</button>\r\n    </div>\r\n</div>"
+
+/***/ },
+/* 35 */
+/***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (ngModule) {
 	    'use strict';
 
 	    ngModule.directive('gdeicHoldOn', gdeicHoldOnDirective);
 
-	    gdeicHoldOnDirective.$inject = [];
+	    gdeicHoldOnDirective.$inject = ['$templateCache'];
 
-	    function gdeicHoldOnDirective() {
+	    function gdeicHoldOnDirective($templateCache) {
+
+	        $templateCache.put('gdeic/template/hold-on.html', __webpack_require__(36));
+
 	        return {
 	            restrict: 'EA',
 	            scope: {
@@ -902,17 +912,26 @@
 	};
 
 /***/ },
-/* 37 */
+/* 36 */
 /***/ function(module, exports) {
+
+	module.exports = "<div class=\"gdeic-holdOn\" ng-show=\"isHoldingOn\">\r\n    <div class=\"gdeic-holdOn-body\">\r\n        <span class=\"gdeic-loading\"></span>\r\n        <span ng-if=\"holdOnText\">{{holdOnText + '...'}}</span>\r\n    </div>\r\n</div>"
+
+/***/ },
+/* 37 */
+/***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (ngModule) {
 	    'use strict';
 
 	    ngModule.directive('gdeicLoading', gdeicLoadingDirective);
 
-	    gdeicLoadingDirective.$inject = [];
+	    gdeicLoadingDirective.$inject = ['$templateCache'];
 
-	    function gdeicLoadingDirective() {
+	    function gdeicLoadingDirective($templateCache) {
+
+	        $templateCache.put('gdeic/template/loading.html', __webpack_require__(38));
+
 	        return {
 	            restrict: 'EA',
 	            transclude: true,
@@ -934,14 +953,23 @@
 /* 38 */
 /***/ function(module, exports) {
 
+	module.exports = "<div>\r\n    <div class=\"{{loadingClass || 'text-center'}}\" ng-show=\"isLoading\" style=\"padding: 25px 0\">\r\n        <span class=\"gdeic-loading anime-spinner\"></span>\r\n        <span ng-if=\"loadingText\">{{loadingText + '...'}}</span>\r\n    </div>\r\n    <ng-transclude ng-class=\"{'invisible': isLoading}\"></ng-transclude>\r\n</div>"
+
+/***/ },
+/* 39 */
+/***/ function(module, exports, __webpack_require__) {
+
 	module.exports = function (ngModule) {
 	    'use strict';
 
 	    ngModule.directive('gdeicPaging', gdeicPagingDirective);
 
-	    gdeicPagingDirective.$inject = ['$cPagingModel', '$cGroupingModel'];
+	    gdeicPagingDirective.$inject = ['$templateCache', '$cPagingModel', '$cGroupingModel'];
 
-	    function gdeicPagingDirective($cPagingModel, $cGroupingModel) {
+	    function gdeicPagingDirective($templateCache, $cPagingModel, $cGroupingModel) {
+	        
+	        $templateCache.put('gdeic/template/paging.html', __webpack_require__(40));
+
 	        return {
 	            restrict: 'EA',
 	            scope: {
@@ -987,7 +1015,13 @@
 	};
 
 /***/ },
-/* 39 */
+/* 40 */
+/***/ function(module, exports) {
+
+	module.exports = "<div>\r\n    <div class=\"text-center\" style=\"border-top: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; padding-top: 20px; padding-bottom: 20px\"\r\n        ng-if=\"!hideAlert\" ng-show=\"pagingModel.pagingListLength === 0\">无匹配记录</div>\r\n    <div class=\"text-center\" ng-show=\"pagingModel.pagingListLength > pagingModel.itemsPerPage\">\r\n        <uib-pagination total-items=\"pagingModel.pagingListLength\" ng-model=\"pagingModel.currentPage\" max-size=\"5\" class=\"pagination-sm\"\r\n            boundary-link-numbers=\"true\" rotate=\"false\" previous-text=\"上一页\" next-text=\"下一页\" items-per-page=\"pagingModel.itemsPerPage\"\r\n            ng-change=\"pagingModel.paging(pagingModel.currentPage)\"></uib-pagination>\r\n    </div>\r\n</div>"
+
+/***/ },
+/* 41 */
 /***/ function(module, exports) {
 
 	module.exports = function (ngModule) {
@@ -1023,7 +1057,7 @@
 	};
 
 /***/ },
-/* 40 */
+/* 42 */
 /***/ function(module, exports) {
 
 	module.exports = function (ngModule) {
@@ -1062,7 +1096,7 @@
 	};
 
 /***/ },
-/* 41 */
+/* 43 */
 /***/ function(module, exports) {
 
 	module.exports = function (ngModule) {
@@ -1102,7 +1136,7 @@
 	};
 
 /***/ },
-/* 42 */
+/* 44 */
 /***/ function(module, exports) {
 
 	module.exports = function (ngModule) {
@@ -1130,7 +1164,7 @@
 	};
 
 /***/ },
-/* 43 */
+/* 45 */
 /***/ function(module, exports) {
 
 	module.exports = function (ngModule) {
@@ -1153,19 +1187,19 @@
 	};
 
 /***/ },
-/* 44 */
+/* 46 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (ngModule) {
 
-	    __webpack_require__(45)(ngModule);
-	    __webpack_require__(46)(ngModule);
 	    __webpack_require__(47)(ngModule);
+	    __webpack_require__(48)(ngModule);
+	    __webpack_require__(49)(ngModule);
 
 	}
 
 /***/ },
-/* 45 */
+/* 47 */
 /***/ function(module, exports) {
 
 	module.exports = function (ngModule) {
@@ -1215,7 +1249,7 @@
 	};
 
 /***/ },
-/* 46 */
+/* 48 */
 /***/ function(module, exports) {
 
 	module.exports = function (ngModule) {
@@ -1296,21 +1330,21 @@
 	};
 
 /***/ },
-/* 47 */
+/* 49 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (ngModule) {
 
-	    __webpack_require__(48)(ngModule);
-	    __webpack_require__(49)(ngModule);
 	    __webpack_require__(50)(ngModule);
 	    __webpack_require__(51)(ngModule);
 	    __webpack_require__(52)(ngModule);
+	    __webpack_require__(53)(ngModule);
+	    __webpack_require__(54)(ngModule);
 
 	}
 
 /***/ },
-/* 48 */
+/* 50 */
 /***/ function(module, exports) {
 
 	module.exports = function (ngModule) {
@@ -1365,7 +1399,7 @@
 	            this.pagingListLength = this.pagingList.length;
 
 	            var pageCount = Math.ceil(this.pagingListLength / this.itemsPerPage);
-	            if (pageCount < this.currentPage) {
+	            if (pageCount < this.currentPage && pageCount > 0) {
 	                this.currentPage = pageCount;
 	            }
 	            this.paging(this.currentPage);
@@ -1479,7 +1513,7 @@
 	};
 
 /***/ },
-/* 49 */
+/* 51 */
 /***/ function(module, exports) {
 
 	module.exports = function (ngModule) {
@@ -1577,7 +1611,7 @@
 	};
 
 /***/ },
-/* 50 */
+/* 52 */
 /***/ function(module, exports) {
 
 	module.exports = function (ngModule) {
@@ -1624,7 +1658,7 @@
 	};
 
 /***/ },
-/* 51 */
+/* 53 */
 /***/ function(module, exports) {
 
 	module.exports = function (ngModule) {
@@ -1762,7 +1796,7 @@
 	};
 
 /***/ },
-/* 52 */
+/* 54 */
 /***/ function(module, exports) {
 
 	module.exports = function (ngModule) {
@@ -1926,19 +1960,19 @@
 	};
 
 /***/ },
-/* 53 */
+/* 55 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (ngModule) {
 
-	    __webpack_require__(54)(ngModule);
-	    __webpack_require__(55)(ngModule);
 	    __webpack_require__(56)(ngModule);
+	    __webpack_require__(57)(ngModule);
+	    __webpack_require__(58)(ngModule);
 
 	}
 
 /***/ },
-/* 54 */
+/* 56 */
 /***/ function(module, exports) {
 
 	module.exports = function (ngModule) {
@@ -1958,7 +1992,7 @@
 	};
 
 /***/ },
-/* 55 */
+/* 57 */
 /***/ function(module, exports) {
 
 	module.exports = function (ngModule) {
@@ -1992,7 +2026,7 @@
 	};
 
 /***/ },
-/* 56 */
+/* 58 */
 /***/ function(module, exports) {
 
 	module.exports = function (ngModule) {
@@ -2094,18 +2128,18 @@
 	};
 
 /***/ },
-/* 57 */
+/* 59 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (ngModule) {
 
-	    __webpack_require__(58)(ngModule);
+	    __webpack_require__(60)(ngModule);
 
 	}
 
 /***/ },
-/* 58 */
-/***/ function(module, exports) {
+/* 60 */
+/***/ function(module, exports, __webpack_require__) {
 
 	module.exports = function (ngModule) {
 	    'use strict';
@@ -2246,7 +2280,7 @@
 	            _size = _size || 'sm';
 
 	            return $uibModal.open({
-	                templateUrl: 'gdeic/template/confirm.html',
+	                template: __webpack_require__(61),
 	                controller: 'gdeicConfirmController',
 	                controllerAs: 'app',
 	                size: _size,
@@ -2297,117 +2331,22 @@
 	};
 
 /***/ },
-/* 59 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = function (ngModule) {
-	    'use strict';
-
-	    ngModule.run(runFunc);
-
-	    runFunc.$inject = ['$templateCache'];
-
-	    function runFunc($templateCache) {
-
-	        __webpack_require__(60)($templateCache);
-
-	    }
-	};
-
-/***/ },
-/* 60 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = function ($templateCache) {
-	    'use strict';
-
-	    var templates = [
-	        'error.html',
-	        'hold-on.html',
-	        'loading.html',
-	        'paging.html',
-	        'confirm.html'
-	    ],
-	        url = 'gdeic/template/',
-	        entry = './template/';
-
-	    var i = 0, max = templates.length, curr;
-
-	    $templateCache.put(url + 'blank.html', '<div></div>');
-	    for (; i < max; i++) {
-	        curr = templates[i];
-	        $templateCache.put(url + curr, __webpack_require__(61)(entry + curr));
-	    }
-	};
-
-/***/ },
 /* 61 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var map = {
-		"./template": 60,
-		"./template.js": 60,
-		"./template/confirm.html": 62,
-		"./template/error.html": 63,
-		"./template/hold-on.html": 64,
-		"./template/loading.html": 65,
-		"./template/paging.html": 66
-	};
-	function webpackContext(req) {
-		return __webpack_require__(webpackContextResolve(req));
-	};
-	function webpackContextResolve(req) {
-		return map[req] || (function() { throw new Error("Cannot find module '" + req + "'.") }());
-	};
-	webpackContext.keys = function webpackContextKeys() {
-		return Object.keys(map);
-	};
-	webpackContext.resolve = webpackContextResolve;
-	module.exports = webpackContext;
-	webpackContext.id = 61;
-
-
-/***/ },
-/* 62 */
 /***/ function(module, exports) {
 
 	module.exports = "<div class=\"modal-header\">\r\n    <button type=\"button\" class=\"close\" data-dismiss=\"modal\" ng-click=\"cancel()\"><span aria-hidden=\"true\">&times;</span><span class=\"sr-only\">Close</span></button>\r\n    <h4 class=\"modal-title\">{{title}}</h4>\r\n</div>\r\n<div class=\"modal-body\">\r\n    <div class=\"text-center\">{{message}}</div>\r\n</div>\r\n<div class=\"modal-footer\">\r\n    <button class=\"btn btn-default\" ng-click=\"cancel()\">取消</button>\r\n    <button class=\"btn btn-danger\" ng-click=\"ok()\">确定</button>\r\n</div>"
 
 /***/ },
-/* 63 */
-/***/ function(module, exports) {
-
-	module.exports = "<div class=\"gdeic-error\" ng-show=\"isShowError\">\r\n    <div class=\"col-xs-offset-1 col-sm-offset-2 col-xs-10 col-sm-8 col-md-offset-3 col-md-6 gdeic-error-body\">\r\n        <span class=\"glyphicon glyphicon-remove-sign gdeic-error-bg\"></span>\r\n        <h4 class=\"gdeic-error-code\">Error：{{error.StatusCode}}</h4>\r\n        <div class=\"gdeic-error-content\">{{error.ErrorMsg}}</div>\r\n        <button type=\"button\" class=\"btn btn-primary btn-xs gdeic-error-btn\" ng-click=\"clearMsg()\">确 定</button>\r\n    </div>\r\n</div>"
-
-/***/ },
-/* 64 */
-/***/ function(module, exports) {
-
-	module.exports = "<div class=\"gdeic-holdOn\" ng-show=\"isHoldingOn\">\r\n    <div class=\"gdeic-holdOn-body\">\r\n        <span class=\"gdeic-loading\"></span>\r\n        <span ng-if=\"holdOnText\">{{holdOnText + '...'}}</span>\r\n    </div>\r\n</div>"
-
-/***/ },
-/* 65 */
-/***/ function(module, exports) {
-
-	module.exports = "<div>\r\n    <div class=\"{{loadingClass || 'text-center'}}\" ng-show=\"isLoading\" style=\"padding: 25px 0\">\r\n        <span class=\"gdeic-loading anime-spinner\"></span>\r\n        <span ng-if=\"loadingText\">{{loadingText + '...'}}</span>\r\n    </div>\r\n    <ng-transclude ng-class=\"{'invisible': isLoading}\"></ng-transclude>\r\n</div>"
-
-/***/ },
-/* 66 */
-/***/ function(module, exports) {
-
-	module.exports = "<div>\r\n    <div class=\"text-center\" style=\"border-top: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; padding-top: 20px; padding-bottom: 20px\"\r\n        ng-if=\"!hideAlert\" ng-show=\"pagingModel.pagingListLength === 0\">无匹配记录</div>\r\n    <div class=\"text-center\" ng-show=\"pagingModel.pagingListLength > pagingModel.itemsPerPage\">\r\n        <uib-pagination total-items=\"pagingModel.pagingListLength\" ng-model=\"pagingModel.currentPage\" max-size=\"5\" class=\"pagination-sm\"\r\n            boundary-link-numbers=\"true\" rotate=\"false\" previous-text=\"上一页\" next-text=\"下一页\" items-per-page=\"pagingModel.itemsPerPage\"\r\n            ng-change=\"pagingModel.paging(pagingModel.currentPage)\"></uib-pagination>\r\n    </div>\r\n</div>"
-
-/***/ },
-/* 67 */
+/* 62 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(68);
+	var content = __webpack_require__(63);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(20)(content, {});
+	var update = __webpack_require__(18)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -2424,10 +2363,10 @@
 	}
 
 /***/ },
-/* 68 */
+/* 63 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(19)();
+	exports = module.exports = __webpack_require__(17)();
 	// imports
 
 
