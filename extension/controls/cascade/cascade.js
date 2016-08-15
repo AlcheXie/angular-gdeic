@@ -6,6 +6,9 @@ module.exports = function (ngModule) {
     gdeicCascadeDirective.$inject = ['$templateCache', '$linq', '$gdeic'];
 
     function gdeicCascadeDirective($templateCache, $linq, $gdeic) {
+
+        $templateCache.put('gdeic/controls/template/cascade.html', require('./template.html'));
+
         return {
             restrict: 'EA',
             scope: {

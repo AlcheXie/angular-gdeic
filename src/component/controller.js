@@ -1,5 +1,5 @@
 module.exports = function (ngModule) {
 
-    require('./controller/confirm')(ngModule);
+    require('./controller/confirm/confirm')(ngModule);
 
 }

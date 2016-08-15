@@ -3,9 +3,12 @@ module.exports = function (ngModule) {
 
     ngModule.directive('gdeicModalPanel', gdeicModalPanelDirective);
 
-    gdeicModalPanelDirective.$inject = [];
+    gdeicModalPanelDirective.$inject = ['$templateCache'];
 
-    function gdeicModalPanelDirective() {
+    function gdeicModalPanelDirective($templateCache) {
+
+        $templateCache.put('gdeic/controls/template/modal-panel.html', require('./template.html'));
+
         return {
             restrict: 'EA',
             transclude: true,

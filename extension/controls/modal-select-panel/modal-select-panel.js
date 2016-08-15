@@ -6,6 +6,10 @@ module.exports = function (ngModule) {
     gdeicModalSelectPanelDirective.$inject = ['$templateCache', '$gdeic'];
 
     function gdeicModalSelectPanelDirective($templateCache, $gdeic) {
+
+        $templateCache.put('gdeic/controls/template/modal-select-panel.html', require('./template.html'));
+        $templateCache.put('gdeic/controls/template/modal-select-panel-multi.html', require('./template-multi.html'));
+
         return {
             restrict: 'EA',
             scope: {

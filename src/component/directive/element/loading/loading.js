@@ -3,9 +3,12 @@ module.exports = function (ngModule) {
 
     ngModule.directive('gdeicLoading', gdeicLoadingDirective);
 
-    gdeicLoadingDirective.$inject = [];
+    gdeicLoadingDirective.$inject = ['$templateCache'];
 
-    function gdeicLoadingDirective() {
+    function gdeicLoadingDirective($templateCache) {
+
+        $templateCache.put('gdeic/template/loading.html', require('./template.html'));
+
         return {
             restrict: 'EA',
             transclude: true,

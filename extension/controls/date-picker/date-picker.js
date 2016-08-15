@@ -3,9 +3,12 @@ module.exports = function (ngModule) {
 
     ngModule.directive('gdeicDatePicker', gdeicDatePickerDirective);
 
-    gdeicDatePickerDirective.$inject = [];
+    gdeicDatePickerDirective.$inject = ['$templateCache'];
 
-    function gdeicDatePickerDirective() {
+    function gdeicDatePickerDirective($templateCache) {
+
+        $templateCache.put('gdeic/controls/template/date-picker.html', require('./template.html'));
+
         return {
             restrict: 'EA',
             scope: {

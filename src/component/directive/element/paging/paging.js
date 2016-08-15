@@ -3,9 +3,12 @@ module.exports = function (ngModule) {
 
     ngModule.directive('gdeicPaging', gdeicPagingDirective);
 
-    gdeicPagingDirective.$inject = ['$cPagingModel', '$cGroupingModel'];
+    gdeicPagingDirective.$inject = ['$templateCache', '$cPagingModel', '$cGroupingModel'];
 
-    function gdeicPagingDirective($cPagingModel, $cGroupingModel) {
+    function gdeicPagingDirective($templateCache, $cPagingModel, $cGroupingModel) {
+        
+        $templateCache.put('gdeic/template/paging.html', require('./template.html'));
+
         return {
             restrict: 'EA',
             scope: {

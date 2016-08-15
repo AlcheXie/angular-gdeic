@@ -3,9 +3,12 @@ module.exports = function (ngModule) {
 
     ngModule.directive('gdeicError', gdeicErrorDirective);
 
-    gdeicErrorDirective.$inject = ['$window'];
+    gdeicErrorDirective.$inject = ['$templateCache', '$window'];
 
-    function gdeicErrorDirective($window) {
+    function gdeicErrorDirective($templateCache, $window) {
+        
+        $templateCache.put('gdeic/template/error.html', require('./template.html'));
+
         return {
             restrict: 'EA',
             scope: {

@@ -6,6 +6,7 @@ module.exports = function (ngModule) {
     gdeicConfirmController.$inject = ['$scope', '$uibModalInstance', 'title', 'message'];
 
     function gdeicConfirmController($scope, $uibModalInstance, _title, _message) {
+
         $scope.title = _title;
         $scope.message = _message;
 

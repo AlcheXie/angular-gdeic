@@ -137,7 +137,7 @@ module.exports = function (ngModule) {
             _size = _size || 'sm';
 
             return $uibModal.open({
-                templateUrl: 'gdeic/template/confirm.html',
+                template: require('../controller/confirm/template.html'),
                 controller: 'gdeicConfirmController',
                 controllerAs: 'app',
                 size: _size,

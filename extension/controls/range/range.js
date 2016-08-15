@@ -3,12 +3,16 @@ module.exports = function (ngModule) {
 
     ngModule.directive('gdeicRange', gdeicRangeDirective);
 
-    gdeicRangeDirective.$inject = [];
+    gdeicRangeDirective.$inject = ['$templateCache'];
 
-    function gdeicRangeDirective() {
+    function gdeicRangeDirective($templateCache) {
+
+        $templateCache.put('gdeic/controls/template/range.html', require('./template.html'));
+
         return {
             restrict: 'EA',
             scope: {
+                templateUrl: '@',
                 ngModel: '=',
                 labelText: '@',
                 minValue: '=',

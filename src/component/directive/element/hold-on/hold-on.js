@@ -3,9 +3,12 @@ module.exports = function (ngModule) {
 
     ngModule.directive('gdeicHoldOn', gdeicHoldOnDirective);
 
-    gdeicHoldOnDirective.$inject = [];
+    gdeicHoldOnDirective.$inject = ['$templateCache'];
 
-    function gdeicHoldOnDirective() {
+    function gdeicHoldOnDirective($templateCache) {
+
+        $templateCache.put('gdeic/template/hold-on.html', require('./template.html'));
+
         return {
             restrict: 'EA',
             scope: {

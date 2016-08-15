@@ -3,9 +3,12 @@ module.exports = function (ngModule) {
 
     ngModule.directive('gdeicFileUpload', gdeicFileUploadDirective);
 
-    gdeicFileUploadDirective.$inject = ['$gdeic'];
+    gdeicFileUploadDirective.$inject = ['$templateCache', '$gdeic'];
 
-    function gdeicFileUploadDirective($gdeic) {
+    function gdeicFileUploadDirective($templateCache, $gdeic) {
+
+        $templateCache.put('gdeic/controls/template/file-upload.html', require('./template.html'));
+
         return {
             restrict: "EA",
             scope: {
