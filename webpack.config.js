@@ -11,13 +11,18 @@ module.exports = {
         filename: PROD ? '[name].min.js' : '[name].js'
     },
     module: {
-        loaders: [
-            {
+        loaders: [{
                 test: /\.html$/,
-                loader: 'raw-loader'
+                loader: 'raw'
             }, {
                 test: /\.scss$/,
-                loader: 'style-loader!css-loader!sass-loader'
+                loader: 'style!css!sass'
+            }, {
+                test: /\.js$/,
+                loader: 'babel',
+                query: {
+                    presets: ['es2015', 'stage-0']
+                }
             }
         ]
     }
