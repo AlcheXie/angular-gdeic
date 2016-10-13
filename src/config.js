@@ -1,11 +1,6 @@
-module.exports = function (ngModule) {
-    'use strict';
+module.exports = function(ngModule) {
 
-    ngModule.config(configFunc);
-
-    configFunc.$inject = ['$httpProvider'];
-
-    function configFunc($httpProvider) {
+    ngModule.config(['$httpProvider', function configFunc($httpProvider) {
         $httpProvider.interceptors.push('$gdeicHttpInterceptor');
-    }
+    }]);
 };
