@@ -2,16 +2,15 @@
     display: inline-block;
     width: 1em;
     height: 1em;
-    margin: 3em auto;
+    margin: 3em;
     @include border-radius(50%);
-    $bosShadow: 0 -2em rgba(98,98,98,1), 1.414em -1.414em rgba(98,98,98,.875), 2em 0 rgba(98,98,98,.75), 1.414em 1.414em rgba(98,98,98,.625), 0 2em rgba(98,98,98,.5), -1.414em 1.414em rgba(98,98,98,.375), -2em 0 rgba(98,98,98,.25), -1.414em -1.414em rgba(98,98,98,.125);
-    @include box-shadow($bosShadow);
+    $boxShadow: 0 -2em rgba(98, 98, 98, 1), 1.414em -1.414em rgba(98, 98, 98, .875), 2em 0 rgba(98, 98, 98, .75), 1.414em 1.414em rgba(98, 98, 98, .625), 0 2em rgba(98, 98, 98, .5), -1.414em 1.414em rgba(98, 98, 98, .375), -2em 0 rgba(98, 98, 98, .25), -1.414em -1.414em rgba(98, 98, 98, .125);
+    @include box-shadow($boxShadow);
     font-size: 12px;
     -webkit-animation: gdeic-rotate 1s infinite forwards steps(8, end);
     -moz-animation: gdeic-rotate 1s infinite forwards steps(8, end);
     animation: gdeic-rotate 1s infinite forwards steps(8, end);
-
-    + span {
+    +span {
         display: block;
     }
 }
