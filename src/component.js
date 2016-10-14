@@ -27,5 +27,5 @@ module.exports = function (ngModule) {
     require('./component/filter/switch')(ngModule);
     require('./component/filter/dateInterval')(ngModule);
 
-    require('./component/service/gdeic')(ngModule);
+    require('./component/provider/gdeic')(ngModule);
 };
