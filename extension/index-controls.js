@@ -7,5 +7,3 @@ require('./controls/modal-panel/modal-panel')(ngModule);
 require('./controls/modal-select-panel/modal-select-panel')(ngModule);
 require('./controls/range/range')(ngModule);
 require('./controls/tree-view/tree-view')(ngModule);
-
-require('./../scss/controls.scss');

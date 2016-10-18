@@ -32,4 +32,6 @@ module.exports = function (ngModule) {
             }
         };
     }
+
+    require('./hold-on.scss');
 };

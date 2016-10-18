@@ -34,4 +34,6 @@ module.exports = function (ngModule) {
             }
         };
     }
+
+    require('./modal-panel.scss');
 };

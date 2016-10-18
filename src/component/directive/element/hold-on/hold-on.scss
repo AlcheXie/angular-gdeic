@@ -1,3 +1,4 @@
+@import "../../../../../bower_components/ui-gdeic/scss/mixins/mixins";
 .gdeic-holdOn {
     position: fixed;
     top: 0;
@@ -7,13 +8,13 @@
     background-color: rgba(0, 0, 0, .5);
     >.gdeic-holdOn-body {
         position: absolute;
+        z-index: 9999;
+        top: 30%;
         left: 50%;
         @include transform(translateX(-50%));
-        z-index: 9999;
-        margin-top: 30%;
         padding: 25px;
-        background-color: #AEAEAE;
         @include border-radius(10px);
+        background-color: #AEAEAE;
         color: #FFFFFF;
         text-align: center;
     }

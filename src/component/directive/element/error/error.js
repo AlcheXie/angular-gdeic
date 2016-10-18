@@ -43,4 +43,6 @@ module.exports = function (ngModule) {
             }
         };
     }
+
+    require('./error.scss');
 };

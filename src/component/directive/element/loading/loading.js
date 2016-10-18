@@ -24,4 +24,6 @@ module.exports = function (ngModule) {
             replace: true
         };
     }
+
+    require('./loading.scss');
 };

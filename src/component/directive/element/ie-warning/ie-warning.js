@@ -24,4 +24,6 @@ module.exports = function (ngModule) {
             }
         }
     }
+
+    require('./ie-warning.scss');
 };

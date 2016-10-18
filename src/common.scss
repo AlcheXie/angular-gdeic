@@ -1,0 +1,23 @@
+@import "../bower_components/ui-gdeic/scss/mixins/mixins";
+form,
+.form {
+    .ng-invalid {
+        @include box-shadow(0px 0px 8px #f00);
+        &.ng-untouched {
+            @include box-shadow(none);
+        }
+    }
+    [required] {
+        &[readonly] {
+            @include box-shadow(0px 0px 8px #C5E0F5);
+        }
+    }
+}
+
+textarea {
+    resize: none;
+}
+
+.holder {
+    margin-bottom: 10px;
+}

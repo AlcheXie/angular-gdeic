@@ -47,4 +47,6 @@ module.exports = function (ngModule) {
             }
         }
     }
+
+    require('./range.scss');
 }
