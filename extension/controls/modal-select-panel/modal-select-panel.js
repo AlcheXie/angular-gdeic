@@ -1,5 +1,4 @@
-module.exports = function (ngModule) {
-    'use strict';
+module.exports = function(ngModule) {
 
     ngModule.directive('gdeicModalSelectPanel', gdeicModalSelectPanelDirective);
 
@@ -23,7 +22,7 @@ module.exports = function (ngModule) {
                 ngModel: '=',
                 multiSelect: '='
             },
-            template: function (tElement, tAttrs) {
+            template: function(tElement, tAttrs) {
                 var template;
 
                 if (angular.isUndefined(tAttrs.templateUrl)) {
@@ -42,10 +41,10 @@ module.exports = function (ngModule) {
                 return template;
             },
             replace: true,
-            link: function (scope, iElement, iAttrs, controller, transcludeFn) {
+            link: function(scope, iElement, iAttrs, controller, transcludeFn) {
                 var _originalValue;
 
-                (function () {
+                (function() {
                     scope.search = {};
                     if (scope.multiSelect === true) {
                         _originalValue = [];
@@ -55,11 +54,11 @@ module.exports = function (ngModule) {
                             value: ''
                         });
                     }
-                } ());
+                }());
 
 
-                scope.$watch('isShow', function (newValue) {
-                    if (newValue) {
+                scope.$watch('isShow', newVal => {
+                    if (newVal) {
                         if (scope.multiSelect === true) {
                             scope.selectedItem = angular.isArray(scope.ngModel) ? angular.copy(scope.ngModel) : _originalValue;
                         } else {
@@ -67,40 +66,38 @@ module.exports = function (ngModule) {
                         }
 
                         if (angular.isUndefined(scope.templateUrl)) {
-                            $gdeic.execAsync(function () {
-                                var panel = iElement.children(),
-                                    panelChildren = panel.children(),
-                                    panelHeader = panelChildren.eq(0),
-                                    panelFilter = panelChildren.eq(1),
-                                    panelBody = panelChildren.eq(angular.isUndefined(scope.filterProperty) ? 1 : 2),
-                                    panelFooter = panelChildren.eq(panelChildren.length - 1);
+                            $gdeic.execAsync(() => {
+                                let $panel = iElement.children(),
+                                    $panelChildren = $panel.children(),
+                                    $panelHeader = $panelChildren.eq(0),
+                                    $panelFilter = $panelChildren.eq(1),
+                                    $panelBody = $panelChildren.eq(angular.isUndefined(scope.filterProperty) ? 1 : 2),
+                                    $panelFooter = $panelChildren.eq($panelChildren.length - 1);
 
                                 if (angular.isUndefined(scope.filterProperty)) {
-                                    panelBody.css('height', (iElement[0].offsetHeight - panelHeader[0].offsetHeight - panelFooter[0].offsetHeight) + 'px');
+                                    $panelBody.css('height', (iElement[0].offsetHeight - $panelHeader[0].offsetHeight - $panelFooter[0].offsetHeight) + 'px');
                                 } else {
-                                    panelBody.css('height', (iElement[0].offsetHeight - panelHeader[0].offsetHeight - panelFilter[0].offsetHeight - panelFooter[0].offsetHeight) + 'px');
+                                    $panelBody.css('height', (iElement[0].offsetHeight - $panelHeader[0].offsetHeight - $panelFilter[0].offsetHeight - $panelFooter[0].offsetHeight) + 'px');
                                 }
                             })
                         }
                     }
                 });
 
-                scope.isCheck = function (oItem) {
-                    if (angular.isUndefined(scope.selectedItem)
-                        || angular.isUndefined(oItem[iAttrs.keyProperty])) {
+                scope.isCheck = item => {
+                    if (angular.isUndefined(scope.selectedItem) ||
+                        angular.isUndefined(item[iAttrs.keyProperty])) {
                         return false;
                     }
 
                     if (scope.multiSelect === true) {
-                        return scope.selectedItem.some(function (item) {
-                            return item[scope.keyProperty] === oItem[scope.keyProperty];
-                        });
+                        return scope.selectedItem.some(x => x[scope.keyProperty] === item[scope.keyProperty]);
                     } else {
-                        return scope.selectedItem[iAttrs.keyProperty] === oItem[iAttrs.keyProperty];
+                        return scope.selectedItem[iAttrs.keyProperty] === item[iAttrs.keyProperty];
                     }
                 }
 
-                scope.selectItem = function (item) {
+                scope.selectItem = item => {
                     if (scope.multiSelect === true) {
                         $gdeic.toggleItem(scope.selectedItem, item);
                     } else {
@@ -108,11 +105,9 @@ module.exports = function (ngModule) {
                     }
                 }
 
-                scope.clear = function () {
-                    scope.selectedItem = angular.copy(_originalValue);
-                }
+                scope.clear = () => scope.selectedItem = angular.copy(_originalValue);
 
-                scope.ok = function () {
+                scope.ok = () => {
                     if (scope.selectedItem === _originalValue) {
                         if (scope.multiSelect === true) {
                             scope.ngModel = [];

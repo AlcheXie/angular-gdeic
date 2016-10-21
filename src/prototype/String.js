@@ -1,7 +1,7 @@
-module.exports = function (angular) {
+module.exports = function(angular) {
     'use strict';
 
-    (function (_) {
+    (function(_) {
         Object.defineProperties(_.prototype, {
             trimAll: {
                 value: function trimAll() {
@@ -11,49 +11,51 @@ module.exports = function (angular) {
                 enumerable: false
             },
             padStart: {
-                value: function padStart(length, string) {
-                    string = string || ' ';
+                value: function padStart(length, padString = ' ') {
                     if (length <= this.length) {
                         return this;
                     }
 
-                    var padLength = length - this.length;
-                    if (padLength <= string.length) {
-                        return string.substring(0, padLength) + this;
+                    let _padLength = length - this.length;
+                    if (_padLength <= padString.length) {
+                        return padString.substring(0, _padLength) + this;
                     } else {
-                        var len = Math.floor(padLength / string.length), i = 0, str = '';
-                        while (i < len) {
-                            str += string;
-                            i++;
+                        let _len = Math.floor(_padLength / padString.length),
+                            _n = 0,
+                            _str = '';
+                        while (_n < _len) {
+                            _str += padString;
+                            _n++;
                         }
-                        return str + string.substring(0, padLength - len * string.length) + this;
+                        return _str + padString.substring(0, _padLength - _len * padString.length) + this;
                     }
                 },
                 writable: false,
                 enumerable: false
             },
             padEnd: {
-                value: function padEnd(string) {
-                    string = string || ' ';
+                value: function padEnd(length, padString = ' ') {
                     if (length <= this.length) {
                         return this;
                     }
 
-                    var padLength = length - this.length;
-                    if (padLength <= string.length) {
-                        return this + string.substring(0, padLength);
+                    let _padLength = length - this.length;
+                    if (_padLength <= padString.length) {
+                        return this + padString.substring(0, _padLength);
                     } else {
-                        var len = Math.floor(padLength / string.length), i = 0, str = '';
-                        while (i < len) {
-                            str += string;
-                            i++;
+                        let _len = Math.floor(_padLength / padString.length),
+                            _n = 0,
+                            _str = '';
+                        while (_n < _len) {
+                            _str += padString;
+                            _n++;
                         }
-                        return this + str + string.substring(0, padLength - len * string.length);
+                        return this + _str + padString.substring(0, _padLength - _len * padString.length);
                     }
                 },
                 writable: false,
                 enumerable: false
             }
         });
-    } (String));
+    }(String));
 };

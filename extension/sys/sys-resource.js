@@ -1,5 +1,4 @@
-module.exports = function (ngModule) {
-    'use strict';
+module.exports = function(ngModule) {
 
     ngModule.factory('$gdeicSysResource', $gdeicSysResourceFactory);
 

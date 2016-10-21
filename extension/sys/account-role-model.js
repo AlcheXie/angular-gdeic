@@ -1,5 +1,4 @@
-module.exports = function (ngModule) {
-    'use strict';
+module.exports = function(ngModule) {
 
     ngModule.factory('$cAccountRoleModel', $cAccountRoleModelFactory);
 
@@ -25,7 +24,7 @@ module.exports = function (ngModule) {
             } else {
                 this.Roles = new $cToggleModel('Id');
                 if (account.length > 0) {
-                    this.LockoutEnabled = !(account.some(function (u) {
+                    this.LockoutEnabled = !(account.some(function(u) {
                         return u.LockoutEnabled === false;
                     }));
                 } else {
@@ -34,16 +33,19 @@ module.exports = function (ngModule) {
             }
         }
 
-        $cAccountRoleModel.prototype.save = function (isAdmin, isUnifyManageOu) {
+        $cAccountRoleModel.prototype.save = function(isAdmin, isUnifyManageOu) {
             isAdmin = isAdmin || false;
             isUnifyManageOu = isUnifyManageOu || false;
 
-            var accounts = angular.copy(this.Accounts.items), deferred = $q.defer();
+            var accounts = angular.copy(this.Accounts.items),
+                deferred = $q.defer();
 
             if (accounts.length === 0) {
                 deferred.resolve(this.Accounts);
             } else {
-                var i = 0, max = accounts.length, account;
+                var i = 0,
+                    max = accounts.length,
+                    account;
                 for (; i < max; i++) {
                     account = accounts[i];
                     if (this.Roles.items.length > 0) {
@@ -61,17 +63,15 @@ module.exports = function (ngModule) {
                     account.LockoutEnabled = this.LockoutEnabled;
                 }
 
-                $gdeic.httpPromise($gdeicSysResource.saveAccount(accounts)).then(function (data) {
-                    deferred.resolve(data);
-                }, function (reason) {
-                    deferred.reject(reason);
-                });
+                $gdeic.httpPromise($gdeicSysResource.saveAccount(accounts))
+                    .then(deferred.resolve, deferred.reject);
             }
 
             return deferred.promise;
         }
-        $cAccountRoleModel.prototype.lock = function () {
-            var accountIds = this.Accounts.Ids, promises = [];
+        $cAccountRoleModel.prototype.lock = function() {
+            var accountIds = this.Accounts.Ids,
+                promises = [];
             for (var i = 0, max = accountIds.length; i < max; i++) {
                 promises.push(_lock(accountIds[i]));
             }
@@ -79,18 +79,13 @@ module.exports = function (ngModule) {
 
             function _lock(uid) {
                 var deferred = $q.defer();
-                $gdeic.httpPromise($gdeicSysResource.lockAccount({ uid: uid })).then(function (data) {
-                    deferred.resolve(data);
-                }, function (reason) {
-                    deferred.reject(reason);
-                }, function (msg) {
-                    deferred.notify(msg);
-                });
+                $gdeic.httpPromise($gdeicSysResource.lockAccount({ uid: uid }))
+                    .then(deferred.resolve, deferred.reject);
 
                 return deferred.promise;
             }
         }
-        $cAccountRoleModel.prototype.getManageOuString = function () {
+        $cAccountRoleModel.prototype.getManageOuString = function() {
             if (!this.ManageOu) {
                 return '';
             }

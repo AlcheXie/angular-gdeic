@@ -1,5 +1,4 @@
-module.exports = function (ngModule) {
-    'use strict';
+module.exports = function(ngModule) {
 
     ngModule.factory('$cOutreeModel', $cOutreeModelFactory);
 
@@ -9,7 +8,7 @@ module.exports = function (ngModule) {
         function $cOutreeModel(outree) {
             var _source = outree;
 
-            this.getSource = function () {
+            this.getSource = function() {
                 return _source;
             }
 
@@ -21,20 +20,21 @@ module.exports = function (ngModule) {
             this.Accounts = null;
         }
 
-        $cOutreeModel.prototype.setSubOus = function () {
+        $cOutreeModel.prototype.setSubOus = function() {
             var outree = this.getSource();
-            this.SubOus = outree.SubOus.map(function (ou, i) {
+            this.SubOus = outree.SubOus.map(function(ou, i) {
                 return new $cOutreeModel(outree.SubOus[i]);
             });
         }
-        $cOutreeModel.prototype.setAccounts = function () {
-            var ou = this, deferred = $q.defer();
+        $cOutreeModel.prototype.setAccounts = function() {
+            var ou = this,
+                deferred = $q.defer();
 
             if (!ou.Accounts) {
-                $gdeic.httpPromise($gdeicSysResource.queryOuAccounts({ ouId: ou.Id })).then(function (data) {
+                $gdeic.httpPromise($gdeicSysResource.queryOuAccounts({ ouId: ou.Id })).then(function(data) {
                     ou.Accounts = data;
                     deferred.resolve(data);
-                }, function (reason) {
+                }, function(reason) {
                     deferred.reject(reason);
                 });
             } else {

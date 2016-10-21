@@ -1,5 +1,4 @@
-module.exports = function (ngModule) {
-    'use strict';
+module.exports = function(ngModule) {
 
     ngModule.directive('gradualShow', gradualShowDirective);
 
@@ -8,10 +7,10 @@ module.exports = function (ngModule) {
     function gradualShowDirective($animateCss) {
         return {
             restrict: 'A',
-            link: function (scope, iElement, iAttrs) {
+            link: function(scope, iElement, iAttrs) {
                 var _isInit = false;
 
-                scope.$watch(iAttrs.gradualShow, function (newValue, oldValue) {
+                scope.$watch(iAttrs.gradualShow, function(newValue, oldValue) {
                     if (!_isInit) {
                         if (angular.isUndefined(oldValue) || !oldValue) {
                             iElement.css({ 'opacity': '0', 'zIndex': '-1' });

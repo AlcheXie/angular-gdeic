@@ -1,15 +1,13 @@
-module.exports = function (ngModule) {
-    'use strict';
+module.exports = function(ngModule) {
 
     ngModule.filter('bool', boolFilter);
 
     boolFilter.$inject = [];
 
     function boolFilter() {
-        return function (input, rule) {
-            rule = rule || '是|否';
-            var params = rule.split('|');
-            return (input === true) ? params[0].trimAll() : params[1].trimAll();
+        return function(input, rule = '是|否') {
+            let _aRules = rule.split('|');
+            return input === true ? _aRules[0].trimAll() : _aRules[1].trimAll();
         };
     }
 };

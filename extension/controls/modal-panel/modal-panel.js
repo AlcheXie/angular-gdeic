@@ -1,5 +1,4 @@
-module.exports = function (ngModule) {
-    'use strict';
+module.exports = function(ngModule) {
 
     ngModule.directive('gdeicModalPanel', gdeicModalPanelDirective);
 
@@ -20,14 +19,14 @@ module.exports = function (ngModule) {
                 clear: '&',
                 cancel: '&'
             },
-            templateUrl: function (tElement, tAttrs) {
+            templateUrl: function(tElement, tAttrs) {
                 return tAttrs.templateUrl || 'gdeic/controls/template/modal-panel.html';
             },
             replace: true,
-            link: function (scope, iElement, iAttrs, controller, transcludeFn) {
+            link: function(scope, iElement, iAttrs, controller, transcludeFn) {
                 scope.$$isClear = angular.isDefined(iAttrs.clear);
 
-                scope.ok = function () {
+                scope.ok = function() {
                     scope.confirm();
                     scope.isShow = false;
                 }

@@ -1,15 +1,12 @@
-module.exports = function (ngModule) {
-    'use strict';
+module.exports = function(ngModule) {
 
     ngModule.filter('dateInterval', dateIntervalFilter);
 
     dateIntervalFilter.$inject = [];
 
     function dateIntervalFilter() {
-        return function (input, rule, type) {
-            type = type || 'day';
-
-            var startDate, endDate, interval;
+        return function(input, rule, type = 'day') {
+            let _dStart, _dEnd, _nInterval;
 
             if (angular.isArray(input) && input.length === 2) {
                 if (!angular.isDate(input[0]) && (new Date(input[0])).toString() === 'Invalid Date') {
@@ -19,8 +16,8 @@ module.exports = function (ngModule) {
                     return '';
                 }
 
-                startDate = data[0].getTime();
-                endDate = data[1].getTime();
+                _dStart = input[0].getTime();
+                _dEnd = input[1].getTime();
             }
             if (!angular.isDate(input) && (new Date(input)).toString() === 'Invalid Date') {
                 return '';
@@ -28,70 +25,72 @@ module.exports = function (ngModule) {
 
             switch (rule) {
                 case 'fromToday':
-                    startDate = new Date();
-                    endDate = input;
+                    _dStart = new Date();
+                    _dEnd = input;
                     break;
                 case 'fromMonthStart':
-                    startDate = new Date();
-                    startDate.setDate(1);
-                    endDate = input;
+                    _dStart = new Date();
+                    _dStart.setDate(1);
+                    _dEnd = input;
                     break;
                 case 'fromSeasonStart':
-                    startDate = new Date();
-                    startDate.setMonth((startDate.getQuarter() - 1) * 3, 1);
-                    endDate = input;
+                    _dStart = new Date();
+                    _dStart.setMonth((_dStart.getQuarter() - 1) * 3, 1);
+                    _dEnd = input;
                     break;
                 case 'fromYearStart':
-                    startDate = new Date();
-                    startDate.setMonth(0, 1);
-                    endDate = input;
+                    _dStart = new Date();
+                    _dStart.setMonth(0, 1);
+                    _dEnd = input;
                     break;
                 case 'toToday':
-                    startDate = input;
-                    endDate = new Date();
+                    _dStart = input;
+                    _dEnd = new Date();
                     break;
                 case 'toMonthEnd':
-                    startDate = input;
-                    endDate = new Date();
-                    endDate.setMonth(endDate.getMonth() + 1, 0);
+                    _dStart = input;
+                    _dEnd = new Date();
+                    _dEnd.setMonth(_dEnd.getMonth() + 1, 0);
                     break;
                 case 'toSeasonEnd':
-                    startDate = input;
-                    endDate = new Date();
-                    endDate.setMonth(endDate.getQuarter() * 3, 0);
+                    _dStart = input;
+                    _dEnd = new Date();
+                    _dEnd.setMonth(_dEnd.getQuarter() * 3, 0);
                     break;
                 case 'toYearEnd':
-                    startDate = input;
-                    endDate = new Date();
-                    endDate.setMonth(12, 0);
+                    _dStart = input;
+                    _dEnd = new Date();
+                    _dEnd.setMonth(12, 0);
             }
 
-            if (angular.isUndefined(startDate) && angular.isUndefined(endDate)) {
+            if (angular.isUndefined(_dStart) && angular.isUndefined(_dEnd)) {
                 return '';
             } else {
-                interval = endDate.getTime() - startDate.getTime();
-                interval = interval / 1000;
+                _nInterval = _dEnd.getTime() - _dStart.getTime();
+                _nInterval = _nInterval / 1000;
             }
 
             switch (type) {
                 case 'year':
-                    interval = (interval / (60 * 60 * 24)) / 365;
+                    _nInterval = (_nInterval / (60 * 60 * 24)) / 365;
                     break;
                 case 'month':
-                    interval = (interval / (60 * 60 * 24)) / 30;
+                    _nInterval = (_nInterval / (60 * 60 * 24)) / 30;
                     break;
                 case 'day':
-                    interval = interval / (60 * 60 * 24);
+                    _nInterval = _nInterval / (60 * 60 * 24);
                     break;
                 case 'hour':
-                    interval = interval / (60 * 60);
+                    _nInterval = _nInterval / (60 * 60);
                     break;
                 case 'minute':
-                    interval = interval / 60;
+                    _nInterval = _nInterval / 60;
+                    break;
+                default:
                     break;
             }
 
-            return interval.toFixed(0);
+            return _nInterval.toFixed(0);
         };
     }
 };

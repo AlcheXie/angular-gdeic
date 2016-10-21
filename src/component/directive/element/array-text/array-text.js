@@ -1,5 +1,4 @@
-module.exports = function (ngModule) {
-    'use strict';
+module.exports = function(ngModule) {
 
     ngModule.directive('gdeicArrayText', gdeicArrayTextDirective);
 
@@ -16,15 +15,13 @@ module.exports = function (ngModule) {
             },
             template: '<span>{{showText}}</span>',
             replace: true,
-            link: function (scope, iElement, iAttrs, controller, transcludeFn) {
-                var properties = scope.property.split('.'), strProperties = '';
-                for (var i = 0, max = properties.length; i < max; i++) {
-                    strProperties += '[\'' + properties[i] + '\']';
+            link: function(scope, iElement, iAttrs, controller, transcludeFn) {
+                let _aProperties = scope.property.split('.'),
+                    _sProperties = '';
+                for (let p of _aProperties) {
+                    _sProperties += `['${p}']`;
                 }
-
-                scope.showText = scope.source.map(function (item) {
-                    return eval('item' + strProperties);
-                }).join(scope.splitOf);
+                scope.showText = scope.source.map(x => eval(`x${_sProperties}`)).join(scope.splitOf);
             }
         };
     }

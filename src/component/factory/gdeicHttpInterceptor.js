@@ -1,5 +1,4 @@
-module.exports = function (ngModule) {
-    'use strict';
+module.exports = function(ngModule) {
 
     ngModule.factory('$gdeicHttpInterceptor', $gdeicHttpInterceptorFactory);
 
@@ -7,23 +6,23 @@ module.exports = function (ngModule) {
 
     function $gdeicHttpInterceptorFactory($q, $rootScope, $log) {
         var httpInterceptor = {
-            'request': function (config) {
+            'request': function(config) {
                 if (config.url.indexOf('.') < 0) {
-                    if (angular.isDefined(config.data)) {
+                    if (angular.isObject(config.data)) {
                         config.data.addHours(8);
                     }
                 }
                 return config;
             },
-            'response': function (response) {
+            'response': function(response) {
                 if (response.config.url.indexOf('.') < 0) {
                     if (response.data.StatusCode < 0) {
-                        var error = {
+                        let _error = {
                             StatusCode: response.data.StatusCode,
                             ErrorMsg: response.data.ErrorMsg
                         };
-                        $log.warn(error);
-                        $rootScope.$broadcast('httpErrMsg', error);
+                        $log.warn(_error);
+                        $rootScope.$broadcast('httpErrMsg', _error);
                     }
 
                     if (angular.isObject(response.data.Data)) {
@@ -33,7 +32,7 @@ module.exports = function (ngModule) {
                 }
                 return response;
             },
-            'responseError': function (response) {
+            'responseError': function(response) {
                 if (response.config.url.indexOf('.') < 0) {
                     $log.error('RequestError: ' + response.config.url, response.status, response);
                 }

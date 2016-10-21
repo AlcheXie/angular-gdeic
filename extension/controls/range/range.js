@@ -1,5 +1,4 @@
-module.exports = function (ngModule) {
-    'use strict';
+module.exports = function(ngModule) {
 
     ngModule.directive('gdeicRange', gdeicRangeDirective);
 
@@ -20,19 +19,18 @@ module.exports = function (ngModule) {
                 step: '=',
                 isModifyMinValue: '='
             },
-            templateUrl: function (tElement, tAttrs) {
+            templateUrl: function(tElement, tAttrs) {
                 return tAttrs.templateUrl || 'gdeic/controls/template/range.html';
             },
             replace: true,
-            controller: function () {
+            controller: function() {
                 this.change = angular.noop;
             },
             controllerAs: 'vm',
-            link: function (scope, iElement, iAttrs, controller, transcludeFn) {
-                var _minValue;
-
+            link: function(scope, iElement, iAttrs, controller, transcludeFn) {
                 if (scope.isModifyMinValue) {
-                    controller.change = function () {
+                    let _minValue;
+                    controller.change = () => {
                         if (angular.isUndefined(_minValue)) {
                             _minValue = scope.minValue;
                         }

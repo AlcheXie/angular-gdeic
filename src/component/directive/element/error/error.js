@@ -1,12 +1,11 @@
-module.exports = function (ngModule) {
-    'use strict';
+module.exports = function(ngModule) {
 
     ngModule.directive('gdeicError', gdeicErrorDirective);
 
     gdeicErrorDirective.$inject = ['$templateCache', '$window'];
 
     function gdeicErrorDirective($templateCache, $window) {
-        
+
         $templateCache.put('gdeic/template/error.html', require('./template.html'));
 
         return {
@@ -14,17 +13,17 @@ module.exports = function (ngModule) {
             scope: {
                 templateUrl: '@'
             },
-            templateUrl: function (tElement, tAttrs) {
+            templateUrl: function(tElement, tAttrs) {
                 return tAttrs.templateUrl || 'gdeic/template/error.html';
             },
             replace: true,
-            link: function (scope, iElement, iAttrs, controller, transcludeFn) {
+            link: function(scope, iElement, iAttrs, controller, transcludeFn) {
                 scope.isShowError = false;
                 scope.error = null;
 
                 scope.clearMsg = clearMsg;
 
-                scope.$on('httpErrMsg', function (event, data) {
+                scope.$on('httpErrMsg', function(event, data) {
                     if (scope.isShowError) {
                         return;
                     }

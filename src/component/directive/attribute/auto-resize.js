@@ -1,5 +1,4 @@
-module.exports = function (ngModule) {
-    'use strict';
+module.exports = function(ngModule) {
 
     ngModule.directive('autoResize', autoResizeDirective);
 
@@ -8,7 +7,7 @@ module.exports = function (ngModule) {
     function autoResizeDirective($window) {
         return {
             restrict: 'A',
-            link: function (scope, iElement, iAttrs) {
+            link: function(scope, iElement, iAttrs) {
                 var _params = iAttrs.autoResize.trimAll().split(','),
                     _direction = _params[0],
                     _size = parseInt(_params[1]);

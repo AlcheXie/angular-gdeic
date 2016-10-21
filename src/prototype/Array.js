@@ -1,46 +1,56 @@
-module.exports = function (angular) {
+module.exports = function(angular) {
     'use strict';
 
-    (function (_) {
+    (function(_) {
         Object.defineProperties(_.prototype, {
             intersect: {
-                value: function intersect(arr) {
-                    var array = [], i = 0, max = this.length, currItem;
-                    arr = arr.map(function (item) {
-                        return angular.toJson(item);
-                    });
-                    for (; i < max; i++) {
-                        currItem = angular.toJson(this[i]);
-                        if (arr.indexOf(currItem) > -1) {
-                            array.push(angular.copy(currItem));
+                value: function intersect(array) {
+                    let _array = [];
+                    array = array.map(x => angular.toJson(x));
+                    for (let item of this) {
+                        let value = angular.copy(item);
+                        value = angular.toJson(value);
+                        if (array.indexOf(value) > -1) {
+                            _array.push(value);
                         }
                     }
-                    return array.map(function (item) {
-                        return angular.fromJson(item);
-                    });
+                    return _array.map(x => angular.fromJson(x));
                 },
                 writable: false,
                 enumerable: false
             },
             differentiate: {
-                value: function difference(arr) {
-                    var array = [], i = 0, max = this.length, currItem;
-                    arr = arr.map(function (item) {
-                        return angular.toJson(item);
-                    });
-                    for (; i < max; i++) {
-                        currItem = angular.toJson(this[i]);
-                        if (arr.indexOf(currItem) < 0) {
-                            array.push(angular.copy(currItem));
+                value: function differentiate(array) {
+                    let _array = [];
+                    let that = this.map(x => angular.toJson(x));
+                    for (let item of array) {
+                        let value = angular.copy(item);
+                        value = angular.toJson(value);
+                        if (that.indexOf(value) < 0) {
+                            _array.push(value);
                         }
                     }
-                    return array.map(function (item) {
-                        return angular.fromJson(item);
-                    });
+                    array = array.map(x => angular.toJson(x));
+                    for (let item of this.reverse()) {
+                        let value = angular.copy(item);
+                        value = angular.toJson(value);
+                        if (array.indexOf(value) < 0) {
+                            _array.unshift(value);
+                        }
+                    }
+                    return _array.map(x => angular.fromJson(x));
+                },
+                writable: false,
+                enumerable: false
+            },
+            union: {
+                value: function union(array) {
+                    let set = new Set(this.concat(array));
+                    return [...set]
                 },
                 writable: false,
                 enumerable: false
             }
         });
-    } (Array));
+    }(Array));
 };

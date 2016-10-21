@@ -1,5 +1,4 @@
-module.exports = function (ngModule) {
-    'use strict';
+module.exports = function(ngModule) {
 
     ngModule.factory('$cEditModel', $cEditModelFactory);
 
@@ -9,7 +8,8 @@ module.exports = function (ngModule) {
         function $cEditModel(source) {
             var p;
             if (angular.isArray(source)) {
-                var array = angular.copy(source), prototype = $cEditModel.prototype;
+                var array = angular.copy(source),
+                    prototype = $cEditModel.prototype;
                 for (p in prototype) {
                     if (prototype.hasOwnProperty(p)) {
                         array[p] = prototype[p];
@@ -32,7 +32,7 @@ module.exports = function (ngModule) {
             return this;
         }
 
-        $cEditModel.prototype.setToggle = function (name, a2, a3) {
+        $cEditModel.prototype.setToggle = function(name, a2, a3) {
             var properties, isBind;
             if (angular.isUndefined(a2)) {
                 properties = 'Id';
@@ -55,13 +55,16 @@ module.exports = function (ngModule) {
 
             return this;
         };
-        $cEditModel.prototype.unbindToggle = function (name) {
+        $cEditModel.prototype.unbindToggle = function(name) {
             this['$$' + name].$$isBind = false;
 
             return this;
         };
-        $cEditModel.prototype.fire = function (actionFunc, paramsConfig) {
-            var deferred = $q.defer(), promise, obj, p, i = 0, max, arrPromises = [], that;
+        $cEditModel.prototype.fire = function(actionFunc, paramsConfig) {
+            var deferred = $q.defer(),
+                promise, obj, p, i = 0,
+                max, arrPromises = [],
+                that;
 
             if (arguments.length === 0) {
                 that = angular.copy(this);
@@ -139,13 +142,7 @@ module.exports = function (ngModule) {
                     promise = $gdeic.httpPromise(actionFunc());
                 }
 
-                promise.then(function (data) {
-                    deferred.resolve(data);
-                }, function (reason) {
-                    deferred.reject(reason);
-                }, function (msg) {
-                    deferred.notify(msg);
-                });
+                promise.then(deferred.resolve, deferred.reject);
 
                 return deferred.promise;
             } else {

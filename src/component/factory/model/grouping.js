@@ -1,5 +1,4 @@
-module.exports = function (ngModule) {
-    'use strict';
+module.exports = function(ngModule) {
 
     ngModule.factory('$cGroupingModel', $cGroupingModelFactory);
 
@@ -20,34 +19,35 @@ module.exports = function (ngModule) {
 
             _source = angular.copy(source);
 
-            this.getSource = function () {
+            this.getSource = function() {
                 return angular.copy(_source);
             }
-            this.setSource = function (newSource) {
+            this.setSource = function(newSource) {
                 _source = angular.copy(newSource);
             }
         }
 
-        $cGroupingModel.prototype.group = function (groupSettings, isSetSource) {
+        $cGroupingModel.prototype.group = function(groupSettings, isSetSource) {
             isSetSource = isSetSource || false;
 
             this.groupSettings = angular.copy(groupSettings);
 
-            var linqSource = $linq.Enumerable().From(this.sourcePaging.pagingList), resultList;
+            var linqSource = $linq.Enumerable().From(this.sourcePaging.pagingList),
+                resultList;
 
             if (angular.isUndefined(groupSettings)) {
                 resultList = [{ groupTag: null, source: linqSource.ToArray() }];
             } else {
                 resultList = linqSource
-                    .GroupBy(function (x) {
+                    .GroupBy(function(x) {
                         return eval('x.' + groupSettings.key);
                     })
-                    .OrderBy(function (x) {
+                    .OrderBy(function(x) {
                         return x.Key();
                     })
                     .ToArray()
-                    .map(function (item, index) {
-                        var groupTag = groupSettings.key.indexOf('.') > -1 ? linqSource.Where(function (x) {
+                    .map(function(item, index) {
+                        var groupTag = groupSettings.key.indexOf('.') > -1 ? linqSource.Where(function(x) {
                             return eval('x.' + groupSettings.name) === eval('item.source[0].' + groupSettings.name);
                         }).First() : '分组' + (index + 1);
 
@@ -66,23 +66,23 @@ module.exports = function (ngModule) {
             }
         };
         $cGroupingModel.prototype.paging = $cPagingModel.prototype.paging;
-        $cGroupingModel.prototype.update = function (pagingList, isSetSource) {
-            var expandList = this.pagingList.map(function (item) {
-                return item.isExpand;
-            }),
+        $cGroupingModel.prototype.update = function(pagingList, isSetSource) {
+            var expandList = this.pagingList.map(function(item) {
+                    return item.isExpand;
+                }),
                 that = this;
             this.sourcePaging.update(pagingList, isSetSource);
             this.group(this.groupSettings);
-            this.pagingList = this.pagingList.map(function (item, index) {
+            this.pagingList = this.pagingList.map(function(item, index) {
                 item.isExpand = expandList[index];
                 return item;
             });
-            this.currentList = this.currentList.map(function (item) {
+            this.currentList = this.currentList.map(function(item) {
                 item.isExpand = that.pagingList[item.$$index].isExpand;
                 return item;
             });
         };
-        $cGroupingModel.prototype.filter = function () {
+        $cGroupingModel.prototype.filter = function() {
             this.sourcePaging.searchParams = angular.copy(this.searchParams);
             this.sourcePaging.filter();
             this.group(this.groupSettings);

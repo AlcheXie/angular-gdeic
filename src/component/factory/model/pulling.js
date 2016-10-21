@@ -1,5 +1,4 @@
-module.exports = function (ngModule) {
-    'use strict';
+module.exports = function(ngModule) {
 
     ngModule.factory('$cPullingModel', $cPullingModelFactory);
 
@@ -12,7 +11,7 @@ module.exports = function (ngModule) {
             }
 
             var _source = angular.copy(source);
-            this.getSource = function () {
+            this.getSource = function() {
                 return angular.copy(_source);
             }
 
@@ -21,7 +20,7 @@ module.exports = function (ngModule) {
             this.itemsPerTime = itemsPerTime || 20;
         }
 
-        $cPullingModel.prototype.pulling = function () {
+        $cPullingModel.prototype.pulling = function() {
             if (this.hidingList.length === 0) {
                 return;
             }

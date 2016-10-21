@@ -1,5 +1,4 @@
-module.exports = function (ngModule) {
-    'use strict';
+module.exports = function(ngModule) {
 
     ngModule.directive('gdeicDatePicker', gdeicDatePickerDirective);
 
@@ -20,27 +19,27 @@ module.exports = function (ngModule) {
                 maxDate: '=',
                 dateDisabled: '&'
             },
-            templateUrl: function (tElement, tAttrs) {
+            templateUrl: function(tElement, tAttrs) {
                 return tAttrs.templateUrl || 'gdeic/controls/template/date-picker.html';
             },
             replace: true,
-            link: function (scope, iElement, iAttrs, controller, transcludeFn) {
+            link: function(scope, iElement, iAttrs, controller, transcludeFn) {
                 scope.ngModel = scope.ngModel || null;
 
-                scope.open = function () {
-                    scope.opened = true;
-                }
+                scope.open = () => scope.opened = true;
 
-                var input = iElement.children().eq(0), date, time = 0;
-                input.bind('keypress', function () {
-                    time++;
-                    if (time === 1) {
-                        date = scope.ngModel;
+                let $input = iElement.children().eq(0),
+                    _date,
+                    _time = 0;
+                $input.bind('keypress', () => {
+                    _time++;
+                    if (_time === 1) {
+                        _date = scope.ngModel;
                     }
-                }).bind('keyup', function () {
-                    if (angular.isDefined(date)) {
-                        time = 0;
-                        scope.ngModel = date;
+                }).bind('keyup', () => {
+                    if (angular.isDefined(_date)) {
+                        _time = 0;
+                        scope.ngModel = _date;
                         scope.$apply();
                     }
                 });

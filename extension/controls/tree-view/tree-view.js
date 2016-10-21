@@ -1,5 +1,4 @@
-module.exports = function (ngModule) {
-    'use strict';
+module.exports = function(ngModule) {
 
     ngModule.directive('gdeicTreeView', gdeicTreeViewDirective);
 
@@ -20,12 +19,12 @@ module.exports = function (ngModule) {
                 itemDisabled: '=',
                 extendMethods: '='
             },
-            template: function (tElement, tAttrs) {
+            template: function(tElement, tAttrs) {
                 var template = $templateCache.get(tAttrs.templateUrl) || '<div ng-include="\'' + tAttrs.templateUrl + '\'"></div>';
                 return template;
             },
-            link: function (scope, iElement, iAttrs, controller, transcludeFn) {
-                (function () {
+            link: function(scope, iElement, iAttrs, controller, transcludeFn) {
+                (function() {
                     if (scope.isMultiChecked) {
                         if (angular.isUndefined(scope.selectedModel)) {
                             scope.selectedItems = [];
@@ -49,7 +48,7 @@ module.exports = function (ngModule) {
                     }
 
                     if (scope.isExpandRoot) {
-                        var _unbindWatcher = scope.$watch('treeData', function (newValue) {
+                        let _unbindWatcher = scope.$watch('treeData', newValue => {
                             if (newValue) {
                                 scope.treeData.$$isExpand = true;
 
@@ -63,24 +62,18 @@ module.exports = function (ngModule) {
                     }
 
                     if (scope.extendMethods) {
-                        for (var p in scope.extendMethods) {
-                            if (scope.extendMethods.hasOwnProperty(p)) {
-                                scope[p] = scope.extendMethods[p];
-                            }
+                        for (let key of Object.keys(scope.extendMethods)) {
+                            scope[key] = scope.extendMethods[key];
                         }
                     }
-                } ());
+                }());
 
-                scope.toggleExpand = toggleExpand;
-
-                scope.doCallback = doCallback;
-
-                function toggleExpand(item, $event) {
+                scope.toggleExpand = (item, $event) => {
                     item.$$isExpand = !item.$$isExpand;
                     $event.stopPropagation();
-                }
+                };
 
-                function doCallback(callbackName, item, $event) {
+                scope.doCallback = (callbackName, item, $event) => {
                     if (!scope[callbackName]) { return; }
 
                     if (callbackName === 'itemSelect') {

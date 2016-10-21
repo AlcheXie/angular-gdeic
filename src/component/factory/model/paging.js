@@ -1,5 +1,4 @@
-module.exports = function (ngModule) {
-    'use strict';
+module.exports = function(ngModule) {
 
     ngModule.factory('$cPagingModel', $cPagingModelFactory);
 
@@ -9,11 +8,11 @@ module.exports = function (ngModule) {
         function $cPagingModel(source, itemsPerPage) {
             if (!angular.isArray(source)) { source = []; }
 
-            var _source = angular.copy(source.map(function (item, index) {
+            var _source = angular.copy(source.map(function(item, index) {
                 item.$$index = index;
                 return item;
             }));
-            this.getSource = function () {
+            this.getSource = function() {
                 return angular.copy(_source);
             }
 
@@ -26,14 +25,15 @@ module.exports = function (ngModule) {
 
             $cPagingModel.prototype.update.call(this, _source);
 
-            this.setSource = function (newSourece, searchParams) {
+            this.setSource = function(newSourece, searchParams) {
                 _source = angular.copy(newSourece);
                 this.filter(searchParams);
             }
         }
 
-        $cPagingModel.prototype.paging = function (currentPage) {
-            var maxPage = Math.ceil(this.pagingList.length / this.itemsPerPage), startPage;
+        $cPagingModel.prototype.paging = function(currentPage) {
+            var maxPage = Math.ceil(this.pagingList.length / this.itemsPerPage),
+                startPage;
             if (currentPage > maxPage) {
                 currentPage = maxPage;
             }
@@ -43,7 +43,7 @@ module.exports = function (ngModule) {
 
             return this;
         };
-        $cPagingModel.prototype.update = function (pagingList, isSetSource) {
+        $cPagingModel.prototype.update = function(pagingList, isSetSource) {
             isSetSource = isSetSource || false;
 
             this.pagingList = pagingList || this.getSource();
@@ -61,7 +61,7 @@ module.exports = function (ngModule) {
 
             return this;
         };
-        $cPagingModel.prototype.filter = function (searchParams) {
+        $cPagingModel.prototype.filter = function(searchParams) {
             searchParams = searchParams || this.searchParams;
             var condition = _getCondition(searchParams);
 
@@ -78,7 +78,8 @@ module.exports = function (ngModule) {
                 return false;
             }
 
-            var source = $linq.Enumerable().From(this.getSource()), strCondition = '';
+            var linqSource = $linq.Enumerable().From(this.getSource()),
+                strCondition = '';
             var p, i, max, or, keys, value, arrPs;
 
             for (p in condition.and) {
@@ -96,12 +97,13 @@ module.exports = function (ngModule) {
                     keys = or.keys = or.keys || '';
                     value = or.value = or.value || '';
                     arrPs = keys.replace(/\s/g, '').split(',');
-                    arrPs = arrPs.filter(function (str) {
+                    arrPs = arrPs.filter(function(str) {
                         return str !== '';
                     });
 
                     if (arrPs.length > 0) {
-                        var j = 0, max2 = arrPs.length;
+                        var j = 0,
+                            max2 = arrPs.length;
                         strCondition += '(';
                         for (; j < max2; j++) {
                             strCondition += 'x.' + arrPs[j] + '.indexOf("' + value + '") > -1 ||';
@@ -112,10 +114,10 @@ module.exports = function (ngModule) {
                 strCondition = strCondition.substr(0, strCondition.length - 2);
             }
 
-            source = source.Where(function (x) {
+            linqSource = linqSource.Where(function(x) {
                 return eval(strCondition);
             });
-            this.update(source.ToArray());
+            this.update(linqSource.ToArray());
 
             return this;
         };
@@ -123,7 +125,10 @@ module.exports = function (ngModule) {
         function _getCondition(searchParams) {
             searchParams = searchParams || {};
 
-            var arrAnd = [], arrOr = [], condition = {}, p, i, max;
+            var arrAnd = [],
+                arrOr = [],
+                condition = {},
+                p, i, max;
             for (p in searchParams) {
                 if (searchParams.hasOwnProperty(p)) {
                     if (p.indexOf('_') < 0) {

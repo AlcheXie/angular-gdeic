@@ -1,5 +1,4 @@
-module.exports = function (ngModule) {
-    'use strict';
+module.exports = function(ngModule) {
 
     ngModule.directive('preventPropagation', preventPropagationDirective);
 
@@ -8,8 +7,8 @@ module.exports = function (ngModule) {
     function preventPropagationDirective() {
         return {
             restrict: 'A',
-            link: function (scope, iElement, iAttrs) {
-                iElement.bind(iAttrs.preventPropagation, function (e) {
+            link: function(scope, iElement, iAttrs) {
+                iElement.bind(iAttrs.preventPropagation, function(e) {
                     e.stopPropagation();
                 });
             }

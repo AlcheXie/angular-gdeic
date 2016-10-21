@@ -1,5 +1,4 @@
-module.exports = function (ngModule) {
-    'use strict';
+module.exports = function(ngModule) {
 
     ngModule.controller('gdeicConfirmController', gdeicConfirmController);
 
@@ -7,18 +6,10 @@ module.exports = function (ngModule) {
 
     function gdeicConfirmController($scope, $uibModalInstance, _title, _message) {
 
-        $scope.title = _title;
-        $scope.message = _message;
+        this.title = _title;
+        this.message = _message;
 
-        $scope.ok = ok;
-        $scope.cancel = cancel;
-
-        function ok() {
-            $uibModalInstance.close('ok');
-        }
-
-        function cancel() {
-            $uibModalInstance.dismiss('cancel');
-        }
+        this.ok = () => { $uibModalInstance.close('ok'); };
+        this.cancel = () => { $uibModalInstance.dismiss('cancel'); }
     }
 };

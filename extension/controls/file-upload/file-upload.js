@@ -1,5 +1,4 @@
-module.exports = function (ngModule) {
-    'use strict';
+module.exports = function(ngModule) {
 
     ngModule.directive('gdeicFileUpload', gdeicFileUploadDirective);
 
@@ -20,12 +19,12 @@ module.exports = function (ngModule) {
                 ngRequired: '=',
                 hideFileName: '='
             },
-            templateUrl: function (tElement, tAttrs) {
+            templateUrl: function(tElement, tAttrs) {
                 return tAttrs.templateUrl || 'gdeic/controls/template/file-upload.html';
             },
             replace: true,
-            link: function (scope, iElement, iAttrs, controller, transcludeFn) {
-                $gdeic.execAsync(function () {
+            link: function(scope, iElement, iAttrs, controller, transcludeFn) {
+                $gdeic.execAsync(function() {
                     var inputs = iElement.find('input'),
                         inputFile = inputs.eq(0),
                         inputText = inputs.eq(1),
@@ -42,7 +41,7 @@ module.exports = function (ngModule) {
 
                     inputText.bind('click', openFile);
                     button.bind('click', openFile);
-                    inputFile.bind('change', function () {
+                    inputFile.bind('change', function() {
                         inputText.val(inputFile.val());
 
                         var base64data, ext;
@@ -51,8 +50,9 @@ module.exports = function (ngModule) {
                             scope.ngModel.clearProperties();
                             scope.$apply();
                         } else {
-                            var reader = new FileReader(), fileObj = fileUpload.files[0];
-                            reader.onload = function (e) {
+                            var reader = new FileReader(),
+                                fileObj = fileUpload.files[0];
+                            reader.onload = function(e) {
                                 var data = e.target.result;
                                 base64data = data;
                                 ext = fileObj.name.match(/\.[a-zA-Z0-9]+$/);
@@ -63,7 +63,7 @@ module.exports = function (ngModule) {
                                     size: fileObj.size,
                                     type: fileObj.type,
                                     ext: ext ? ext[0] : 'unknown',
-                                    getBase64: function () {
+                                    getBase64: function() {
                                         if (angular.isString(this.data)) {
                                             return this.data.substr(this.data.indexOf('base64,') + 'base64,'.length);
                                         } else {
@@ -82,7 +82,7 @@ module.exports = function (ngModule) {
                         fileUpload.click();
                     }
 
-                    scope.$watch('ngModel', function (newValue, oldValue) {
+                    scope.$watch('ngModel', function(newValue, oldValue) {
                         if (angular.toJson(newValue) === '{}' || angular.isUndefined(newValue)) { return; }
 
                         if (angular.isDefined(newValue) && oldValue !== null && newValue.name === null) {
