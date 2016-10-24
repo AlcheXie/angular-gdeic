@@ -1,10 +1,13 @@
-<div>
-    <input id="{{fileId}}" class="form-control" type="file" style="display: none" accept="{{accept}}" />
-    <div class="input-group">
-        <input type="text" class="form-control" style="background: #ffffff" readonly ng-required="ngRequired" placeholder="{{placeholder}}"
-            ng-if="!hideFileName" />
-        <span class="input-group-btn">
-            <button class="btn btn-default" type="button">浏览</button>
+<div class="form">
+	<input id="{{vm.fileInputId}}" class="form-control" type="file" style="display: none" accept="{{accept}}" />
+	<div class="input-group">
+		<input id="{{vm.textInputId}}" type="text" class="form-control" style="background: #ffffff" readonly placeholder="请选择文件"
+			ng-model="vm.fileName" />
+		<span class="input-group-btn">
+            <button id="{{vm.btnInputId}}" class="btn btn-default" type="button">浏览</button>
         </span>
-    </div>
+		<span class="input-group-btn">
+		    <button class="btn btn-primary" type="button" ng-click="upload()">上传</button>
+        </span>
+	</div>
 </div>

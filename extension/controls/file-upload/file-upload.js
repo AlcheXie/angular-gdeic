@@ -2,9 +2,9 @@ module.exports = function(ngModule) {
 
     ngModule.directive('gdeicFileUpload', gdeicFileUploadDirective);
 
-    gdeicFileUploadDirective.$inject = ['$templateCache', '$gdeic'];
+    gdeicFileUploadDirective.$inject = ['$rootScope', '$templateCache', '$log', '$gdeic'];
 
-    function gdeicFileUploadDirective($templateCache, $gdeic) {
+    function gdeicFileUploadDirective($rootScope, $templateCache, $log, $gdeic) {
 
         $templateCache.put('gdeic/controls/template/file-upload.html', require('./template.html'));
 
@@ -12,90 +12,90 @@ module.exports = function(ngModule) {
             restrict: "EA",
             scope: {
                 templateUrl: '@',
-                fileId: '@',
                 accept: '@',
-                placeholder: '@',
-                ngModel: '=',
-                ngRequired: '=',
-                hideFileName: '='
+                multiple: '=',
+                target: '=',
+                success: '&',
+                error: '&',
+                progress: '&'
             },
             templateUrl: function(tElement, tAttrs) {
                 return tAttrs.templateUrl || 'gdeic/controls/template/file-upload.html';
             },
-            replace: true,
+            controller: function() {
+                let _timestamp = (new Date()).getTime(),
+                    _n = 0;
+                this.fileInputId = `gdeic_file_file_${_timestamp}`;
+                this.textInputId = `gdeic_file_text_${_timestamp}`;
+                this.btnInputId = `gdeic_file_btn_${_timestamp}`;
+                this.fileName = '';
+            },
+            controllerAs: 'vm',
             link: function(scope, iElement, iAttrs, controller, transcludeFn) {
-                $gdeic.execAsync(function() {
-                    var inputs = iElement.find('input'),
-                        inputFile = inputs.eq(0),
-                        inputText = inputs.eq(1),
-                        button = iElement.find('button');
+                $gdeic.execAsync(() => {
+                    let $fileInput = angular.element(document.getElementById(controller.fileInputId)),
+                        $textInput = angular.element(document.getElementById(controller.textInputId)),
+                        $btnBrowse = angular.element(document.getElementById(controller.btnInputId));
 
-                    var fileId, fileUpload, extReg;
-                    if (angular.isUndefined(scope.fileId)) {
-                        fileId = 'file' + (new Date()).getTime();
-                        inputFile.attr('id', fileId);
+                    let openFile = () => { $fileInput[0].click(); }
+                    if (scope.multiple) {
+                        $fileInput.attr('multiple', true);
                     } else {
-                        fileId = scope.fileId;
+                        $textInput.bind('click', openFile);
                     }
-                    fileUpload = document.getElementById(fileId);
-
-                    inputText.bind('click', openFile);
-                    button.bind('click', openFile);
-                    inputFile.bind('change', function() {
-                        inputText.val(inputFile.val());
-
-                        var base64data, ext;
-
-                        if (inputFile.val() === '') {
-                            scope.ngModel.clearProperties();
-                            scope.$apply();
-                        } else {
-                            var reader = new FileReader(),
-                                fileObj = fileUpload.files[0];
-                            reader.onload = function(e) {
-                                var data = e.target.result;
-                                base64data = data;
-                                ext = fileObj.name.match(/\.[a-zA-Z0-9]+$/);
-
-                                scope.ngModel = {
-                                    name: fileObj.name,
-                                    data: base64data,
-                                    size: fileObj.size,
-                                    type: fileObj.type,
-                                    ext: ext ? ext[0] : 'unknown',
-                                    getBase64: function() {
-                                        if (angular.isString(this.data)) {
-                                            return this.data.substr(this.data.indexOf('base64,') + 'base64,'.length);
-                                        } else {
-                                            return '';
-                                        }
-                                    }
-                                };
-                                extReg = eval('/\\' + ext + '$/');
-                                scope.$apply();
-                            }
-                            reader.readAsDataURL(fileObj);
-                        }
+                    $btnBrowse.bind('click', openFile);
+                    $fileInput.bind('change', () => {
+                        $textInput.removeClass('ng-invalid');
+                        controller.fileName = [...$fileInput[0].files].map(x => x.name).join('; ');
+                        scope.$apply();
                     });
 
-                    function openFile() {
-                        fileUpload.click();
-                    }
-
-                    scope.$watch('ngModel', function(newValue, oldValue) {
-                        if (angular.toJson(newValue) === '{}' || angular.isUndefined(newValue)) { return; }
-
-                        if (angular.isDefined(newValue) && oldValue !== null && newValue.name === null) {
-                            inputFile.val('');
-                            inputText.val('');
+                    scope.upload = () => {
+                        $textInput.removeClass('ng-invalid').removeClass('ng-untouched');
+                        if (controller.fileName === '') {
+                            $textInput.addClass('ng-invalid');
+                            return;
                         }
 
-                        if (oldValue !== null && newValue !== null && !newValue.isClear()) {
-                            if (!extReg.test(newValue.name)) {
-                                scope.ngModel = oldValue;
+                        let fd = new FormData();
+                        for (let i = 0, max = $fileInput[0].files.length; i < max; i++) {
+                            fd.append(`files_${i}`, $fileInput[0].files[i]);
+                        }
+
+                        let xhr = new XMLHttpRequest();
+                        xhr.upload.addEventListener('progress', event => {
+                            scope.progress({ $event: event });
+                        }, false);
+                        xhr.addEventListener('error', (event) => {
+                            $log.error(event);
+                            scope.error();
+                        }, false);
+                        xhr.open('POST', scope.target);
+                        xhr.onreadystatechange = () => {
+                            if (xhr.readyState === 4) {
+                                if (xhr.status === 200) {
+                                    $fileInput.val('');
+                                    controller.fileName = '';
+
+                                    let data = angular.fromJson(xhr.responseText);
+                                    if (data.StatusCode < 0) {
+                                        $log.warn(data);
+                                        $rootScope.$broadcast('httpErrMsg', data);
+                                    } else {
+                                        scope.success();
+                                    }
+                                    $rootScope.$apply();
+                                } else if (xhr.status === 404) {
+                                    $rootScope.$broadcast('httpErrMsg', {
+                                        StatusCode: '-',
+                                        ErrorMsg: '文件大小超过了限制'
+                                    });
+                                    $rootScope.$apply();
+                                }
                             }
                         }
-                    }, true);
+                        xhr.send(fd);
+                    }
                 });
             }
         };
