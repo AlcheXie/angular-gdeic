@@ -9,7 +9,8 @@ module.exports = function (ngModule) {
     require('./component/directive/element/paging/paging')(ngModule);
     require('./component/directive/element/array-text/array-text')(ngModule);
 
-    require('./component/directive/attribute/auto-resize')(ngModule)
+    require('./component/directive/attribute/auto-resize/auto-resize-padding-x')(ngModule);
+    require('./component/directive/attribute/auto-resize/auto-resize-padding-y')(ngModule);
     require('./component/directive/attribute/gradual-show/gradual-show')(ngModule);
     require('./component/directive/attribute/prevent-edit')(ngModule);
     require('./component/directive/attribute/prevent-propagation')(ngModule);
