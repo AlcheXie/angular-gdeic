@@ -8,9 +8,11 @@ module.exports = function(ngModule) {
         return {
             restrict: 'A',
             link: function(scope, iElement, iAttrs) {
-                iElement.bind(iAttrs.preventPropagation, function(e) {
-                    e.stopPropagation();
-                });
+                let _eventTypes = iAttrs.preventPropagation.split(',');
+                for (let type of _eventTypes) {
+                    type = type.trim();
+                    iElement.bind(type, (e) => { e.stopPropagation(); });
+                }
             }
         };
     }
