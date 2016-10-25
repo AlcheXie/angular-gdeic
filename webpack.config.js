@@ -4,7 +4,8 @@ module.exports = {
     entry: {
         'angular-gdeic': __dirname + '/index.js',
         '/extension/angular-gdeic-sys': __dirname + '/extension/index-sys.js',
-        '/extension/angular-gdeic-controls': __dirname + '/extension/index-controls.js'
+        '/extension/angular-gdeic-controls': __dirname + '/extension/index-controls.js',
+        'angular-gdeic-custom': __dirname + '/index.custom.js'
     },
     output: {
         path: __dirname + '/dist',
