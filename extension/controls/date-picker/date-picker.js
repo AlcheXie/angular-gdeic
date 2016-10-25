@@ -23,11 +23,14 @@ module.exports = function(ngModule) {
                 return tAttrs.templateUrl || 'gdeic/controls/template/date-picker.html';
             },
             replace: true,
+            controller: ['$scope',
+                function($scope) {
+                    $scope.ngModel = $scope.ngModel || null;
+                    this.open = () => this.opened = true;
+                }
+            ],
+            controllerAs: 'vm',
             link: function(scope, iElement, iAttrs, controller, transcludeFn) {
-                scope.ngModel = scope.ngModel || null;
-
-                scope.open = () => scope.opened = true;
-
                 let $input = iElement.children().eq(0),
                     _date,
                     _time = 0;

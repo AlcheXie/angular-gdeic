@@ -2,9 +2,9 @@ module.exports = function(ngModule) {
 
     ngModule.directive('gdeicCascade', gdeicCascadeDirective);
 
-    gdeicCascadeDirective.$inject = ['$templateCache', '$linq', '$gdeic'];
+    gdeicCascadeDirective.$inject = ['$templateCache'];
 
-    function gdeicCascadeDirective($templateCache, $linq, $gdeic) {
+    function gdeicCascadeDirective($templateCache) {
 
         $templateCache.put('gdeic/controls/template/cascade.html', require('./template.html'));
 
@@ -12,11 +12,8 @@ module.exports = function(ngModule) {
             restrict: 'EA',
             scope: {
                 templateUrl: '@',
-                inputClass: '@',
                 ngRequired: '=',
                 ngDisabled: '=',
-                showWhenNoOption: '=',
-                modelIsObject: '=',
                 keyProperty: '@',
                 valueProperty: '@',
                 initRefModel: '=',
@@ -42,95 +39,89 @@ module.exports = function(ngModule) {
                 return template;
             },
             replace: true,
-            link: function(scope, iElement, iAttrs, controller, transcludeFn) {
-                let _isAsync = false;
-                if (angular.isDefined(scope.queryParams)) {
-                    _isAsync = false;
-                } else if (angular.isDefined(scope.queryParamsAsync)) {
-                    _isAsync = true;
-                } else {
-                    throw new Error('Must have a query method');
-                }
-
-                let _isInit = false,
-                    _initRefModel,
-                    _watchModel = () => {
-                        if (angular.isDefined(iAttrs.referenceModel) && iAttrs.referenceModel !== '') {
-                            let _init = () => {
-                                if (!_isInit && _initRefModel) {
-                                    _isInit = true;
-                                    let _linqResult = $linq.Enumerable().From(scope.itemList).Where(x => eval(scope.initCondition.replace(/\$\$item/g, 'x').replace(/\$\$initModel/g, '_initRefModel'))).ToArray();
-
-                                    if (_linqResult.length > 0) {
-                                        scope.targetModel = _linqResult[0];
-                                        scope.selectedModel = scope.targetModel[scope.keyProperty].toString();
-                                    }
-                                }
-                            }
-
-                            scope.$watch('referenceModel', (newValue, oldeValue) => {
-                                if (angular.isUndefined(newValue) ||
-                                    (angular.isDefined(newValue) && (newValue === null || newValue === ''))) {
-                                    scope.itemList = [];
-                                    scope.selectedModel = '';
-                                    scope.targetModel = '';
-                                    return;
-                                }
-    
-                                if (!_isAsync) {
-                                    let args = [],
-                                        arrProperties = scope.queryParams.trimAll().split(','),
-                                        i = 0,
-                                        max = arrProperties.length;
-                                    for (; i < max; i++) {
-                                        args.push(newValue[arrProperties[i]]);
-                                    }
-    
-                                    scope.itemList = scope.queryList.apply(args);
-                                    _init();
-                                } else {
-                                    let obj = angular.fromJson(scope.queryParamsAsync.replace(/'/g, '"'));
-                                    for (let p of Object.keys(obj)) {
-                                        obj[p] = newValue[obj[p].substr(1)];
-                                    }
-                                    $gdeic.httpPromise(scope.queryListAsync({
-                                        $params: obj
-                                    })).then(function(data) {
-                                        scope.itemList = data;
-                                        scope.selectedModel = '';
-                                        scope.targetModel = '';
-    
-                                        _init();
-                                    });
-                                }
-                            }, true);
-                        }
-                    }
-
-                if (angular.isDefined(iAttrs.initRefModel)) {
-                    let _unbindWatcher = scope.$watch('initRefModel', (newValue, oldValue) => {
-                        if (angular.isDefined(newValue) && newValue !== null) {
-                            _initRefModel = angular.copy(newValue);
-                            _unbindWatcher();
-                            _watchModel();
-                        } else if (angular.isUndefined(oldValue) && angular.isDefined(newValue)) {
-                            _unbindWatcher();
-                            _watchModel();
-                        }
-                    }, true);
-                } else {
-                    _watchModel();
-                    _isInit = true;
-                }
-
-                scope.setValue = () => {
-                    if (scope.modelIsObject) {
-                        scope.targetModel = angular.copy(scope.itemList.filter(x => x[scope.keyProperty].toString() === scope.selectedModel.toString())[0]);
+            controller: ['$scope', '$attrs', '$linq', '$gdeic',
+                function($scope, $attrs, $linq, $gdeic) {
+                    let _isAsync = false;
+                    if (angular.isDefined($attrs.queryList)) {
+                        _isAsync = false;
+                    } else if (angular.isDefined($attrs.queryListAsync)) {
+                        _isAsync = true;
                     } else {
-                        scope.targetModel = scope.selectedModel;
+                        throw new Error('Must have a query method');
+                    }
+
+                    let _isInit = false,
+                        _initRefModel,
+                        _watchModel = () => {
+                            if (angular.isDefined($attrs.referenceModel) && $attrs.referenceModel !== '') {
+                                let _init = () => {
+                                    if (!_isInit && _initRefModel) {
+                                        _isInit = true;
+                                        let _linqResult = $linq.Enumerable().From(this.itemList).Where(x => eval($scope.initCondition.replace(/\$\$item/g, 'x').replace(/\$\$initModel/g, '_initRefModel'))).ToArray();
+
+                                        if (_linqResult.length > 0) {
+                                            $scope.targetModel = _linqResult[0];
+                                            this.selectedModel = $scope.targetModel[$scope.keyProperty].toString();
+                                        }
+                                    }
+                                }
+
+                                $scope.$watch('referenceModel', (newVal, oldVal) => {
+                                    if (angular.isUndefined(newVal) ||
+                                        (angular.isDefined(newVal) && (newVal === null || newVal === ''))) {
+                                        this.itemList = [];
+                                        this.selectedModel = '';
+                                        $scope.targetModel = '';
+                                        return;
+                                    }
+
+                                    if (!_isAsync) {
+                                        this.itemList = $scope.queryList({
+                                            $param: newVal[$scope.queryParams.trimAll()]
+                                        });
+                                        this.selectedModel = '';
+                                        $scope.targetModel = '';
+                                        _init();
+                                    } else {
+                                        let _param = angular.fromJson($scope.queryParamsAsync.replace(/'/g, '"'));
+                                        for (let key of Object.keys(_param)) {
+                                            _param[key] = newVal[_param[key].substr(1)];
+                                        }
+                                        $gdeic.httpPromise($scope.queryListAsync({
+                                            $param: _param
+                                        })).then(data => {
+                                            this.itemList = data;
+                                            this.selectedModel = '';
+                                            $scope.targetModel = '';
+                                            _init();
+                                        });
+                                    }
+                                }, true);
+                            }
+                        }
+
+                    if (angular.isDefined($attrs.initRefModel)) {
+                        let _unbindWatcher = $scope.$watch('initRefModel', (newVal, oldVal) => {
+                            if (angular.isDefined(newVal) && newVal !== null) {
+                                _initRefModel = angular.copy(newVal);
+                                _unbindWatcher();
+                                _watchModel();
+                            } else if (angular.isUndefined(oldVal) && angular.isDefined(newVal)) {
+                                _unbindWatcher();
+                                _watchModel();
+                            }
+                        }, true);
+                    } else {
+                        _watchModel();
+                        _isInit = true;
+                    }
+
+                    this.setValue = () => {
+                        $scope.targetModel = angular.copy(this.itemList.filter(x => x[$scope.keyProperty].toString() === this.selectedModel.toString())[0]);
                     }
                 }
-            }
+            ],
+            controllerAs: 'vm'
         };
     }
 };

@@ -23,27 +23,28 @@ module.exports = function(ngModule) {
                 return tAttrs.templateUrl || 'gdeic/controls/template/range.html';
             },
             replace: true,
-            controller: function() {
-                this.change = angular.noop;
-            },
-            controllerAs: 'vm',
-            link: function(scope, iElement, iAttrs, controller, transcludeFn) {
-                if (scope.isModifyMinValue) {
-                    let _minValue;
-                    controller.change = () => {
-                        if (angular.isUndefined(_minValue)) {
-                            _minValue = scope.minValue;
-                        }
+            controller: ['$scope',
+                function($scope) {
+                    this.change = angular.noop;
 
-                        if (parseFloat(scope.ngModel) - _minValue < 1) {
-                            scope.minValue = _minValue;
-                        } else {
-                            scope.minValue = Math.ceil(scope.minValue);
+                    if ($scope.isModifyMinValue) {
+                        let _minValue;
+                        this.change = () => {
+                            if (angular.isUndefined(_minValue)) {
+                                _minValue = $scope.minValue;
+                            }
+
+                            if (parseFloat($scope.ngModel) - _minValue < 1) {
+                                $scope.minValue = _minValue;
+                            } else {
+                                $scope.minValue = Math.ceil($scope.minValue);
+                            }
                         }
                     }
                 }
-            }
-        }
+            ],
+            controllerAs: 'vm'
+        };
     }
 
     require('./range.scss');

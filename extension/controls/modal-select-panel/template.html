@@ -6,7 +6,7 @@
         </div>
         <div class="gdeic-modal-panel-filter" ng-if="filterProperty">
             <div class="input-group">
-                <input type="text" class="form-control" ng-model="search.[[filter]]">
+                <input type="text" class="form-control" ng-model="vm.search.[[filter]]">
                 <span class="input-group-addon"><span class="glyphicon glyphicon-filter"></span></span>
             </div>
         </div>
@@ -15,10 +15,10 @@
                 <span class="fa fa-spinner anime-spinner"></span>&nbsp;正在加载..
             </div>
             <p ng-show="sourceList.length === 0">无可选项</p>
-            <div class="radio" ng-repeat="item in sourceList | filter:search"
+            <div class="radio" ng-repeat="item in sourceList | filter:vm.search"
                 ng-show="sourceList">
-                <label ng-class="{'highlight': item.[[key]] === selectedItem.[[key]]}">
-                    <input type="radio" name="items" ng-checked="isCheck(item)" ng-click="selectItem(item)" />&nbsp;&nbsp;{{[[value]]}}
+                <label ng-class="{'highlight': item.[[key]] === vm.selectedItem.[[key]]}">
+                    <input type="radio" name="items" ng-checked="vm.isCheck(item)" ng-click="vm.selectItem(item)" />&nbsp;&nbsp;{{[[value]]}}
                 </label>
             </div>
         </div>
@@ -27,10 +27,10 @@
                 <button type="button" class="btn btn-default btn-xs" ng-click="isShow = !isShow">
                     <span class="glyphicon glyphicon-remove"></span> 取消
                 </button>&nbsp;
-                <button type="button" class="btn btn-warning btn-xs" style="margin-left: 5px" ng-click="clear()">
+                <button type="button" class="btn btn-warning btn-xs" style="margin-left: 5px" ng-click="vm.clear()">
                     <span class="glyphicon glyphicon-trash"></span> 清空
                 </button>&nbsp;
-                <button type="button" class="btn btn-primary btn-xs" style="margin-left: 5px" ng-click="ok()">
+                <button type="button" class="btn btn-primary btn-xs" style="margin-left: 5px" ng-click="vm.ok()">
                     <span class="glyphicon glyphicon-ok"></span> 确定
                 </button>
             </div>

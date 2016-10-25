@@ -41,28 +41,66 @@ module.exports = function(ngModule) {
                 return template;
             },
             replace: true,
-            link: function(scope, iElement, iAttrs, controller, transcludeFn) {
-                var _originalValue;
+            controller: ['$scope', '$attrs',
+                function($scope, $attrs) {
+                    this.originalValue;
+                    this.search = {};
+                    this.selectItem;
 
-                (function() {
-                    scope.search = {};
-                    if (scope.multiSelect === true) {
-                        _originalValue = [];
+                    this.isCheck = item => {
+                        if (angular.isUndefined(this.selectedItem) ||
+                            angular.isUndefined(item[$attrs.keyProperty])) {
+                            return false;
+                        }
+
+                        if ($scope.multiSelect === true) {
+                            return this.selectedItem.some(x => x[$scope.keyProperty] === item[$scope.keyProperty]);
+                        } else {
+                            return this.selectedItem[$attrs.keyProperty] === item[$attrs.keyProperty];
+                        }
+                    }
+
+                    this.selectItem = item => {
+                        if ($scope.multiSelect === true) {
+                            $gdeic.toggleItem(this.selectedItem, item);
+                        } else {
+                            this.selectedItem = item;
+                        }
+                    }
+
+                    this.clear = () => this.selectedItem = angular.copy(this.originalValue);
+
+                    this.ok = () => {
+                        if (angular.toJson(this.selectedItem) === angular.toJson(this.originalValue)) {
+                            if ($scope.multiSelect === true) {
+                                $scope.ngModel = [];
+                            } else {
+                                $scope.ngModel = null;
+                            }
+                        } else {
+                            $scope.ngModel = angular.copy(this.selectedItem);
+                        }
+                        $scope.isShow = false;
+                    }
+
+                    if ($scope.multiSelect === true) {
+                        this.originalValue = [];
                     } else {
-                        _originalValue = {};
-                        Object.defineProperty(_originalValue, iAttrs.keyProperty, {
+                        this.originalValue = {};
+                        Object.defineProperty(this.originalValue, $attrs.keyProperty, {
                             value: ''
                         });
                     }
-                }());
-
-
+                }
+            ],
+            controllerAs: 'vm',
+            link: function(scope, iElement, iAttrs, controller, transcludeFn) {
                 scope.$watch('isShow', newVal => {
                     if (newVal) {
                         if (scope.multiSelect === true) {
-                            scope.selectedItem = angular.isArray(scope.ngModel) ? angular.copy(scope.ngModel) : _originalValue;
+                            controller.selectedItem = angular.isArray(scope.ngModel) ? angular.copy(scope.ngModel) : angular.copy(controller.originalValue);
                         } else {
-                            scope.selectedItem = angular.isObject(scope.ngModel) && !angular.isArray(scope.ngModel) ? angular.copy(scope.ngModel) : _originalValue;
+                            controller.selectedItem = angular.isObject(scope.ngModel) && !angular.isArray(scope.ngModel) ? angular.copy(scope.ngModel) : angular.copy(controller.originalValue);
                         }
 
                         if (angular.isUndefined(scope.templateUrl)) {
@@ -83,42 +121,6 @@ module.exports = function(ngModule) {
                         }
                     }
                 });
-
-                scope.isCheck = item => {
-                    if (angular.isUndefined(scope.selectedItem) ||
-                        angular.isUndefined(item[iAttrs.keyProperty])) {
-                        return false;
-                    }
-
-                    if (scope.multiSelect === true) {
-                        return scope.selectedItem.some(x => x[scope.keyProperty] === item[scope.keyProperty]);
-                    } else {
-                        return scope.selectedItem[iAttrs.keyProperty] === item[iAttrs.keyProperty];
-                    }
-                }
-
-                scope.selectItem = item => {
-                    if (scope.multiSelect === true) {
-                        $gdeic.toggleItem(scope.selectedItem, item);
-                    } else {
-                        scope.selectedItem = item;
-                    }
-                }
-
-                scope.clear = () => scope.selectedItem = angular.copy(_originalValue);
-
-                scope.ok = () => {
-                    if (scope.selectedItem === _originalValue) {
-                        if (scope.multiSelect === true) {
-                            scope.ngModel = [];
-                        } else {
-                            scope.ngModel = null;
-                        }
-                    } else {
-                        scope.ngModel = angular.copy(scope.selectedItem);
-                    }
-                    scope.isShow = false;
-                }
             }
         };
     }

@@ -23,16 +23,12 @@ module.exports = function(ngModule) {
                 return tAttrs.templateUrl || 'gdeic/controls/template/modal-panel.html';
             },
             replace: true,
-            link: function(scope, iElement, iAttrs, controller, transcludeFn) {
-                scope.$$isClear = angular.isDefined(iAttrs.clear);
-
-                scope.ok = function() {
-                    scope.confirm();
-                    scope.isShow = false;
+            controller: ['$scope', '$attrs',
+                function($scope, $attrs) {
+                    this.$$hasClear = angular.isDefined($attrs.clear);
                 }
-            }
+            ],
+            controllerAs: 'vm'
         };
     }
-
-    require('./modal-panel.scss');
 };

@@ -17,29 +17,26 @@ module.exports = function(ngModule) {
                 return tAttrs.templateUrl || 'gdeic/template/error.html';
             },
             replace: true,
-            link: function(scope, iElement, iAttrs, controller, transcludeFn) {
-                scope.isShowError = false;
-                scope.error = null;
+            controller: ['$scope', '$window', function($scope, $window) {
+                this.isShowError = false;
+                this.error = null;
 
-                scope.clearMsg = clearMsg;
-
-                scope.$on('httpErrMsg', function(event, data) {
-                    if (scope.isShowError) {
-                        return;
-                    }
-                    scope.isShowError = true;
-                    scope.error = data;
-                });
-
-                function clearMsg() {
-                    if (scope.error.StatusCode === -1) {
+                this.clearMsg = () => {
+                    if (this.error.StatusCode === -1) {
                         $window.location = 'api/account';
-                    } else if (scope.error.StatusCode === 500) {
+                    } else if (this.error.StatusCode === 500) {
                         $window.location.reload();
                     }
-                    scope.isShowError = false;
+                    this.isShowError = false;
                 }
-            }
+
+                $scope.$on('httpErrMsg', (event, data) => {
+                    if (this.isShowError) { return; }
+                    this.isShowError = true;
+                    this.error = data;
+                });
+            }],
+            controllerAs: 'vm'
         };
     }
 

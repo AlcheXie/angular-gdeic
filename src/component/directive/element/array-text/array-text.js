@@ -13,16 +13,22 @@ module.exports = function(ngModule) {
                 property: '@',
                 splitOf: '@'
             },
-            template: '<span>{{showText}}</span>',
+            template: '<span>{{vm.showText}}</span>',
             replace: true,
-            link: function(scope, iElement, iAttrs, controller, transcludeFn) {
-                let _aProperties = scope.property.split('.'),
-                    _sProperties = '';
-                for (let p of _aProperties) {
-                    _sProperties += `['${p}']`;
+            controller: ['$scope',
+                function($scope) {
+                    $scope.splitOf = $scope.splitOf || ',';
+
+                    let _aProperties = $scope.property.split('.'),
+                        _sProperties = '';
+                    for (let p of _aProperties) {
+                        _sProperties += `['${p}']`;
+                    }
+                    this.showText = $scope.source.map(x => eval(`x${_sProperties}`)).join($scope.splitOf);
+
                 }
-                scope.showText = scope.source.map(x => eval(`x${_sProperties}`)).join(scope.splitOf);
-            }
+            ],
+            controllerAs: 'vm'
         };
     }
 };

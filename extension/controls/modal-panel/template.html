@@ -1,4 +1,4 @@
-<div gradual-show="isShow" style="position:absolute; width:100%; height:100%; top:0">
+﻿<div gradual-show="isShow" style="position:absolute; width:100%; height:100%; top:0">
     <div class="gdeic-modal-panel" gradual-show="isShow">
         <div class="gdeic-modal-panel-header">
             <b>{{headerTitle}}</b>
@@ -12,10 +12,10 @@
                 <button type="button" class="btn btn-default btn-xs" ng-click="cancel(); isShow = !isShow">
                     <span class="glyphicon glyphicon-remove"></span> 取消
                 </button>
-                <button type="button" class="btn btn-warning btn-xs" style="margin-left: 5px" ng-if="$$isClear" ng-click="clear()">'
+                <button type="button" class="btn btn-warning btn-xs" style="margin-left: 5px" ng-if="vm.$$hasClear" ng-click="clear()">
                     <span class="glyphicon glyphicon-trash"></span> 清空
                 </button>
-                <button type="button" class="btn btn-primary btn-xs" style="margin-left: 5px" ng-click="ok()">
+                <button type="button" class="btn btn-primary btn-xs" style="margin-left: 5px" ng-click="confirm(); isShow = !isShow">
                 <span class="glyphicon glyphicon-ok"></span> 确定
                 </button>
             </div>
