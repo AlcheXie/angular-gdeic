@@ -12,8 +12,8 @@ module.exports = function(ngModule) {
             document.title = _appTitle;
         }
 
-        this.$get = ['$rootScope', '$q', '$location', '$timeout', '$uibModal',
-            function($rootScope, $q, $location, $timeout, $uibModal) {
+        this.$get = ['$rootScope', '$q', '$location', '$timeout',
+            function($rootScope, $q, $location, $timeout) {
                 let $gdeic = {
                     version: '1.1.0',
                     appTitle: _appTitle
@@ -48,10 +48,17 @@ module.exports = function(ngModule) {
                         }
                     }
                 }
-                $gdeic.httpPromise = action => {
+                $gdeic.httpPromise = promise => {
                     let deferred = $q.defer();
-                    action.$promise
-                        .then((data) => {
+
+                    if (angular.isDefined(promise.$promise)) {
+                        promise = promise.$promise;
+                    } else {
+                        promise = promise.then(response => response.data);
+                    }
+
+                    promise
+                        .then(data => {
                             $gdeic.httpDone(data, deferred.resolve, deferred.reject);
                         }, deferred.reject);
                     return deferred.promise;
@@ -105,37 +112,6 @@ module.exports = function(ngModule) {
                         $location.replace();
                     }
                 }
-
-                $gdeic.showConfirmDialog = ({
-                    title = '确认操作',
-                    message = '当前操作不可撤销， 确认要继续吗？',
-                    option = {
-                        size: 'sm'
-                    }
-                }) => {
-                    if (!/^(xs|sm|md|lg)$/.test(option.size)) { option.size = 'sm'; }
-
-                    return $uibModal.open(Object.assign({
-                        template: require('../controller/confirm/template.html'),
-                        controller: 'gdeicConfirmController',
-                        controllerAs: 'vm',
-                        resolve: {
-                            title: function() { return title; },
-                            message: function() { return message; }
-                        },
-                        backdrop: 'static'
-                    }, option));
-                }
-                $gdeic.showEditDialog = (config = {}, option = {
-                    size: 'md'
-                }) => {
-                    option = Object.assign({
-                        controllerAs: 'vm',
-                        backdrop: 'static'
-                    }, option);
-
-                    return $uibModal.open(Object.assign(config, option))
-                };
 
                 $gdeic.makeKeyAccept = (callback = angular.noop, keyCode = [13]) => function keyFunc($event) {
                     if (keyCode.indexOf($event.keyCode) > -1) {

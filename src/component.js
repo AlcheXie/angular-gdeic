@@ -1,7 +1,5 @@
 module.exports = function (ngModule) {
 
-    require('./component/controller/confirm/confirm')(ngModule);
-
     require('./component/directive/element/ie-warning/ie-warning')(ngModule);
     require('./component/directive/element/error/error')(ngModule);
     require('./component/directive/element/hold-on/hold-on')(ngModule);
