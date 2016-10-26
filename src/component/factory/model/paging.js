@@ -31,13 +31,15 @@ module.exports = function(ngModule) {
             }
         }
 
-        $cPagingModel.prototype.paging = function(currentPage) {
+        $cPagingModel.prototype.paging = function(pageIndex) {
             var maxPage = Math.ceil(this.pagingList.length / this.itemsPerPage),
                 startPage;
-            if (currentPage > maxPage) {
-                currentPage = maxPage;
+
+            if (pageIndex > maxPage) {
+                pageIndex = maxPage;
             }
-            startPage = currentPage - 1 < 0 ? 0 : currentPage - 1;
+            this.currentPage = pageIndex;
+            startPage = pageIndex - 1 < 0 ? 0 : pageIndex - 1;
 
             this.currentList = angular.copy(this.pagingList).splice(startPage * this.itemsPerPage, this.itemsPerPage);
 

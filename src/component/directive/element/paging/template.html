@@ -1,9 +1,26 @@
 <div>
-    <div class="text-center" style="border-top: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; padding-top: 20px; padding-bottom: 20px"
-        ng-if="!hideAlert" ng-show="pagingModel.pagingListLength === 0">无匹配记录</div>
-    <div class="text-center" ng-show="pagingModel.pagingListLength > pagingModel.itemsPerPage">
-        <uib-pagination total-items="pagingModel.pagingListLength" ng-model="pagingModel.currentPage" max-size="5" class="pagination-sm"
-            boundary-link-numbers="true" rotate="false" previous-text="上一页" next-text="下一页" items-per-page="pagingModel.itemsPerPage"
-            ng-change="pagingModel.paging(pagingModel.currentPage)"></uib-pagination>
-    </div>
+	<div class="text-center" style="border-top: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; padding-top: 20px; padding-bottom: 20px"
+		ng-if="!hideAlert" ng-show="pagingModel.pagingListLength === 0">无匹配记录</div>
+	<div class="text-center" ng-show="pagingModel.pagingListLength > pagingModel.itemsPerPage">
+		<ul class="pagination pagination-{{size}}">
+			<li ng-class="{'disabled': pagingModel.currentPage === 1}">
+				<a href ng-click="vm.setPage(pagingModel.currentPage - 1)">上一页</a>
+			</li>
+            <li ng-show="vm.showingPages[0] !== 1">
+                <a href ng-click="vm.setPage(1)">1</a>
+            </li>
+			<li ng-show="vm.showingPages[0] - 1 > 0">
+				<a href ng-click="vm.setPage(vm.showingPages[0] - 1)">...</a>
+			</li>
+			<li ng-repeat="p in vm.showingPages" ng-class="{'active': p === pagingModel.currentPage}">
+				<a href ng-click="vm.setPage(p)">{{p}}</a>
+			</li>
+			<li ng-show="vm.showingPages[vm.showingPages.length - 1] < vm.pageCount">
+				<a href ng-click="vm.setPage(vm.showingPages[vm.showingPages.length - 1] + 1)">...</a>
+			</li>
+			<li ng-class="{'disabled': pagingModel.currentPage === vm.pageCount}">
+				<a href ng-click="vm.setPage(pagingModel.currentPage + 1)">下一页</a>
+			</li>
+		</ul>
+	</div>
 </div>
