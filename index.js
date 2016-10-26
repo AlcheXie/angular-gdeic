@@ -1,4 +1,4 @@
-var ngApp = angular.module('ngGdeic', ['ngAnimate', 'ui.bootstrap', 'ngResource', 'angular-linq']);
+var ngApp = angular.module('ngGdeic', ['angular-linq']);
 
 require('./src/prototype')(angular);
 require('./src/component')(ngApp);

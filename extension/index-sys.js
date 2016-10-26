@@ -1,4 +1,4 @@
-var ngModule = angular.module('ngGdeicSys', ['ngGdeic']);
+var ngModule = angular.module('ngGdeicSys', ['ngResource', 'ngGdeic']);
 
 require('./sys/sys-resource')(ngModule);
 require('./sys/account-role-model')(ngModule);

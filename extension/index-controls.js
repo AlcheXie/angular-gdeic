@@ -1,4 +1,4 @@
-var ngModule = angular.module('ngGdeicControls', ['ngGdeic']);
+var ngModule = angular.module('ngGdeicControls', ['ui.bootstrap', 'ngGdeic']);
 
 require('./controls/cascade/cascade')(ngModule);
 require('./controls/date-picker/date-picker')(ngModule);
