@@ -1,0 +1,17 @@
+<div class="gdeic-image-upload">
+	<div class="image" ng-repeat="img in vm.imageList" ng-style="{'background-image': 'url(' + img.src + ')'}" ng-click="vm.previewImage(img)">
+		<button class="image-delete" ng-click="vm.deleteImage($event, img)">×</button>
+	</div>
+	<div class="input">
+		<input id="{{vm.fileInputId}}" type="file" accept="image/*" multiple />
+	</div>
+	<div class="button">
+		<button class="btn btn-primary" ng-disabled="vm.imageList.length === 0" ng-click="upload()">上传</button>
+	</div>
+	<div class="preview" ng-show="vm.previewing">
+		<div class="preview-bg" ng-style="{'background-image': 'url(' + vm.previewingImage.src + ')'}" ng-click="vm.previewing = false"></div>
+		<div class="preview-delete" ng-click="vm.deleteImage($event, vm.previewingImage)">
+			<span class="glyphicon glyphicon-trash"></span> 删除
+		</div>
+	</div>
+</div>
