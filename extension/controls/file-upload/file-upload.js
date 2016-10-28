@@ -1,4 +1,4 @@
-module.exports = function(ngModule) {
+﻿module.exports = function(ngModule) {
 
     ngModule.directive('gdeicFileUpload', gdeicFileUploadDirective);
 
@@ -14,7 +14,10 @@ module.exports = function(ngModule) {
                 templateUrl: '@',
                 accept: '@',
                 multiple: '=',
-                target: '=',
+                action: '=',
+                method: '@',
+                extraData: '=',
+                uploadTag: '@',
                 success: '&',
                 error: '&',
                 progress: '&'
@@ -22,14 +25,31 @@ module.exports = function(ngModule) {
             templateUrl: function(tElement, tAttrs) {
                 return tAttrs.templateUrl || 'gdeic/controls/template/file-upload.html';
             },
-            controller: function() {
-                let _timestamp = (new Date()).getTime(),
-                    _n = 0;
-                this.fileInputId = `gdeic_file_file_${_timestamp}`;
-                this.textInputId = `gdeic_file_text_${_timestamp}`;
-                this.btnInputId = `gdeic_file_btn_${_timestamp}`;
-                this.fileName = '';
-            },
+            controller: ['$scope',
+                function($scope) {
+                    let _timestamp = (new Date()).getTime(),
+                        _n = 0;
+
+                    this.fileInputId = `gdeic_file_file_${_timestamp}`;
+                    this.textInputId = `gdeic_file_text_${_timestamp}`;
+                    this.btnInputId = `gdeic_file_btn_${_timestamp}`;
+
+                    this.fileList = [];
+
+                    this.addFile = file => {
+                        file.id = _n++;
+                        this.fileList.push(file);
+                    }
+
+                    this.deleteFile = file => {
+                        this.fileList.splice(this.fileList.map(x => x.id).indexOf(file.id), 1);
+                    }
+
+                    if (angular.isUndefined($scope.method) || ['GET', 'POST', 'HEAD', 'PUT', 'DELETE'].indexOf($scope.method.toUpperCase() < 0)) {
+                        $scope.method = 'POST';
+                    }
+                }
+            ],
             controllerAs: 'vm',
             link: function(scope, iElement, iAttrs, controller, transcludeFn) {
                 $gdeic.execAsync(() => {
@@ -38,60 +58,94 @@ module.exports = function(ngModule) {
                         $btnBrowse = angular.element(document.getElementById(controller.btnInputId));
 
                     let openFile = () => { $fileInput[0].click(); }
-                    if (scope.multiple) {
-                        $fileInput.attr('multiple', true);
-                    } else {
+                    if (!scope.multiple) {
                         $textInput.bind('click', openFile);
                     }
+
                     $btnBrowse.bind('click', openFile);
                     $fileInput.bind('change', () => {
-                        $textInput.removeClass('ng-invalid');
-                        controller.fileName = [...$fileInput[0].files].map(x => x.name).join('; ');
+                        if (!scope.multiple) {
+                            if ($fileInput[0].files.length > 0) {
+                                $textInput.val($fileInput[0].files[0].name);
+                                controller.addFile({
+                                    file: $fileInput[0].files[0],
+                                    name: $fileInput[0].files[0].name
+                                });
+                            } else {
+                                $textInput.val('');
+                                controller.fileList = [];
+                            }
+                        } else {
+                            for (let file of[...$fileInput[0].files]) {
+                                controller.addFile({
+                                    file: file,
+                                    name: file.name
+                                });
+                            }
+                        }
                         scope.$apply();
                     });
 
                     scope.upload = () => {
-                        $textInput.removeClass('ng-invalid').removeClass('ng-untouched');
-                        if (controller.fileName === '') {
-                            $textInput.addClass('ng-invalid');
-                            return;
-                        }
-
                         let fd = new FormData();
-                        for (let i = 0, max = $fileInput[0].files.length; i < max; i++) {
-                            fd.append(`files_${i}`, $fileInput[0].files[i]);
+                        for (let file of controller.fileList) {
+                            fd.append(`file_${file.id}`, file.file);
+                        }
+                        let _aInvalidParams = [];
+                        if (angular.isObject(scope.extraData)) {
+                            if (angular.isDefined(scope.uploadTag)) {
+                                Object.assign(scope.extraData, { 'uploadTag': scope.uploadTag });
+                            }
+
+                            for (let key of Object.keys(scope.extraData)) {
+                                let value = scope.extraData[key];
+                                if (angular.isString(value) || angular.isNumber(value) || angular.isDate(value)) {
+                                    fd.append(key, value);
+                                } else {
+                                    _aInvalidParams.push(key);
+                                }
+                            }
+                            if (_aInvalidParams.length > 0) {
+                                $log.info(`Invalid params: ${_aInvalidParams.join(', ')}.`);
+                            }
+                        } else {
+                            if (angular.isDefined(scope.uploadTag)) {
+                                fd.append('uploadTag', scope.uploadTag);
+                            }
                         }
 
                         let xhr = new XMLHttpRequest();
                         xhr.upload.addEventListener('progress', event => {
                             scope.progress({ $event: event });
+                            scope.$apply();
                         }, false);
-                        xhr.addEventListener('error', (event) => {
+                        xhr.addEventListener('error', event => {
                             $log.error(event);
                             scope.error();
+                            scope.$apply();
                         }, false);
-                        xhr.open('POST', scope.target);
+                        xhr.open(scope.method, scope.action);
                         xhr.onreadystatechange = () => {
                             if (xhr.readyState === 4) {
                                 if (xhr.status === 200) {
-                                    $fileInput.val('');
-                                    controller.fileName = '';
-
                                     let data = angular.fromJson(xhr.responseText);
                                     if (data.StatusCode < 0) {
                                         $log.warn(data);
                                         $rootScope.$broadcast('httpErrMsg', data);
                                     } else {
-                                        scope.success();
+                                        scope.success({ $data: data.Data });
+
+                                        $fileInput.val('');
+                                        if (!scope.multiple) { $textInput.val(''); }
+                                        controller.fileList = [];
                                     }
-                                    $rootScope.$apply();
                                 } else if (xhr.status === 404) {
                                     $rootScope.$broadcast('httpErrMsg', {
                                         StatusCode: '-',
                                         ErrorMsg: '文件大小超过了限制'
                                     });
-                                    $rootScope.$apply();
                                 }
+                                $rootScope.$apply();
                             }
                         }
                         xhr.send(fd);

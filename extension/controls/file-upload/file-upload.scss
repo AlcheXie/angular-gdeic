@@ -1,0 +1,9 @@
+@import "../../../bower_components/ui-gdeic/scss/mixins/mixins";
+.gdeic-file-upload {
+    border: fnDefaultBorder(#D9D9D9);
+    padding: 10px;
+    background-color: #FFF;
+    >.file {
+        margin-bottom: 10px;
+    }
+}
