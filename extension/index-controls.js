@@ -8,5 +8,6 @@ require('./controls/modal/modal-factory')(ngModule);
 require('./controls/modal/confirm-controller')(ngModule);
 require('./controls/modal-panel/modal-panel')(ngModule);
 require('./controls/modal-select-panel/modal-select-panel')(ngModule);
+require('./controls/paging-ahead/paging-ahead')(ngModule);
 require('./controls/range/range')(ngModule);
 require('./controls/tree-view/tree-view')(ngModule);
