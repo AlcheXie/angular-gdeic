@@ -7,7 +7,7 @@ module.exports = function(ngModule) {
     function $gdeicHttpInterceptorFactory($q, $rootScope, $log) {
         var httpInterceptor = {
             'request': function(config) {
-                if (config.url.indexOf('.') < 0) {
+                if (!/\.\w+$/.test(config.url)) {
                     if (angular.isObject(config.data)) {
                         config.data.addHours(8);
                     }
@@ -15,7 +15,7 @@ module.exports = function(ngModule) {
                 return config;
             },
             'response': function(response) {
-                if (response.config.url.indexOf('.') < 0) {
+                if (!/\.\w+$/.test(response.config.url)) {
                     if (response.data.StatusCode < 0) {
                         let _error = {
                             StatusCode: response.data.StatusCode,

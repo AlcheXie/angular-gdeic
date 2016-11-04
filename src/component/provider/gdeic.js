@@ -5,18 +5,20 @@ module.exports = function(ngModule) {
     $gdeicProvider.$inject = [];
 
     function $gdeicProvider() {
-        let _appTitle = '';
+        let _appTitle = '',
+            _loginUrl = '';
 
-        this.setAppTitle = title => {
-            _appTitle = title;
-            document.title = _appTitle;
+        this.setAppData = options => {
+            _appTitle = document.title = options.appTitle;
+            _loginUrl = options.loginUrl;
         }
 
         this.$get = ['$rootScope', '$q', '$location', '$timeout',
             function($rootScope, $q, $location, $timeout) {
                 let $gdeic = {
                     version: '1.1.0',
-                    appTitle: _appTitle
+                    appTitle: _appTitle,
+                    loginUrl: _loginUrl
                 };
 
                 $gdeic.finishInit = () => { $rootScope.finishInit = true; }
@@ -104,13 +106,6 @@ module.exports = function(ngModule) {
                     }
 
                     return true;
-                }
-
-                $gdeic.goto = (path, isReplace = false) => {
-                    $location.path(path);
-                    if (isReplace) {
-                        $location.replace();
-                    }
                 }
 
                 $gdeic.makeKeyAccept = (callback = angular.noop, keyCode = [13]) => function keyFunc($event) {
