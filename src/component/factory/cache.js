@@ -2,9 +2,9 @@ module.exports = function(ngModule) {
 
     ngModule.factory('$gdeicCache', $gdeicCacheFactory);
 
-    $gdeicCacheFactory.$inject = ['$cacheFactory', '$q', '$gdeic'];
+    $gdeicCacheFactory.$inject = ['$cacheFactory', '$q', '$http', '$gdeic'];
 
-    function $gdeicCacheFactory($cacheFactory, $q, $gdeic) {
+    function $gdeicCacheFactory($cacheFactory, $q, $http, $gdeic) {
         let _cacheKeyList = [],
             _cache = $cacheFactory('gdeicCache');
 
@@ -13,18 +13,34 @@ module.exports = function(ngModule) {
                 _cache.put(key, value);
                 $gdeic.toggleItem(_cacheKeyList, key);
             },
-            putAsync({ key, actionFn, params, isAlways = false }) {
+            putAsync(key, { url, config = {}, action, data, promise, isAlways = false }) {
                 let deferred = $q.defer(),
                     _promise;
 
+                let _getPromise = () => {
+                    let promise;
+                    if (angular.isDefined(url)) {
+                        config = Object.assign({ url: url, method: 'GET' }, config);
+                        config.url = url;
+                        promise = $gdeic.httpPromise($http(config));
+                    } else if (angular.isDefined(action)) {
+                        promise = $gdeic.httpPromise(action(data));
+                    } else if (angular.isDefined(promise)) {
+                        promise = promise;
+                    } else {
+                        throw new Error('No promise is deferred.')
+                    }
+                    return promise;
+                }
+
                 if (isAlways) {
-                    _promise = $gdeic.httpPromise(actionFn(params));
+                    _promise = _getPromise();
                 } else {
                     let _value = this.get(key);
-                    if (angular.isUndefined(value)) {
-                        _promise = $gdeic.httpPromise(actionFn(params));
+                    if (angular.isUndefined(_value)) {
+                        _promise = _getPromise();
                     } else {
-                        _promise = value;
+                        _promise = _value;
                     }
                 }
 
