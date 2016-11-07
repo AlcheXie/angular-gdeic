@@ -1,4 +1,4 @@
-module.exports = function(ngModule) {
+module.exports = function(ngModule, options) {
 
     ngModule.directive('gdeicModalPanel', gdeicModalPanelDirective);
 
@@ -6,7 +6,14 @@ module.exports = function(ngModule) {
 
     function gdeicModalPanelDirective($templateCache) {
 
-        $templateCache.put('gdeic/controls/template/modal-panel.html', require('./template.html'));
+        options = options || {};
+        let templateName = 'gdeic/template/modal-panel.html';
+        if (options.defaultTemplate) {
+            $templateCache.put(templateName, require('./template.html'));
+        }
+        if (options.defaultStyle) {
+            require('./modal-panel.scss');
+        }
 
         return {
             restrict: 'EA',
@@ -20,7 +27,7 @@ module.exports = function(ngModule) {
                 cancel: '&'
             },
             templateUrl: function(tElement, tAttrs) {
-                return tAttrs.templateUrl || 'gdeic/controls/template/modal-panel.html';
+                return require('../../../src/common/set-directive-template-url')($templateCache, tAttrs.templateUrl, templateName);
             },
             replace: true,
             controller: ['$scope', '$attrs',

@@ -1,4 +1,4 @@
-module.exports = function(ngModule) {
+module.exports = function(ngModule, options) {
 
     ngModule.directive('gdeicPaging', gdeicPagingDirective);
 
@@ -6,7 +6,11 @@ module.exports = function(ngModule) {
 
     function gdeicPagingDirective($templateCache) {
 
-        $templateCache.put('gdeic/template/paging.html', require('./template.html'));
+        options = options || {};
+        let templateName = 'gdeic/template/paging.html';
+        if (options.defaultTemplate) {
+            $templateCache.put(templateName, require('./template.html'));
+        }
 
         return {
             restrict: 'EA',
@@ -18,7 +22,7 @@ module.exports = function(ngModule) {
                 editMode: '='
             },
             templateUrl: function(tElement, tAttrs) {
-                return tAttrs.templateUrl || 'gdeic/template/paging.html';
+                return require('../../../../common/set-directive-template-url')($templateCache, tAttrs.templateUrl, templateName);
             },
             replace: true,
             controller: ['$scope', '$cPagingModel', '$cGroupingModel',

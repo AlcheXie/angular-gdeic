@@ -1,4 +1,4 @@
-module.exports = function(ngModule) {
+module.exports = function(ngModule, options) {
 
     ngModule.directive('gdeicError', gdeicErrorDirective);
 
@@ -6,7 +6,14 @@ module.exports = function(ngModule) {
 
     function gdeicErrorDirective($templateCache) {
 
-        $templateCache.put('gdeic/template/error.html', require('./template.html'));
+        options = options || {};
+        let templateName = 'gdeic/template/error.html';
+        if (options.defaultTemplate) {
+            $templateCache.put(templateName, require('./template.html'));
+        }
+        if (options.defaultStyle) {
+            require('./error.scss');
+        }
 
         return {
             restrict: 'EA',
@@ -14,7 +21,7 @@ module.exports = function(ngModule) {
                 templateUrl: '@'
             },
             templateUrl: function(tElement, tAttrs) {
-                return tAttrs.templateUrl || 'gdeic/template/error.html';
+                return require('../../../../common/set-directive-template-url')($templateCache, tAttrs.templateUrl, templateName);
             },
             replace: true,
             controller: ['$scope', '$window', '$gdeic',
@@ -41,6 +48,4 @@ module.exports = function(ngModule) {
             controllerAs: 'vm'
         };
     }
-
-    require('./error.scss');
 };

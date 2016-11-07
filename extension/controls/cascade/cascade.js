@@ -1,4 +1,4 @@
-module.exports = function(ngModule) {
+module.exports = function(ngModule, options) {
 
     ngModule.directive('gdeicCascade', gdeicCascadeDirective);
 
@@ -6,7 +6,11 @@ module.exports = function(ngModule) {
 
     function gdeicCascadeDirective($templateCache) {
 
-        $templateCache.put('gdeic/controls/template/cascade.html', require('./template.html'));
+        options = options || {};
+        let templateName = 'gdeic/controls/template/cascade.html';
+        if (options.defaultTemplate) {
+            $templateCache.put(templateName, require('./template.html'));
+        }
 
         return {
             restrict: 'EA',
@@ -26,15 +30,9 @@ module.exports = function(ngModule) {
                 queryParamsAsync: "@"
             },
             template: function(tElement, tAttrs) {
-                var template;
-
-                if (angular.isUndefined(tAttrs.templateUrl)) {
-                    template = $templateCache.get('gdeic/controls/template/cascade.html');
-                    template = template.replace(/\[\[key\]\]/g, tAttrs.keyProperty);
-                    template = template.replace(/\[\[value\]\]/g, tAttrs.valueProperty);
-                } else {
-                    template = '<span ng-include="\'' + tAttrs.templateUrl + '\'"></span>';
-                }
+                var template = require('../../../src/common/set-directive-template')($templateCache, tAttrs.templateUrl, templateName);
+                template = template.replace(/\[\[key\]\]/g, tAttrs.keyProperty);
+                template = template.replace(/\[\[value\]\]/g, tAttrs.valueProperty);
 
                 return template;
             },

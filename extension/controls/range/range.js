@@ -1,4 +1,4 @@
-module.exports = function(ngModule) {
+module.exports = function(ngModule, options) {
 
     ngModule.directive('gdeicRange', gdeicRangeDirective);
 
@@ -6,7 +6,14 @@ module.exports = function(ngModule) {
 
     function gdeicRangeDirective($templateCache) {
 
-        $templateCache.put('gdeic/controls/template/range.html', require('./template.html'));
+        options = options || {};
+        let templateName = 'gdeic/template/range.html';
+        if (options.defaultTemplate) {
+            $templateCache.put(templateName, require('./template.html'));
+        }
+        if (options.defaultStyle) {
+            require('./range.scss');
+        }
 
         return {
             restrict: 'EA',
@@ -20,7 +27,7 @@ module.exports = function(ngModule) {
                 isModifyMinValue: '='
             },
             templateUrl: function(tElement, tAttrs) {
-                return tAttrs.templateUrl || 'gdeic/controls/template/range.html';
+                return require('../../../src/common/set-directive-template-url')($templateCache, tAttrs.templateUrl, templateName);
             },
             replace: true,
             controller: ['$scope',
@@ -46,6 +53,4 @@ module.exports = function(ngModule) {
             controllerAs: 'vm'
         };
     }
-
-    require('./range.scss');
 }

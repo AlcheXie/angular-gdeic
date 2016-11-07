@@ -1,4 +1,4 @@
-module.exports = function(ngModule) {
+module.exports = function(ngModule, options) {
 
     ngModule.directive('gdeicPagingAhead', gdeicPagingAheadDirective);
 
@@ -6,7 +6,11 @@ module.exports = function(ngModule) {
 
     function gdeicPagingAheadDirective($templateCache) {
 
-        $templateCache.put('gdeic/template/paging-ahead.html', require('./template.html'));
+        options = options || {};
+        let templateName = 'gdeic/template/paging-ahead.html';
+        if (options.defaultTemplate) {
+            $templateCache.put(templateName, require('./template.html'));
+        }
 
         return {
             restrict: 'EA',
@@ -23,7 +27,7 @@ module.exports = function(ngModule) {
                 isAlwaysRequest: '='
             },
             templateUrl: function(tElement, tAttrs) {
-                return tAttrs.templateUrl || 'gdeic/template/paging-ahead.html';
+                return require('../../../src/common/set-directive-template-url')($templateCache, tAttrs.templateUrl, templateName);
             },
             controller: ['$scope', '$attrs', '$http', '$q', '$gdeic',
                 function($scope, $attrs, $http, $q, $gdeic) {

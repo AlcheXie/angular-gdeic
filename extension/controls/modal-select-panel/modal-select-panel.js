@@ -1,4 +1,4 @@
-module.exports = function(ngModule) {
+module.exports = function(ngModule, options) {
 
     ngModule.directive('gdeicModalSelectPanel', gdeicModalSelectPanelDirective);
 
@@ -6,7 +6,14 @@ module.exports = function(ngModule) {
 
     function gdeicModalSelectPanelDirective($templateCache, $gdeic) {
 
-        $templateCache.put('gdeic/controls/template/modal-select-panel.html', require('./template.html'));
+        options = options || {};
+        let templateName = 'gdeic/controls/template/modal-select-panel.html';
+        if (options.defaultTemplate) {
+            $templateCache.put(templateName, require('./template.html'));
+        }
+        if (options.defaultStyle) {
+            require('../modal-panel/modal-panel.scss');
+        }
 
         return {
             restrict: 'EA',
@@ -22,16 +29,10 @@ module.exports = function(ngModule) {
                 multiSelect: '='
             },
             template: function(tElement, tAttrs) {
-                var template;
-
-                if (angular.isUndefined(tAttrs.templateUrl)) {
-                    template = $templateCache.get('gdeic/controls/template/modal-select-panel.html');
-                    template = template.replace(/\[\[key\]\]/g, tAttrs.keyProperty);
-                    template = template.replace(/\[\[value\]\]/g, tAttrs.valueProperty);
-                    template = template.replace(/\[\[filter\]\]/g, tAttrs.filterProperty);
-                } else {
-                    template = '<span ng-include="\'' + tAttrs.templateUrl + '\'"></span>';
-                }
+                var template = require('../../../src/common/set-directive-template')($templateCache, tAttrs.templateUrl, templateName);
+                template = template.replace(/\[\[key\]\]/g, tAttrs.keyProperty);
+                template = template.replace(/\[\[value\]\]/g, tAttrs.valueProperty);
+                template = template.replace(/\[\[filter\]\]/g, tAttrs.filterProperty);
 
                 return template;
             },

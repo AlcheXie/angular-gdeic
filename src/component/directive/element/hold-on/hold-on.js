@@ -1,4 +1,4 @@
-module.exports = function(ngModule) {
+module.exports = function(ngModule, options) {
 
     ngModule.directive('gdeicHoldOn', gdeicHoldOnDirective);
 
@@ -6,7 +6,14 @@ module.exports = function(ngModule) {
 
     function gdeicHoldOnDirective($templateCache) {
 
-        $templateCache.put('gdeic/template/hold-on.html', require('./template.html'));
+        options = options || {};
+        let templateName = 'gdeic/template/hold-on.html';
+        if (options.defaultTemplate) {
+            $templateCache.put(templateName, require('./template.html'));
+        }
+        if (options.defaultStyle) {
+            require('./hold-on.scss');
+        }
 
         return {
             restrict: 'EA',
@@ -15,7 +22,7 @@ module.exports = function(ngModule) {
                 holdOnText: '@'
             },
             templateUrl: function(tElement, tAttrs) {
-                return tAttrs.templateUrl || 'gdeic/template/hold-on.html';
+                return require('../../../../common/set-directive-template-url')($templateCache, tAttrs.templateUrl, templateName);
             },
             replace: true,
             link: function(scope, iElement, iAttrs, controller, transcludeFn) {
@@ -31,6 +38,4 @@ module.exports = function(ngModule) {
             }
         };
     }
-
-    require('./hold-on.scss');
 };

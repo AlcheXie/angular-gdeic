@@ -1,4 +1,4 @@
-module.exports = function (ngModule) {
+module.exports = function(ngModule, options) {
 
     ngModule.directive('gdeicLoading', gdeicLoadingDirective);
 
@@ -6,7 +6,14 @@ module.exports = function (ngModule) {
 
     function gdeicLoadingDirective($templateCache) {
 
-        $templateCache.put('gdeic/template/loading.html', require('./template.html'));
+        options = options || {};
+        let templateName = 'gdeic/template/loading.html';
+        if (options.defaultTemplate) {
+            $templateCache.put(templateName, require('./template.html'));
+        }
+        if (options.defaultStyle) {
+            require('./loading.scss');
+        }
 
         return {
             restrict: 'EA',
@@ -17,12 +24,10 @@ module.exports = function (ngModule) {
                 loadingClass: '@',
                 loadingText: '@'
             },
-            templateUrl: function (tElement, tAttrs) {
-                return tAttrs.templateUrl || 'gdeic/template/loading.html';
+            templateUrl: function(tElement, tAttrs) {
+                return require('../../../../common/set-directive-template-url')($templateCache, tAttrs.templateUrl, templateName);
             },
             replace: true
         };
     }
-
-    require('./loading.scss');
 };

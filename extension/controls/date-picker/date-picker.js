@@ -1,4 +1,4 @@
-module.exports = function(ngModule) {
+module.exports = function(ngModule, options) {
 
     ngModule.directive('gdeicDatePicker', gdeicDatePickerDirective);
 
@@ -6,7 +6,11 @@ module.exports = function(ngModule) {
 
     function gdeicDatePickerDirective($templateCache) {
 
-        $templateCache.put('gdeic/controls/template/date-picker.html', require('./template.html'));
+        options = options || {};
+        let templateName = 'gdeic/controls/template/date-picker.html';
+        if (options.defaultTemplate) {
+            $templateCache.put(templateName, require('./template.html'));
+        }
 
         return {
             restrict: 'EA',
@@ -20,7 +24,7 @@ module.exports = function(ngModule) {
                 dateDisabled: '&'
             },
             templateUrl: function(tElement, tAttrs) {
-                return tAttrs.templateUrl || 'gdeic/controls/template/date-picker.html';
+                return require('../../../src/common/set-directive-template-url')($templateCache, tAttrs.templateUrl, templateName);
             },
             replace: true,
             controller: ['$scope',

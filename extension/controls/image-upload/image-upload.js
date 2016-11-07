@@ -1,4 +1,4 @@
-﻿module.exports = function(ngModule) {
+module.exports = function(ngModule, options) {
 
     ngModule.directive('gdeicImageUpload', gdeicImageUploadDirective);
 
@@ -6,7 +6,14 @@
 
     function gdeicImageUploadDirective($rootScope, $templateCache, $log, $window, $gdeic) {
 
-        $templateCache.put('gdeic/controls/template/image-upload.html', require('./template.html'));
+        options = options || {};
+        let templateName = 'gdeic/template/image-upload.html';
+        if (options.defaultTemplate) {
+            $templateCache.put(templateName, require('./template.html'));
+        }
+        if (options.defaultStyle) {
+            require('./image-upload.scss');
+        }
 
         return {
             restrict: "EA",
@@ -21,7 +28,7 @@
                 progress: '&'
             },
             templateUrl: function(tElement, tAttrs) {
-                return tAttrs.templateUrl || 'gdeic/controls/template/image-upload.html';
+                return require('../../../src/common/set-directive-template-url')($templateCache, tAttrs.templateUrl, templateName);
             },
             replace: true,
             controller: ['$scope', '$gdeic',
