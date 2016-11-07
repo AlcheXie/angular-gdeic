@@ -15,9 +15,9 @@ module.exports = function(ngModule) {
                 return angular.copy(_source);
             }
 
-            this.showingList = source.slice(0, itemsPerTime);
-            this.hidingList = source.slice(itemsPerTime, source.length);
             this.itemsPerTime = itemsPerTime || 20;
+            this.showingList = source.slice(0, this.itemsPerTime);
+            this.hidingList = source.slice(this.itemsPerTime, source.length);
         }
 
         $cPullingModel.prototype.pulling = function() {
