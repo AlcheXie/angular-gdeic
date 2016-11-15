@@ -21,7 +21,6 @@ module.exports = function(ngModule, options) {
             scope: {
                 templateUrl: '@',
                 isLoading: '=',
-                loadingClass: '@',
                 loadingText: '@'
             },
             templateUrl: function(tElement, tAttrs) {
