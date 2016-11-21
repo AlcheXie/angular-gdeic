@@ -18,8 +18,7 @@ module.exports = function(ngModule) {
 
                 _dStart = input[0].getTime();
                 _dEnd = input[1].getTime();
-            }
-            if (!angular.isDate(input) && (new Date(input)).toString() === 'Invalid Date') {
+            } else if (!angular.isDate(input) && (new Date(input)).toString() === 'Invalid Date') {
                 return '';
             }
 
@@ -61,14 +60,19 @@ module.exports = function(ngModule) {
                     _dStart = input;
                     _dEnd = new Date();
                     _dEnd.setMonth(12, 0);
+                    break;
+                case 'interval':
+                    break;
             }
 
-            if (angular.isUndefined(_dStart) && angular.isUndefined(_dEnd)) {
-                return '';
-            } else {
-                _nInterval = _dEnd.getTime() - _dStart.getTime();
-                _nInterval = _nInterval / 1000;
+            if (angular.isDate(_dStart)) {
+                _dStart = _dStart.getTime();
             }
+            if (angular.isDate(_dEnd)) {
+                _dEnd = _dEnd.getTime();
+            }
+            _nInterval = _dEnd - _dStart;
+            _nInterval = _nInterval / 1000;
 
             switch (type) {
                 case 'year':
