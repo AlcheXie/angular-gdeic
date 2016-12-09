@@ -32,17 +32,17 @@ module.exports = function(ngModule) {
 
     require('./component/factory/gdeicCache')(ngModule);
 
-    /* models */
+    /* classes */
 
-    require('./component/factory/model/paging')(ngModule);
+    require('./component/factory/class/paging')(ngModule);
 
-    require('./component/factory/model/grouping')(ngModule);
+    require('./component/factory/class/grouping')(ngModule);
 
-    require('./component/factory/model/pulling')(ngModule);
+    require('./component/factory/class/pulling')(ngModule);
 
-    require('./component/factory/model/toggle')(ngModule);
-    
-    require('./component/factory/model/edit')(ngModule);
+    require('./component/factory/class/toggle')(ngModule);
+
+    require('./component/factory/class/edit')(ngModule);
 
     /* filters */
 

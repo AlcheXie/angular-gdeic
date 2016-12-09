@@ -25,8 +25,8 @@ module.exports = function(ngModule, options) {
                 return require('../../../../common/set-directive-template-url')($templateCache, tAttrs.templateUrl, templateName);
             },
             replace: true,
-            controller: ['$scope', '$cPagingModel', '$cGroupingModel',
-                function($scope, $cPagingModel, $cGroupingModel) {
+            controller: ['$scope', 'GdeicPaging', 'GdeicGrouping',
+                function($scope, GdeicPaging, GdeicGrouping) {
                     let _aDefaultPages = [1, 2, 3, 4, 5],
                         _isInit = false;
 
@@ -57,7 +57,7 @@ module.exports = function(ngModule, options) {
                             let _source, _aPageIdx;
                             if (!(angular.isDefined(oldVal) && newVal.length > 0)) { return; }
 
-                            if ($scope.pagingModel.constructor = $cPagingModel) {
+                            if ($scope.pagingModel.constructor === GdeicPaging) {
                                 _source = $scope.pagingModel.getSource();
                                 _aPageIdx = $scope.pagingModel.pagingList.map(x => x.$$index);
 
@@ -69,7 +69,7 @@ module.exports = function(ngModule, options) {
                                     }
                                     $scope.pagingModel.setSource(_source);
                                 }
-                            } else if ($scope.pagingModel.constructor === $cGroupingModel) {
+                            } else if ($scope.pagingModel.constructor === GdeicGrouping) {
                                 for (let item of newVal) {
                                     $scope.pagingModel.pagingList[item.$$index].isExpand = item.isExpand;
                                 }
