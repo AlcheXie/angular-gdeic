@@ -1,8 +1,8 @@
 var ngModule = angular.module('ngGdeicSys', ['ngResource', 'ngGdeic']);
 
 // based on ngResource
-require('./sys/sys-resource')(ngModule);
+require('./sys/$gdeicSysResource')(ngModule);
 
-require('./sys/account-role-model')(ngModule);
+require('./sys/GdeicAccountRole')(ngModule);
 
-require('./sys/outree-model')(ngModule);
+require('./sys/GdeicOutree')(ngModule);

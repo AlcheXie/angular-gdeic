@@ -66,12 +66,12 @@ module.exports = function(ngModule) {
                 params: { menuId: '@menuId' },
                 method: 'GET'
             },
-            initOutree: {
-                url: 'api/account/init-ou',
-                method: 'GET'
-            },
             getOuTree: {
                 url: 'api/account/ou-tree',
+                method: 'GET'
+            },
+            initOutree: {
+                url: 'api/account/init-ou',
                 method: 'GET'
             },
             queryOuAccounts: {
