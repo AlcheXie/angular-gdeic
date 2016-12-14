@@ -1,26 +1,26 @@
 var ngModule = angular.module('ngGdeicControls', ['ui.bootstrap', 'ngGdeic']);
 
-require('./controls/cascade/cascade')(ngModule, { defaultTemplate: true });
+require('./controls/gdeicCascade/gdeicCascade')(ngModule, { defaultTemplate: true });
 
 // based on ui.bootstrap
-require('./controls/date-picker/date-picker')(ngModule, { defaultTemplate: true });
+require('./controls/gdeicDatePicker/gdeicDatePicker')(ngModule, { defaultTemplate: true });
 
-require('./controls/file-upload/file-upload')(ngModule, { defaultTemplate: true, defaultStyle: true });
+require('./controls/gdeicFileUpload/gdeicFileUpload')(ngModule, { defaultTemplate: true, defaultStyle: true });
 
-require('./controls/image-upload/image-upload')(ngModule, { defaultTemplate: true, defaultStyle: true });
+require('./controls/gdeicImageUpload/gdeicImageUpload')(ngModule, { defaultTemplate: true, defaultStyle: true });
 
 // based on ui.bootstrap
-require('./controls/modal/modal-factory')(ngModule, { defaultTemplate: true });
-require('./controls/modal/confirm-controller')(ngModule);
+require('./controls/gdeicModal/$gdeicModal')(ngModule, { defaultTemplate: true });
+require('./controls/gdeicModal/GdeicConfirmController')(ngModule);
 
 // based on ngGdeic's gradualShowDirective
-require('./controls/modal-panel/modal-panel')(ngModule, { defaultTemplate: true, defaultStyle: true });
+require('./controls/gdeicModalPanel/gdeicModalPanel')(ngModule, { defaultTemplate: true, defaultStyle: true });
 
 // based on ngGdeic's gradualShowDirective
-require('./controls/modal-select-panel/modal-select-panel')(ngModule, { defaultTemplate: true });
+require('./controls/gdeicModalSelectPanel/gdeicModalSelectPanel')(ngModule, { defaultTemplate: true });
 
-require('./controls/paging-ahead/paging-ahead')(ngModule, { defaultTemplate: true });
+require('./controls/gdeicPagingAhead/gdeicPagingAhead')(ngModule, { defaultTemplate: true });
 
-require('./controls/range/range')(ngModule, { defaultTemplate: true, defaultStyle: true });
+require('./controls/gdeicRange/gdeicRange')(ngModule, { defaultTemplate: true, defaultStyle: true });
 
-require('./controls/tree-view/tree-view')(ngModule, { defaultTemplate: true });
+require('./controls/gdeicTreeView/gdeicTreeView')(ngModule, { defaultTemplate: true });

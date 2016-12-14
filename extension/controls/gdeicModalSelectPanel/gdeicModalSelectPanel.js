@@ -7,12 +7,12 @@ module.exports = function(ngModule, options) {
     function gdeicModalSelectPanelDirective($templateCache, $gdeic) {
 
         options = options || {};
-        let templateName = 'gdeic/controls/template/modal-select-panel.html';
+        let templateName = 'gdeic/controls/template/gdeicModalSelectPanel.html';
         if (options.defaultTemplate) {
             $templateCache.put(templateName, require('./template.html'));
         }
         if (options.defaultStyle) {
-            require('../modal-panel/modal-panel.scss');
+            require('../gdeicModalPanel/styles.scss');
         }
 
         return {

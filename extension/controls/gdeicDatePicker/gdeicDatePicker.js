@@ -7,7 +7,7 @@ module.exports = function(ngModule, options) {
     function gdeicDatePickerDirective($templateCache) {
 
         options = options || {};
-        let templateName = 'gdeic/controls/template/date-picker.html';
+        let templateName = 'gdeic/controls/template/gdeicDatePicker.html';
         if (options.defaultTemplate) {
             $templateCache.put(templateName, require('./template.html'));
         }

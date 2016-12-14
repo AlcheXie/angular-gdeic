@@ -7,12 +7,12 @@ module.exports = function(ngModule, options) {
     function gdeicFileUploadDirective($rootScope, $templateCache, $log, $gdeic) {
 
         options = options || {};
-        let templateName = 'gdeic/template/file-upload.html';
+        let templateName = 'gdeic/template/gdeicFileUpload.html';
         if (options.defaultTemplate) {
             $templateCache.put(templateName, require('./template.html'));
         }
         if (options.defaultStyle) {
-            require('./file-upload.scss');
+            require('./styles.scss');
         }
 
         return {

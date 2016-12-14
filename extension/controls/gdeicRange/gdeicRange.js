@@ -7,12 +7,12 @@ module.exports = function(ngModule, options) {
     function gdeicRangeDirective($templateCache) {
 
         options = options || {};
-        let templateName = 'gdeic/template/range.html';
+        let templateName = 'gdeic/template/gdeicRange.html';
         if (options.defaultTemplate) {
             $templateCache.put(templateName, require('./template.html'));
         }
         if (options.defaultStyle) {
-            require('./range.scss');
+            require('./styles.scss');
         }
 
         return {

@@ -7,7 +7,7 @@ module.exports = function(ngModule, options) {
     function gdeicCascadeDirective($templateCache) {
 
         options = options || {};
-        let templateName = 'gdeic/controls/template/cascade.html';
+        let templateName = 'gdeic/controls/template/gdeicCascade.html';
         if (options.defaultTemplate) {
             $templateCache.put(templateName, require('./template.html'));
         }
@@ -24,10 +24,10 @@ module.exports = function(ngModule, options) {
                 initCondition: '@',
                 referenceModel: '=',
                 targetModel: '=',
-                queryList: '&',
-                queryParams: '@',
-                queryListAsync: '&',
-                queryParamsAsync: "@"
+                queryMethod: '&',
+                queryParam: '@',
+                queryMethodAsync: '&',
+                queryParamAsync: "@"
             },
             template: function(tElement, tAttrs) {
                 var template = require('../../../src/common/set-directive-template')($templateCache, tAttrs.templateUrl, templateName);
@@ -40,9 +40,9 @@ module.exports = function(ngModule, options) {
             controller: ['$scope', '$attrs', '$linq', '$gdeic',
                 function($scope, $attrs, $linq, $gdeic) {
                     let _isAsync = false;
-                    if (angular.isDefined($attrs.queryList)) {
+                    if (angular.isDefined($attrs.queryMethod)) {
                         _isAsync = false;
-                    } else if (angular.isDefined($attrs.queryListAsync)) {
+                    } else if (angular.isDefined($attrs.queryMethodAsync)) {
                         _isAsync = true;
                     } else {
                         throw new Error('Must have a query method');
@@ -74,18 +74,18 @@ module.exports = function(ngModule, options) {
                                     }
 
                                     if (!_isAsync) {
-                                        this.itemList = $scope.queryList({
-                                            $param: newVal[$scope.queryParams.trimAll()]
+                                        this.itemList = $scope.queryMethod({
+                                            $param: newVal[$scope.queryParam.trimAll()]
                                         });
                                         this.selectedModel = '';
                                         $scope.targetModel = '';
                                         _init();
                                     } else {
-                                        let _param = angular.fromJson($scope.queryParamsAsync.replace(/'/g, '"'));
+                                        let _param = angular.fromJson($scope.queryParamAsync.replace(/'/g, '"'));
                                         for (let key of Object.keys(_param)) {
                                             _param[key] = newVal[_param[key].substr(1)];
                                         }
-                                        $gdeic.httpPromise($scope.queryListAsync({
+                                        $gdeic.httpPromise($scope.queryMethodAsync({
                                             $param: _param
                                         })).then(data => {
                                             this.itemList = data;

@@ -12,7 +12,7 @@ module.exports = function(ngModule) {
                 treeData: '=',
                 isExpandRoot: '=',
                 isSelectRoot: '=',
-                isMultiChecked: '=',
+                isMultiSelected: '=',
                 selectedModel: '=',
                 itemToggle: '&',
                 itemSelect: '&',
@@ -26,7 +26,7 @@ module.exports = function(ngModule) {
             controller: ['$scope', '$gdeic',
                 function($scope, $gdeic) {
                     (() => {
-                        if ($scope.isMultiChecked) {
+                        if ($scope.isMultiSelected) {
                             if (angular.isUndefined($scope.selectedModel)) {
                                 $scope.selectedItems = [];
                             } else {
@@ -76,7 +76,7 @@ module.exports = function(ngModule) {
                         if (!$scope[callbackName]) { return; }
 
                         if (callbackName === 'itemSelect') {
-                            if ($scope.isMultiChecked) {
+                            if ($scope.isMultiSelected) {
                                 $gdeic.toggleItem($scope.selectedItems, item);
                             } else {
                                 $scope.selectedItems = item;

@@ -7,7 +7,7 @@ module.exports = function(ngModule, options) {
     function gdeicPagingAheadDirective($templateCache) {
 
         options = options || {};
-        let templateName = 'gdeic/template/paging-ahead.html';
+        let templateName = 'gdeic/template/gdeicPagingAhead.html';
         if (options.defaultTemplate) {
             $templateCache.put(templateName, require('./template.html'));
         }

@@ -24,11 +24,11 @@ module.exports = function(ngModule, options) {
 
                 return $uibModal.open(Object.assign({
                     template: $templateCache.get(templateName) || $templateCache.get('gdeic/template/directive-blank.html'),
-                    controller: 'gdeicConfirmController',
+                    controller: 'GdeicConfirmController',
                     controllerAs: 'vm',
                     resolve: {
-                        title: function() { return title; },
-                        message: function() { return message; }
+                        title: () => title,
+                        message: () => message
                     },
                     backdrop: 'static'
                 }, option));
