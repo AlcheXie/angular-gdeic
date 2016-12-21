@@ -1,10 +1,10 @@
 module.exports = function(ngModule) {
 
-    ngModule.factory('GdeicPaging', GdeicPagingFactory);
+    ngModule.factory('GdeicPage', GdeicPageFactory);
 
-    GdeicPagingFactory.$inject = ['$linq'];
+    GdeicPageFactory.$inject = ['$linq'];
 
-    function GdeicPagingFactory($linq) {
+    function GdeicPageFactory($linq) {
 
         let _getCondition = (searchParams = {}) => {
             let _arrAnd = [],
@@ -42,7 +42,7 @@ module.exports = function(ngModule) {
             return condition;
         }
 
-        class GdeicPaging {
+        class GdeicPage {
             constructor(source, itemsPerPage = 10) {
                 if (!angular.isArray(source)) { source = []; }
 
@@ -59,7 +59,7 @@ module.exports = function(ngModule) {
                 this.currentPage = 1;
                 this.searchParams = {};
 
-                GdeicPaging.prototype.update.call(this, _source);
+                GdeicPage.prototype.update.call(this, _source);
 
                 this.setSource = (newSource, searchParams) => {
                     _source = angular.copy(newSource);
@@ -140,6 +140,6 @@ module.exports = function(ngModule) {
             }
         }
 
-        return GdeicPaging;
+        return GdeicPage;
     }
 };

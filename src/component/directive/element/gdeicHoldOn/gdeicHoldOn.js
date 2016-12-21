@@ -7,12 +7,12 @@ module.exports = function(ngModule, options) {
     function gdeicHoldOnDirective($templateCache) {
 
         options = options || {};
-        let templateName = 'gdeic/template/hold-on.html';
+        let templateName = 'gdeic/template/gdeicHoldOn.html';
         if (options.defaultTemplate) {
             $templateCache.put(templateName, require('./template.html'));
         }
         if (options.defaultStyle) {
-            require('./hold-on.scss');
+            require('./styles.scss');
         }
 
         return {

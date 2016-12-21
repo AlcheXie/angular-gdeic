@@ -1,18 +1,18 @@
 module.exports = function(ngModule) {
 
-    ngModule.factory('GdeicGrouping', GdeicGroupingFactory);
+    ngModule.factory('GdeicGroup', GdeicGroupFactory);
 
-    GdeicGroupingFactory.$inject = ['$linq', 'GdeicPaging'];
+    GdeicGroupFactory.$inject = ['$linq', 'GdeicPage'];
 
-    function GdeicGroupingFactory($linq, GdeicPaging) {
+    function GdeicGroupFactory($linq, GdeicPage) {
 
-        class GdeicGrouping extends GdeicPaging {
+        class GdeicGroup extends GdeicPage {
             constructor(source = [], itemsPerPage = 10, itemsInitPerGroup = 0) {
                 let _source,
                     _formatSource = [{ groupTag: null, source: source, isExpand: false, $$index: 0 }];
 
                 super(_formatSource, itemsPerPage);
-                this.sourcePaging = new GdeicPaging(source);
+                this.sourcePaging = new GdeicPage(source);
                 this.groupSettings = null;
                 this.itemsInitPerGroup = itemsInitPerGroup;
 
@@ -79,6 +79,6 @@ module.exports = function(ngModule) {
             }
         }
 
-        return GdeicGrouping;
+        return GdeicGroup;
     }
 };

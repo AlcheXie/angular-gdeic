@@ -7,12 +7,12 @@ module.exports = function(ngModule, options) {
     function gdeicErrorDirective($templateCache) {
 
         options = options || {};
-        let templateName = 'gdeic/template/error.html';
+        let templateName = 'gdeic/template/gdeicError.html';
         if (options.defaultTemplate) {
             $templateCache.put(templateName, require('./template.html'));
         }
         if (options.defaultStyle) {
-            require('./error.scss');
+            require('./styles.scss');
         }
 
         return {

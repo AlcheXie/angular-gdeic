@@ -31,5 +31,5 @@ module.exports = function(ngModule) {
         };
     }
 
-    require('./gradual-show.scss');
+    require('./styles.scss');
 };

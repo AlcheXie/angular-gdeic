@@ -7,7 +7,7 @@ module.exports = function(ngModule, options) {
     function gdeicPagingDirective($templateCache) {
 
         options = options || {};
-        let templateName = 'gdeic/template/paging.html';
+        let templateName = 'gdeic/template/gdeicPaging.html';
         if (options.defaultTemplate) {
             $templateCache.put(templateName, require('./template.html'));
         }
@@ -25,8 +25,8 @@ module.exports = function(ngModule, options) {
                 return require('../../../../common/set-directive-template-url')($templateCache, tAttrs.templateUrl, templateName);
             },
             replace: true,
-            controller: ['$scope', 'GdeicPaging', 'GdeicGrouping',
-                function($scope, GdeicPaging, GdeicGrouping) {
+            controller: ['$scope', 'GdeicPage', 'GdeicGroup',
+                function($scope, GdeicPage, GdeicGroup) {
                     let _aDefaultPages = [1, 2, 3, 4, 5],
                         _isInit = false;
 
@@ -57,7 +57,7 @@ module.exports = function(ngModule, options) {
                             let _source, _aPageIdx;
                             if (!(angular.isDefined(oldVal) && newVal.length > 0)) { return; }
 
-                            if ($scope.pagingModel.constructor === GdeicPaging) {
+                            if ($scope.pagingModel.constructor === GdeicPage) {
                                 _source = $scope.pagingModel.getSource();
                                 _aPageIdx = $scope.pagingModel.pagingList.map(x => x.$$index);
 
@@ -69,7 +69,7 @@ module.exports = function(ngModule, options) {
                                     }
                                     $scope.pagingModel.setSource(_source);
                                 }
-                            } else if ($scope.pagingModel.constructor === GdeicGrouping) {
+                            } else if ($scope.pagingModel.constructor === GdeicGroup) {
                                 for (let item of newVal) {
                                     $scope.pagingModel.pagingList[item.$$index].isExpand = item.isExpand;
                                 }

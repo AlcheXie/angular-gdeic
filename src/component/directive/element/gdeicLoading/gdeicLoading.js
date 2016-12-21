@@ -7,12 +7,12 @@ module.exports = function(ngModule, options) {
     function gdeicLoadingDirective($templateCache) {
 
         options = options || {};
-        let templateName = 'gdeic/template/loading.html';
+        let templateName = 'gdeic/template/gdeicLoading.html';
         if (options.defaultTemplate) {
             $templateCache.put(templateName, require('./template.html'));
         }
         if (options.defaultStyle) {
-            require('./loading.scss');
+            require('./styles.scss');
         }
 
         return {

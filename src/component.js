@@ -2,47 +2,33 @@ module.exports = function(ngModule) {
 
     /* directives of element */
 
-    require('./component/directive/element/error/error')(ngModule, { defaultTemplate: true, defaultStyle: true });
+    require('./component/directive/element/gdeicError/gdeicError')(ngModule, { defaultTemplate: true, defaultStyle: true });
 
-    require('./component/directive/element/hold-on/hold-on')(ngModule, { defaultTemplate: true, defaultStyle: true });
+    require('./component/directive/element/gdeicHoldOn/gdeicHoldOn')(ngModule, { defaultTemplate: true, defaultStyle: true });
 
-    require('./component/directive/element/ie-warning/ie-warning')(ngModule);
+    require('./component/directive/element/gdeicIeWarning/gdeicIeWarning')(ngModule);
 
-    require('./component/directive/element/loading/loading')(ngModule, { defaultTemplate: true, defaultStyle: true });
+    require('./component/directive/element/gdeicLoading/gdeicLoading')(ngModule, { defaultTemplate: true, defaultStyle: true });
 
-    require('./component/directive/element/paging/paging')(ngModule, { defaultTemplate: true });
+    require('./component/directive/element/gdeicPaging/gdeicPaging')(ngModule, { defaultTemplate: true });
 
-    require('./component/directive/element/array-text/array-text')(ngModule);
+    require('./component/directive/element/gdeicArrayText/gdeicArrayText')(ngModule);
 
     /* directives of attribute */
 
-    require('./component/directive/attribute/auto-resize/auto-resize-padding-x')(ngModule);
+    require('./component/directive/attribute/autoResize/autoResizePaddingX')(ngModule);
 
-    require('./component/directive/attribute/auto-resize/auto-resize-padding-y')(ngModule);
+    require('./component/directive/attribute/autoResize/autoResizePaddingY')(ngModule);
 
-    require('./component/directive/attribute/gradual-show/gradual-show')(ngModule);
+    require('./component/directive/attribute/gradualShow/gradualShow')(ngModule);
     
-    require('./component/directive/attribute/prevent-edit')(ngModule);
+    require('./component/directive/attribute/preventEdit')(ngModule);
     
-    require('./component/directive/attribute/prevent-propagation')(ngModule);
+    require('./component/directive/attribute/preventPropagation')(ngModule);
 
-    /* factories */
+    /* providers */
 
-    require('./component/factory/gdeicHttpInterceptor')(ngModule);
-
-    require('./component/factory/gdeicCache')(ngModule);
-
-    /* classes */
-
-    require('./component/factory/class/paging')(ngModule);
-
-    require('./component/factory/class/grouping')(ngModule);
-
-    require('./component/factory/class/pulling')(ngModule);
-
-    require('./component/factory/class/toggle')(ngModule);
-
-    require('./component/factory/class/edit')(ngModule);
+    require('./component/provider/$gdeic')(ngModule);
 
     /* filters */
 
@@ -52,7 +38,21 @@ module.exports = function(ngModule) {
     
     require('./component/filter/dateInterval')(ngModule);
 
-    /* providers */
+    /* factories */
 
-    require('./component/provider/gdeic')(ngModule);
+    require('./component/factory/$gdeicHttpInterceptor')(ngModule);
+
+    require('./component/factory/$gdeicCache')(ngModule);
+
+    /* factories - classes */
+
+    require('./component/factory/class/GdeicPage')(ngModule);
+
+    require('./component/factory/class/GdeicGroup')(ngModule);
+
+    require('./component/factory/class/GdeicPulling')(ngModule);
+
+    require('./component/factory/class/GdeicToggle')(ngModule);
+
+    require('./component/factory/class/GdeicEdit')(ngModule);
 };
