@@ -7,18 +7,28 @@ module.exports = function(ngModule) {
     function $gdeicProvider() {
         let _appTitle = '',
             _loginUrl = '';
+        let _timeDiff = 0;
 
         this.setAppData = options => {
             _appTitle = document.title = options.appTitle;
             _loginUrl = options.loginUrl;
         }
 
+        this.setTimeDiff = diff => {
+            if (angular.isNumber(diff) && (diff > 0 || diff < 24)) {
+                _timeDiff = diff;
+            }
+        }
+
         this.$get = ['$rootScope', '$q', '$location', '$timeout',
             function($rootScope, $q, $location, $timeout) {
                 let $gdeic = {
-                    version: '1.1.0',
-                    appTitle: _appTitle,
-                    loginUrl: _loginUrl
+                    appData: {
+                        version: '1.1.0',
+                        appTitle: _appTitle,
+                        loginUrl: _loginUrl
+                    },
+                    getTimeDiff() { return _timeDiff; }
                 };
 
                 $gdeic.finishInit = () => { $rootScope.finishInit = true; }

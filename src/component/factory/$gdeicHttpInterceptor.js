@@ -2,14 +2,15 @@ module.exports = function(ngModule) {
 
     ngModule.factory('$gdeicHttpInterceptor', $gdeicHttpInterceptorFactory);
 
-    $gdeicHttpInterceptorFactory.$inject = ['$q', '$rootScope', '$log'];
+    $gdeicHttpInterceptorFactory.$inject = ['$q', '$rootScope', '$log', '$gdeic'];
 
-    function $gdeicHttpInterceptorFactory($q, $rootScope, $log) {
-        var httpInterceptor = {
+    function $gdeicHttpInterceptorFactory($q, $rootScope, $log, $gdeic) {
+        let timeDiff = $gdeic.getTimeDiff();
+        let httpInterceptor = {
             'request': function(config) {
                 if (!/\.\w+$/.test(config.url)) {
                     if (angular.isObject(config.data)) {
-                        config.data.addHours(8);
+                        config.data.addHours(timeDiff);
                     }
                 }
                 return config;
@@ -27,7 +28,7 @@ module.exports = function(ngModule) {
 
                     if (angular.isObject(response.data.Data)) {
                         response.data.Data.formatDate();
-                        response.data.Data.addHours(-8);
+                        response.data.Data.addHours(-timeDiff);
                     }
                 }
                 return response;

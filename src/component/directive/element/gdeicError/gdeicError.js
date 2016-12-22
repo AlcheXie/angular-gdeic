@@ -30,8 +30,8 @@ module.exports = function(ngModule, options) {
                     this.error = null;
 
                     this.clearMsg = () => {
-                        if (this.error.StatusCode === -1 && angular.isDefined($gdeic.loginUrl)) {
-                            $window.location = $gdeic.loginUrl;
+                        if (this.error.StatusCode === -1 && angular.isDefined($gdeic.appData.loginUrl)) {
+                            $window.location = $gdeic.appData.loginUrl;
                         } else if (this.error.StatusCode === 500) {
                             $window.location.reload();
                         }
