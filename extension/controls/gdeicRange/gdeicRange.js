@@ -20,6 +20,7 @@ module.exports = function(ngModule, options) {
             scope: {
                 templateUrl: '@',
                 ngModel: '=',
+                showLabel: '=',
                 labelText: '@',
                 minValue: '=',
                 maxValue: '=',
