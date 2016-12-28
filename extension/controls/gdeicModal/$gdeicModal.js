@@ -16,11 +16,11 @@ module.exports = function(ngModule, options) {
             confirm({
                 title = '确认操作',
                 message = '当前操作不可撤销， 确认要继续吗？',
-                option = {
+                config = {
                     size: 'sm'
                 }
             }) {
-                if (!/^(xs|sm|md|lg)$/.test(option.size)) { option.size = 'sm'; }
+                if (!/^(xs|sm|md|lg)$/.test(config.size)) { config.size = 'sm'; }
 
                 return $uibModal.open(Object.assign({
                     template: $templateCache.get(templateName) || $templateCache.get('gdeic/template/directive-blank.html'),
@@ -31,17 +31,16 @@ module.exports = function(ngModule, options) {
                         message: () => message
                     },
                     backdrop: 'static'
-                }, option));
+                }, config));
             },
-            edit(config = {}, option = {
-                size: 'md'
-            }) {
-                option = Object.assign({
+            edit(config = {}) {
+                config = Object.assign({
                     controllerAs: 'vm',
-                    backdrop: 'static'
-                }, option);
+                    backdrop: 'static',
+                    size: 'md'
+                }, config);
 
-                return $uibModal.open(Object.assign(config, option));
+                return $uibModal.open(config);
             }
         }
     }
