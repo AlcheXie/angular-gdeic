@@ -32,6 +32,11 @@ module.exports = function(ngModule) {
                 params: { uid: '@uid' },
                 method: 'GET'
             },
+            deleteAccount: {
+                url: 'api/account/del-account/:uid',
+                params: { uid: '@uid' },
+                method: 'GET'
+            },
             queryRole: {
                 url: 'api/account/get-roles',
                 method: 'GET'
