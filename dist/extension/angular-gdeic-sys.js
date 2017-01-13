@@ -43,21 +43,27 @@
 /******/ ({
 
 /***/ 0:
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
-	var ngModule = angular.module('ngGdeicSys', ['ngGdeic']);
+	'use strict';
 
-	__webpack_require__(19)(ngModule);
-	__webpack_require__(20)(ngModule);
-	__webpack_require__(21)(ngModule);
+	var ngModule = angular.module('ngGdeicSys', ['ngResource', 'ngGdeic']);
 
-/***/ },
+	// based on ngResource
+	__webpack_require__(33)(ngModule);
 
-/***/ 19:
-/***/ function(module, exports) {
+	__webpack_require__(34)(ngModule);
+
+	__webpack_require__(35)(ngModule);
+
+/***/ }),
+
+/***/ 33:
+/***/ (function(module, exports) {
+
+	'use strict';
 
 	module.exports = function (ngModule) {
-	    'use strict';
 
 	    ngModule.factory('$gdeicSysResource', $gdeicSysResourceFactory);
 
@@ -88,6 +94,11 @@
 	            },
 	            lockAccount: {
 	                url: 'api/account/lock-account/:uid',
+	                params: { uid: '@uid' },
+	                method: 'GET'
+	            },
+	            deleteAccount: {
+	                url: 'api/account/del-account/:uid',
 	                params: { uid: '@uid' },
 	                method: 'GET'
 	            },
@@ -125,12 +136,12 @@
 	                params: { menuId: '@menuId' },
 	                method: 'GET'
 	            },
-	            initOutree: {
-	                url: 'api/account/init-ou',
-	                method: 'GET'
-	            },
 	            getOuTree: {
 	                url: 'api/account/ou-tree',
+	                method: 'GET'
+	            },
+	            initOutree: {
+	                url: 'api/account/init-ou',
 	                method: 'GET'
 	            },
 	            queryOuAccounts: {
@@ -142,179 +153,245 @@
 	    }
 	};
 
-/***/ },
+/***/ }),
 
-/***/ 20:
-/***/ function(module, exports) {
+/***/ 34:
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	module.exports = function (ngModule) {
-	    'use strict';
 
-	    ngModule.factory('$cAccountRoleModel', $cAccountRoleModelFactory);
+	    ngModule.factory('GdeicAccountRole', GdeicAccountRoleFactory);
 
-	    $cAccountRoleModelFactory.$inject = ['$q', '$gdeic', '$cToggleModel', '$gdeicSysResource'];
+	    GdeicAccountRoleFactory.$inject = ['$q', '$gdeic', 'GdeicToggle', '$gdeicSysResource'];
 
-	    function $cAccountRoleModelFactory($q, $gdeic, $cToggleModel, $gdeicSysResource) {
-	        function $cAccountRoleModel(account) {
-	            account = account || [];
+	    function GdeicAccountRoleFactory($q, $gdeic, GdeicToggle, $gdeicSysResource) {
+	        var GdeicAccountRole = function () {
+	            function GdeicAccountRole() {
+	                var account = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
 
-	            this.Accounts = null;
-	            this.Roles = null;
-	            this.ManageOu = null;
-	            this.LockoutEnabled = false;
+	                _classCallCheck(this, GdeicAccountRole);
 
-	            if (account.constructor === Object) {
-	                account = [account];
-	            }
-	            this.Accounts = new $cToggleModel(account, 'Id');
-	            if (account.length === 1) {
-	                this.Roles = new $cToggleModel(account[0].Roles, 'Id');
-	                this.ManageOu = account[0].ManageOu;
-	                this.LockoutEnabled = account[0].LockoutEnabled;
-	            } else {
-	                this.Roles = new $cToggleModel('Id');
-	                if (account.length > 0) {
-	                    this.LockoutEnabled = !(account.some(function (u) {
-	                        return u.LockoutEnabled === false;
-	                    }));
-	                } else {
-	                    this.LockoutEnabled = false;
+	                this.Accounts = null;
+	                this.Roles = null;
+	                this.ManageOu = null;
+	                this.LockoutEnabled = false;
+
+	                if (account.constructor === Object) {
+	                    account = [account];
 	                }
-	            }
-	        }
-
-	        $cAccountRoleModel.prototype.save = function (isAdmin, isUnifyManageOu) {
-	            isAdmin = isAdmin || false;
-	            isUnifyManageOu = isUnifyManageOu || false;
-
-	            var accounts = angular.copy(this.Accounts.items), deferred = $q.defer();
-
-	            if (accounts.length === 0) {
-	                deferred.resolve(this.Accounts);
-	            } else {
-	                var i = 0, max = accounts.length, account;
-	                for (; i < max; i++) {
-	                    account = accounts[i];
-	                    if (this.Roles.items.length > 0) {
-	                        account.Roles = this.Roles.items;
-	                    }
-	                    if (isAdmin) {
-	                        if (isUnifyManageOu) {
-	                            account.ManageOu = this.ManageOu;
-	                        } else {
-	                            account.ManageOu = account.Ou;
-	                        }
+	                this.Accounts = new GdeicToggle(account, 'Sid');
+	                if (account.length === 1) {
+	                    this.Roles = new GdeicToggle(account[0].Roles, 'Id');
+	                    this.ManageOu = account[0].ManageOu;
+	                    this.LockoutEnabled = account[0].LockoutEnabled;
+	                } else {
+	                    this.Roles = new GdeicToggle('Id');
+	                    if (account.length > 0) {
+	                        this.LockoutEnabled = !account.some(function (x) {
+	                            return x.LockoutEnabled === false;
+	                        });
 	                    } else {
-	                        account.ManageOu = null;
+	                        this.LockoutEnabled = false;
 	                    }
-	                    account.LockoutEnabled = this.LockoutEnabled;
-	                }
-
-	                $gdeic.httpPromise($gdeicSysResource.saveAccount(accounts)).then(function (data) {
-	                    deferred.resolve(data);
-	                }, function (reason) {
-	                    deferred.reject(reason);
-	                });
-	            }
-
-	            return deferred.promise;
-	        }
-	        $cAccountRoleModel.prototype.lock = function () {
-	            var accountIds = this.Accounts.Ids, promises = [];
-	            for (var i = 0, max = accountIds.length; i < max; i++) {
-	                promises.push(_lock(accountIds[i]));
-	            }
-	            return $q.all(promises);
-
-	            function _lock(uid) {
-	                var deferred = $q.defer();
-	                $gdeic.httpPromise($gdeicSysResource.lockAccount({ uid: uid })).then(function (data) {
-	                    deferred.resolve(data);
-	                }, function (reason) {
-	                    deferred.reject(reason);
-	                }, function (msg) {
-	                    deferred.notify(msg);
-	                });
-
-	                return deferred.promise;
-	            }
-	        }
-	        $cAccountRoleModel.prototype.getManageOuString = function () {
-	            if (!this.ManageOu) {
-	                return '';
-	            }
-
-	            var arr = (this.ManageOu.DnName || '').match(/[\u4e00-\u9fa5]+/g);
-	            if (!arr) {
-	                return this.ManageOu.OuName;
-	            } else {
-	                if (this.ManageOu.OuName === arr[0]) {
-	                    return arr.reverse().join(' - ');
-	                } else {
-	                    return arr.reverse().join(' - ') + ' - ' + (this.ManageOu.OuName || '');
 	                }
 	            }
-	        }
 
-	        return $cAccountRoleModel;
+	            _createClass(GdeicAccountRole, [{
+	                key: 'save',
+	                value: function save() {
+	                    var isAdmin = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+	                    var isUnifyManageOu = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
+	                    var _accounts = angular.copy(this.Accounts.items),
+	                        deferred = $q.defer();
+
+	                    if (_accounts.length === 0) {
+	                        deferred.resolve(this.Accounts);
+	                    } else {
+	                        var _iteratorNormalCompletion = true;
+	                        var _didIteratorError = false;
+	                        var _iteratorError = undefined;
+
+	                        try {
+	                            for (var _iterator = _accounts[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+	                                var account = _step.value;
+
+	                                if (this.Roles.items.length > 0) {
+	                                    account.Roles = this.Roles.items;
+	                                }
+	                                if (isAdmin) {
+	                                    if (isUnifyManageOu) {
+	                                        account.ManageOu = this.ManageOu;
+	                                    } else {
+	                                        account.ManageOu = account.Ou;
+	                                    }
+	                                } else {
+	                                    account.ManageOu = null;
+	                                }
+	                                account.LockoutEnabled = this.LockoutEnabled;
+	                            }
+	                        } catch (err) {
+	                            _didIteratorError = true;
+	                            _iteratorError = err;
+	                        } finally {
+	                            try {
+	                                if (!_iteratorNormalCompletion && _iterator.return) {
+	                                    _iterator.return();
+	                                }
+	                            } finally {
+	                                if (_didIteratorError) {
+	                                    throw _iteratorError;
+	                                }
+	                            }
+	                        }
+
+	                        $gdeic.httpPromise($gdeicSysResource.saveAccount(_accounts)).then(deferred.resolve, deferred.reject);
+	                    }
+
+	                    return deferred.promise;
+	                }
+	            }, {
+	                key: 'lock',
+	                value: function lock() {
+	                    var _accountIds = this.Accounts.Ids,
+	                        _promises = [],
+	                        _lock = function _lock(uid) {
+	                        var deferred = $q.defer();
+	                        $gdeic.httpPromise($gdeicSysResource.lockAccount({ uid: uid })).then(deferred.resolve, deferred.reject);
+	                        return deferred.promise;
+	                    };
+
+	                    var _iteratorNormalCompletion2 = true;
+	                    var _didIteratorError2 = false;
+	                    var _iteratorError2 = undefined;
+
+	                    try {
+	                        for (var _iterator2 = _accountIds[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+	                            var id = _step2.value;
+
+	                            _promises.push(_lock(id));
+	                        }
+	                    } catch (err) {
+	                        _didIteratorError2 = true;
+	                        _iteratorError2 = err;
+	                    } finally {
+	                        try {
+	                            if (!_iteratorNormalCompletion2 && _iterator2.return) {
+	                                _iterator2.return();
+	                            }
+	                        } finally {
+	                            if (_didIteratorError2) {
+	                                throw _iteratorError2;
+	                            }
+	                        }
+	                    }
+
+	                    return $q.all(_promises);
+	                }
+	            }, {
+	                key: 'getManageOuString',
+	                value: function getManageOuString() {
+	                    if (!this.ManageOu) {
+	                        return '';
+	                    }
+
+	                    var _matches = (this.ManageOu.DnName || '').match(/[\u4e00-\u9fa5]+/g);
+	                    if (!_matches) {
+	                        return this.ManageOu.OuName;
+	                    } else {
+	                        if (this.ManageOu.OuName === _matches[0]) {
+	                            return _matches.reverse().join(' - ');
+	                        } else {
+	                            return _matches.reverse().join(' - ') + ' - ' + (this.ManageOu.OuName || '');
+	                        }
+	                    }
+	                }
+	            }]);
+
+	            return GdeicAccountRole;
+	        }();
+
+	        return GdeicAccountRole;
 	    }
 	};
 
-/***/ },
+/***/ }),
 
-/***/ 21:
-/***/ function(module, exports) {
+/***/ 35:
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	module.exports = function (ngModule) {
-	    'use strict';
 
-	    ngModule.factory('$cOutreeModel', $cOutreeModelFactory);
+	    ngModule.factory('GdeicOutree', GdeicOutreeFactory);
 
-	    $cOutreeModelFactory.$inject = ['$q', '$gdeic', '$gdeicSysResource'];
+	    GdeicOutreeFactory.$inject = ['$q', '$gdeic', '$gdeicSysResource'];
 
-	    function $cOutreeModelFactory($q, $gdeic, $gdeicSysResource) {
-	        function $cOutreeModel(outree) {
-	            var _source = outree;
+	    function GdeicOutreeFactory($q, $gdeic, $gdeicSysResource) {
+	        var GdeicOutree = function () {
+	            function GdeicOutree(outree) {
+	                _classCallCheck(this, GdeicOutree);
 
-	            this.getSource = function () {
-	                return _source;
+	                var _source = outree;
+
+	                this.Id = outree.Id;
+	                this.OuName = outree.OuName;
+	                this.DnName = outree.DnName;
+	                this.ParentId = outree.ParentId;
+	                this.SubOus = null;
+	                this.Accounts = null;
+
+	                this.getSource = function () {
+	                    return _source;
+	                };
 	            }
 
-	            this.Id = outree.Id;
-	            this.OuName = outree.OuName;
-	            this.DnName = outree.DnName;
-	            this.ParentId = outree.ParentId;
-	            this.SubOus = null;
-	            this.Accounts = null;
-	        }
+	            _createClass(GdeicOutree, [{
+	                key: 'setSubOus',
+	                value: function setSubOus() {
+	                    var _outree = this.getSource();
+	                    this.SubOus = _outree.SubOus.map(function (x, i) {
+	                        return new GdeicOutree(_outree.SubOus[i]);
+	                    });
+	                }
+	            }, {
+	                key: 'setAccounts',
+	                value: function setAccounts() {
+	                    var _this = this;
 
-	        $cOutreeModel.prototype.setSubOus = function () {
-	            var outree = this.getSource();
-	            this.SubOus = outree.SubOus.map(function (ou, i) {
-	                return new $cOutreeModel(outree.SubOus[i]);
-	            });
-	        }
-	        $cOutreeModel.prototype.setAccounts = function () {
-	            var ou = this, deferred = $q.defer();
+	                    var deferred = $q.defer();
 
-	            if (!ou.Accounts) {
-	                $gdeic.httpPromise($gdeicSysResource.queryOuAccounts({ ouId: ou.Id })).then(function (data) {
-	                    ou.Accounts = data;
-	                    deferred.resolve(data);
-	                }, function (reason) {
-	                    deferred.reject(reason);
-	                });
-	            } else {
-	                deferred.resolve(ou.Accounts);
-	            }
+	                    if (!this.Accounts) {
+	                        $gdeic.httpPromise($gdeicSysResource.queryOuAccounts({ ouId: this.Id })).then(function (data) {
+	                            _this.Accounts = data;
+	                            deferred.resolve(data);
+	                        }, deferred.reject);
+	                    } else {
+	                        deferred.resolve(this.Accounts);
+	                    }
 
-	            return deferred.promise;
-	        }
+	                    return deferred.promise;
+	                }
+	            }]);
 
-	        return $cOutreeModel;
+	            return GdeicOutree;
+	        }();
+
+	        return GdeicOutree;
 	    }
 	};
 
-/***/ }
+/***/ })
 
 /******/ });

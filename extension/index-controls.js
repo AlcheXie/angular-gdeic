@@ -1,5 +1,13 @@
 var ngModule = angular.module('ngGdeicControls', ['ui.bootstrap', 'ngGdeic']);
 
+/* factories */
+
+// based on ui.bootstrap
+require('./controls/gdeicModal/$gdeicModal')(ngModule, { defaultTemplate: true });
+require('./controls/gdeicModal/GdeicConfirmController')(ngModule);
+
+/* directives */
+
 require('./controls/gdeicCascade/gdeicCascade')(ngModule, { defaultTemplate: true });
 
 // based on ui.bootstrap
@@ -8,10 +16,6 @@ require('./controls/gdeicDatePicker/gdeicDatePicker')(ngModule, { defaultTemplat
 require('./controls/gdeicFileUpload/gdeicFileUpload')(ngModule, { defaultTemplate: true, defaultStyle: true });
 
 require('./controls/gdeicImageUpload/gdeicImageUpload')(ngModule, { defaultTemplate: true, defaultStyle: true });
-
-// based on ui.bootstrap
-require('./controls/gdeicModal/$gdeicModal')(ngModule, { defaultTemplate: true });
-require('./controls/gdeicModal/GdeicConfirmController')(ngModule);
 
 // based on ngGdeic's gradualShowDirective
 require('./controls/gdeicModalPanel/gdeicModalPanel')(ngModule, { defaultTemplate: true, defaultStyle: true });
@@ -23,4 +27,4 @@ require('./controls/gdeicPagingAhead/gdeicPagingAhead')(ngModule, { defaultTempl
 
 require('./controls/gdeicRange/gdeicRange')(ngModule, { defaultTemplate: true, defaultStyle: true });
 
-require('./controls/gdeicTreeView/gdeicTreeView')(ngModule, { defaultTemplate: true });
+require('./controls/gdeicTreeView/gdeicTreeView')(ngModule);

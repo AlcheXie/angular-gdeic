@@ -2,6 +2,8 @@ module.exports = function(ngModule) {
 
     /* directives of element */
 
+    require('./component/directive/element/gdeicArrayText/gdeicArrayText')(ngModule);
+
     require('./component/directive/element/gdeicError/gdeicError')(ngModule, { defaultTemplate: true, defaultStyle: true });
 
     require('./component/directive/element/gdeicHoldOn/gdeicHoldOn')(ngModule, { defaultTemplate: true, defaultStyle: true });
@@ -11,8 +13,6 @@ module.exports = function(ngModule) {
     require('./component/directive/element/gdeicLoading/gdeicLoading')(ngModule, { defaultTemplate: true, defaultStyle: true });
 
     require('./component/directive/element/gdeicPaging/gdeicPaging')(ngModule, { defaultTemplate: true });
-
-    require('./component/directive/element/gdeicArrayText/gdeicArrayText')(ngModule);
 
     /* directives of attribute */
 
