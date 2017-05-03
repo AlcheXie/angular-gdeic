@@ -7,7 +7,7 @@ module.exports = function(ngModule) {
     function $gdeicProvider() {
         let _appTitle = '',
             _loginUrl = '';
-        let _timeDiff = 0;
+        let _timeDiff = -((new Date()).getTimezoneOffset()) / 60;
 
         this.setAppData = options => {
             _appTitle = document.title = options.appTitle;
