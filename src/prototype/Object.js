@@ -20,7 +20,10 @@ module.exports = function(angular) {
                                 if (value === '1900-01-01T00:00:00' || value === '0001-01-01T00:00:00') {
                                     delete this[key];
                                 } else {
-                                    this[key] = new Date(this[key]);
+                                    if (/T\d{2}:\d{2}:\d{2}$/.test(value)) {
+                                        value = `${value}.000Z`;
+                                    }
+                                    this[key] = new Date(value);
                                 }
                             } else if (angular.isObject(value)) {
                                 value.formatDate();
