@@ -36,9 +36,7 @@ module.exports = function(ngModule) {
                     deferred.resolve(this.Accounts);
                 } else {
                     for (let account of _accounts) {
-                        if (this.Roles.items.length > 0) {
-                            account.Roles = this.Roles.items;
-                        }
+                        account.Roles = this.Roles.items;
                         if (isAdmin) {
                             if (isUnifyManageOu) {
                                 account.ManageOu = this.ManageOu;
