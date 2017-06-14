@@ -1,6 +1,6 @@
 var ngApp = angular.module('ngGdeic', ['angular-linq']);
 
-require('./src/prototype')(angular);
+require('./src/polyfill')(angular);
 require('./src/component')(ngApp);
 require('./src/config')(ngApp);
 
