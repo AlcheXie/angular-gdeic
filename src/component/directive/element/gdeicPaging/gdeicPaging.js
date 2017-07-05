@@ -43,12 +43,22 @@ module.exports = function(ngModule, options) {
                         }
                     }
 
-                    let _unbindWatcher = $scope.$watch('pagingModel', (newVal, oldVal) => {
+                    $scope.$watch('pagingModel', (newVal, oldVal) => {
                         if (angular.isObject(newVal)) {
-                            _unbindWatcher();
                             this.pageCount = Math.ceil(newVal.pagingListLength / newVal.itemsPerPage);
-                            this.setPage(1);
-                            _isInit = true;
+                            if (_isInit) {
+                                let _pageIdx = 1;
+                                if (this.pageCount < oldVal.currentPage) {
+                                    _pageIdx = this.pageCount;
+                                } else {
+                                    _pageIdx = oldVal.currentPage ? oldVal.currentPage : 1;
+                                }
+                                this.setPage(_pageIdx);
+                                this.showingPages = _aDefaultPages.map(x => (Math.ceil(_pageIdx / 5) - 1) * 5 + x).filter(x => x <= this.pageCount);
+                            } else {
+                                this.setPage(1);
+                                _isInit = true;
+                            }
                         }
                     });
 
