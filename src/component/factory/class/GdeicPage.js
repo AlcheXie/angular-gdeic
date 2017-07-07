@@ -79,15 +79,14 @@ module.exports = function(ngModule) {
                 return this;
             }
 
-            update(pagingList = this.getSource(), isSetSource = false) {
+            update(pagingList = this.getSource()) {
                 this.pagingList = pagingList;
                 this.pagingListLength = this.pagingList.length;
 
                 let pageCount = Math.ceil(this.pagingListLength / this.itemsPerPage);
                 if (pageCount < this.currentPage && pageCount > 0) { this.currentPage = pageCount; }
+                if (this.currentPage === 0) { this.currentPage = 1; }
                 this.paging(this.currentPage);
-
-                if (isSetSource) { this.setSource(pagingList); }
 
                 return this;
             }
@@ -101,7 +100,7 @@ module.exports = function(ngModule) {
                 }
                 condition = {
                     and: condition.and || {},
-                    or: condition.or || {}
+                    or: condition.or || []
                 }
                 if (angular.toJson(condition.and) === '{}' && !angular.isArray(condition.or)) {
                     this.update();
@@ -112,7 +111,8 @@ module.exports = function(ngModule) {
                     strCondition = '';
 
                 for (let key of Object.keys(condition.and)) {
-                    strCondition += `x.${key}.indexOf('${condition.and[key]}') > -1 &&`;
+                    if (condition.and[key] === undefined || condition.and[key] === null || condition.and[key] === '') { continue; }
+                    strCondition += `x.${key}.toString().indexOf('${condition.and[key]}') > -1 &&`;
                 }
                 if (condition.or.length === 0) {
                     strCondition = strCondition.substr(0, strCondition.length - 2);
@@ -125,15 +125,17 @@ module.exports = function(ngModule) {
                         if (arrPs.length > 0) {
                             strCondition += '(';
                             for (let item of arrPs) {
-                                strCondition += `x.${item}.indexOf('${value}') > -1 ||`;
+                                if (value === undefined || value === null || value === '') { continue; }
+                                strCondition += `x.${item}.toString().indexOf('${value}') > -1 ||`;
                             }
                             strCondition = `${strCondition.substr(0, strCondition.length - 2)}) &&`;
                         }
                     }
                     strCondition = strCondition.substr(0, strCondition.length - 2);
                 }
-
-                _linqSource = _linqSource.Where(x => eval(strCondition));
+                if (strCondition !== '') {
+                    _linqSource = _linqSource.Where(x => eval(strCondition));
+                }
                 this.update(_linqSource.ToArray());
 
                 return this;
