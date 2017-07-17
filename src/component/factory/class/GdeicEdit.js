@@ -42,7 +42,7 @@ module.exports = function(ngModule) {
                 return this;
             }
 
-            fire({ url, config = {}, action, params, method }) {
+            fire({ url, config = {}, action, params, method } = {}) {
                 let deferred = $q.defer(),
                     _promise;
                 let _getType = () => {
@@ -101,12 +101,7 @@ module.exports = function(ngModule) {
                     return $q.all(_promise);
                 } else if (angular.isObject(this)) {
                     let _data;
-                    if (params.constructor === Object) {
-                        _data = angular.copy(params);
-                        for (let key of Object.keys(params)) {
-                            _data[key] = this[_data[key].substr(1)];
-                        }
-                    } else if (params === true) {
+                    if (angular.isUndefined(params) || params === true) {
                         _data = angular.copy(this);
                         for (let key of Object.keys(_data)) {
                             if (angular.isDefined(_data[key]) && _data[key] !== null && _data[key].constructor === Object && _data[key].isClear()) {
@@ -115,6 +110,11 @@ module.exports = function(ngModule) {
                             if (/\$\$/.test(key) && _data.hasOwnProperty(key.substr(2)) && _data[key].$$isBind) {
                                 _data[key.substr(2)] = _data[key].items;
                             }
+                        }
+                    } else if (params.constructor === Object) {
+                        _data = angular.copy(params);
+                        for (let key of Object.keys(params)) {
+                            _data[key] = this[_data[key].substr(1)];
                         }
                     }
 
