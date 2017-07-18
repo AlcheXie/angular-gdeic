@@ -474,7 +474,10 @@
 	                                    if (_value === '1900-01-01T00:00:00' || _value === '0001-01-01T00:00:00') {
 	                                        delete this[key];
 	                                    } else {
-	                                        this[key] = new Date(this[key]);
+	                                        if (/T\d{2}:\d{2}:\d{2}$/.test(_value)) {
+	                                            _value = _value + '.000Z';
+	                                        }
+	                                        this[key] = new Date(_value);
 	                                    }
 	                                } else if (angular.isObject(_value)) {
 	                                    _value.formatDate();
@@ -1480,12 +1483,26 @@
 	                    }
 	                };
 
-	                var _unbindWatcher = $scope.$watch('pagingModel', function (newVal, oldVal) {
+	                $scope.$watch('pagingModel', function (newVal, oldVal) {
 	                    if (angular.isObject(newVal)) {
-	                        _unbindWatcher();
 	                        _this.pageCount = Math.ceil(newVal.pagingListLength / newVal.itemsPerPage);
-	                        _this.setPage(1);
-	                        _isInit = true;
+	                        if (_isInit) {
+	                            var _pageIdx = 1;
+	                            if (_this.pageCount < oldVal.currentPage) {
+	                                _pageIdx = _this.pageCount;
+	                            } else {
+	                                _pageIdx = oldVal.currentPage ? oldVal.currentPage : 1;
+	                            }
+	                            _this.setPage(_pageIdx);
+	                            _this.showingPages = _aDefaultPages.map(function (x) {
+	                                return (Math.ceil(_pageIdx / 5) - 1) * 5 + x;
+	                            }).filter(function (x) {
+	                                return x <= _this.pageCount;
+	                            });
+	                        } else {
+	                            _this.setPage(1);
+	                            _isInit = true;
+	                        }
 	                    }
 	                });
 
@@ -1841,7 +1858,7 @@
 	    function $gdeicProvider() {
 	        var _appTitle = '',
 	            _loginUrl = '';
-	        var _timeDiff = 0;
+	        var _timeDiff = -new Date().getTimezoneOffset() / 60;
 
 	        this.setAppData = function (options) {
 	            _appTitle = document.title = options.appTitle;
@@ -1857,7 +1874,7 @@
 	        this.$get = ['$rootScope', '$q', '$location', '$timeout', function ($rootScope, $q, $location, $timeout) {
 	            var $gdeic = {
 	                appData: {
-	                    version: '1.1.0',
+	                    version: '1.1.1',
 	                    appTitle: _appTitle,
 	                    loginUrl: _loginUrl
 	                },
@@ -2522,7 +2539,6 @@
 	                key: 'update',
 	                value: function update() {
 	                    var pagingList = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : this.getSource();
-	                    var isSetSource = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
 
 	                    this.pagingList = pagingList;
 	                    this.pagingListLength = this.pagingList.length;
@@ -2531,11 +2547,10 @@
 	                    if (pageCount < this.currentPage && pageCount > 0) {
 	                        this.currentPage = pageCount;
 	                    }
-	                    this.paging(this.currentPage);
-
-	                    if (isSetSource) {
-	                        this.setSource(pagingList);
+	                    if (this.currentPage === 0) {
+	                        this.currentPage = 1;
 	                    }
+	                    this.paging(this.currentPage);
 
 	                    return this;
 	                }
@@ -2552,7 +2567,7 @@
 	                    }
 	                    condition = {
 	                        and: condition.and || {},
-	                        or: condition.or || {}
+	                        or: condition.or || []
 	                    };
 	                    if (angular.toJson(condition.and) === '{}' && !angular.isArray(condition.or)) {
 	                        this.update();
@@ -2570,7 +2585,10 @@
 	                        for (var _iterator4 = Object.keys(condition.and)[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
 	                            var key = _step4.value;
 
-	                            strCondition += 'x.' + key + '.indexOf(\'' + condition.and[key] + '\') > -1 &&';
+	                            if (condition.and[key] === undefined || condition.and[key] === null || condition.and[key] === '') {
+	                                continue;
+	                            }
+	                            strCondition += 'x.' + key + '.toString().indexOf(\'' + condition.and[key] + '\') > -1 &&';
 	                        }
 	                    } catch (err) {
 	                        _didIteratorError4 = true;
@@ -2614,7 +2632,10 @@
 	                                        for (var _iterator6 = arrPs[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
 	                                            var item = _step6.value;
 
-	                                            strCondition += 'x.' + item + '.indexOf(\'' + value + '\') > -1 ||';
+	                                            if (value === undefined || value === null || value === '') {
+	                                                continue;
+	                                            }
+	                                            strCondition += 'x.' + item + '.toString().indexOf(\'' + value + '\') > -1 ||';
 	                                        }
 	                                    } catch (err) {
 	                                        _didIteratorError6 = true;
@@ -2651,10 +2672,11 @@
 
 	                        strCondition = strCondition.substr(0, strCondition.length - 2);
 	                    }
-
-	                    _linqSource = _linqSource.Where(function (x) {
-	                        return eval(strCondition);
-	                    });
+	                    if (strCondition !== '') {
+	                        _linqSource = _linqSource.Where(function (x) {
+	                            return eval(strCondition);
+	                        });
+	                    }
 	                    this.update(_linqSource.ToArray());
 
 	                    return this;
@@ -3231,8 +3253,9 @@
 	                }
 	            }, {
 	                key: 'fire',
-	                value: function fire(_ref2) {
-	                    var url = _ref2.url,
+	                value: function fire() {
+	                    var _ref2 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+	                        url = _ref2.url,
 	                        _ref2$config = _ref2.config,
 	                        config = _ref2$config === undefined ? {} : _ref2$config,
 	                        action = _ref2.action,
@@ -3349,17 +3372,22 @@
 	                        return $q.all(_promise);
 	                    } else if (angular.isObject(this)) {
 	                        var _data2 = void 0;
-	                        if (params.constructor === Object) {
-	                            _data2 = angular.copy(params);
+	                        if (angular.isUndefined(params) || params === true) {
+	                            _data2 = angular.copy(this);
 	                            var _iteratorNormalCompletion4 = true;
 	                            var _didIteratorError4 = false;
 	                            var _iteratorError4 = undefined;
 
 	                            try {
-	                                for (var _iterator4 = Object.keys(params)[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+	                                for (var _iterator4 = Object.keys(_data2)[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
 	                                    var _key = _step4.value;
 
-	                                    _data2[_key] = this[_data2[_key].substr(1)];
+	                                    if (angular.isDefined(_data2[_key]) && _data2[_key] !== null && _data2[_key].constructor === Object && _data2[_key].isClear()) {
+	                                        delete _data2[_key];
+	                                    }
+	                                    if (/\$\$/.test(_key) && _data2.hasOwnProperty(_key.substr(2)) && _data2[_key].$$isBind) {
+	                                        _data2[_key.substr(2)] = _data2[_key].items;
+	                                    }
 	                                }
 	                            } catch (err) {
 	                                _didIteratorError4 = true;
@@ -3375,22 +3403,17 @@
 	                                    }
 	                                }
 	                            }
-	                        } else if (params === true) {
-	                            _data2 = angular.copy(this);
+	                        } else if (params.constructor === Object) {
+	                            _data2 = angular.copy(params);
 	                            var _iteratorNormalCompletion5 = true;
 	                            var _didIteratorError5 = false;
 	                            var _iteratorError5 = undefined;
 
 	                            try {
-	                                for (var _iterator5 = Object.keys(_data2)[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
+	                                for (var _iterator5 = Object.keys(params)[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
 	                                    var _key2 = _step5.value;
 
-	                                    if (angular.isDefined(_data2[_key2]) && _data2[_key2] !== null && _data2[_key2].constructor === Object && _data2[_key2].isClear()) {
-	                                        delete _data2[_key2];
-	                                    }
-	                                    if (/\$\$/.test(_key2) && _data2.hasOwnProperty(_key2.substr(2)) && _data2[_key2].$$isBind) {
-	                                        _data2[_key2.substr(2)] = _data2[_key2].items;
-	                                    }
+	                                    _data2[_key2] = this[_data2[_key2].substr(1)];
 	                                }
 	                            } catch (err) {
 	                                _didIteratorError5 = true;

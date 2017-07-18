@@ -222,9 +222,7 @@
 	                            for (var _iterator = _accounts[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
 	                                var account = _step.value;
 
-	                                if (this.Roles.items.length > 0) {
-	                                    account.Roles = this.Roles.items;
-	                                }
+	                                account.Roles = this.Roles.items;
 	                                if (isAdmin) {
 	                                    if (isUnifyManageOu) {
 	                                        account.ManageOu = this.ManageOu;

@@ -24,7 +24,7 @@ module.exports = function(ngModule) {
             function($rootScope, $q, $location, $timeout) {
                 let $gdeic = {
                     appData: {
-                        version: '1.1.0',
+                        version: '1.1.1',
                         appTitle: _appTitle,
                         loginUrl: _loginUrl
                     },

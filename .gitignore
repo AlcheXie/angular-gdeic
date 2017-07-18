@@ -4,3 +4,4 @@
 /test/
 /dist/angular-gdeic-custom.*
 *.log
+package-lock.json

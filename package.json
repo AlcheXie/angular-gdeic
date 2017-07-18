@@ -1,11 +1,8 @@
 {
   "name": "angular-gdeic",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "An ng-component for GDEIC's projects",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "author": "AlcheXie",
   "license": "MIT",
   "devDependencies": {
