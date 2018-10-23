@@ -1,6 +1,6 @@
 {
   "name": "angular-gdeic",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "An ng-components for GDEIC's projects",
   "main": "./dist/angular.gdeic.js",
   "authors": [
